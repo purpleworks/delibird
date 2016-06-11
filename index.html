@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Delibird - shipment tracking library for Golang</title>
+
+    <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/freelancer.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <style>
+        .loading-wrapper {
+            display: none;
+            padding: 20px 0;
+        }
+
+        .result-wrapper {
+            padding-top: 20px;
+        }
+    </style>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body id="page-top" class="index">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#page-top">Delibird</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#tracking">Tracking</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="https://github.com/purpleworks/delibird">Github</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <img class="img-responsive" src="img/delibird.logo.png" alt="">
+                    <div class="intro-text">
+                        <iframe src="https://ghbtns.com/github-btn.html?user=purpleworks&amp;repo=delibird&amp;type=star&amp;count=true" frameborder="0" scrolling="0" width="95px" height="20px"></iframe>
+                        <hr class="star-light">
+                        <span class="skills">Shipment tracking library for Golang</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Portfolio Grid Section -->
+    <section id="tracking">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>Tracking</h2>
+                    <hr class="star-primary">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <form id="trackingForm">
+                        <div class="form-group">
+                            <label for="courierCode">Courier</label>
+                            <select id="courierCode" class="form-control" name="courierCode">
+                                <option value="CJ" selected>CJ 대한통운</option>
+                                <!-- <option value="KPOST">우체국택배</option> -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="trackingNumber">Tracking Number</label>
+                            <input type="text" class="form-control" id="trackingNumber" placeholder="number">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                    <div class="loading-wrapper">
+                        <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
+                    <div class="result-wrapper">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="success" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>Github</h2>
+                    <hr class="star-light">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <a href="https://github.com/purpleworks/delibird" class="btn btn-lg btn-outline">
+                        <i class="fa fa-github"></i> Source
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="footer-below">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        Code licensed <a href="https://github.com/purpleworks/delibird/blob/master/LICENSE">MIT</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+    <div class="scroll-top page-scroll visible-xs visible-sm">
+        <a class="btn btn-primary" href="#page-top">
+            <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="js/classie.js"></script>
+    <script src="js/cbpAnimatedHeader.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="js/jqBootstrapValidation.js"></script>
+    <script src="js/contact_me.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/freelancer.js"></script>
+
+    <script>
+    $(function() {
+        $('#trackingForm').submit(function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+
+            if($.trim($('#trackingNumber').val()) == '') {
+                alert('Please input tracking number.');
+                return false;
+            }
+
+            $('.loading-wrapper').show();
+            $('.result-wrapper').html('');
+
+            $.get('https://delibird.herokuapp.com/tracking/' + $('#courierCode').val() + '/' + $.trim($('#trackingNumber').val()), function(data) {
+                console.log(data);
+                var html = '';
+                html += '<div class="alert alert-success" role="alert">' + data.company_name + ' (' + data.company_code + ') - ' + data.tracking_number +'</div>';
+                html += '<div class="alert alert-success" role="alert">' + data.sender + ' -&gt;' + data.receiver + ' (수령인:' + data.signer +')</div>';
+                html += '<table class="table table-striped"> <thead> <tr> <th>Area</th> <th>Date</th> <th>Status</th> </tr> </thead> <tbody>';
+                
+                for(var i=0; i<data.history.length; i++) {
+                    html += '<tr><td>' + data.history[i].area + '</td><td>' + data.history[i].date_text + '</td><td>' + data.history[i].status_text + '</td></tr>';
+                }
+
+                html += '</tbody> </table>';
+
+                $('.result-wrapper').html(html);
+            }).fail(function(data) {
+                var html = '';
+                html += '<div class="alert alert-warning" role="alert">' + data.responseJSON.message + '</div>';
+                $('.result-wrapper').html(html);
+            }).always(function() {
+                $('.loading-wrapper').hide();
+            });
+        });
+    });
+    </script>
+
+</body>
+
+</html>
