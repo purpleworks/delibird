@@ -1,0 +1,163 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Delibird API",
+    "description": "Shipment Tracking Open API",
+    "version": "0.1.0"
+  },
+  "host": "delibird.herokuapp.com",
+  "schemes": [
+    "https"
+  ],
+  "basePath": "/",
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/tracking/{code}/{tracking_number}": {
+      "get": {
+        "summary": "Shipment Tracking",
+        "description": "Support Epost & CJ\n- code\n  - KPOST(Korean Post)\n  - CJ(CJ대한통운)\n",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "description": "택배사 코드",
+            "required": true,
+            "type": "string",
+            "default": "CJ",
+            "enum": [
+              "CJ"
+            ]
+          },
+          {
+            "name": "tracking_number",
+            "in": "path",
+            "description": "송장번호",
+            "required": true,
+            "type": "string",
+            "default": "1234"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "배송정보",
+            "schema": {
+              "$ref": "#/definitions/Track"
+            },
+            "examples": {
+              "application/json": "{\n  \"tracking_number\":\"1234\",\n  \"company_code\":\"CJ\",\n  \"company_name\":\"CJ대한통운\",\n  \"sender\":\"아*\",\n  \"receiver\":\"김*섭\",\n  \"signer\":\"본인\",\n  \"status_code\":7,\n  \"status_text\":\"배달완료\",\n  \"history\":[\n    {\n      \"area\":\"송파B직영(차상문)\",\n      \"tel\":\"02-6937-6842\",\n      \"date\":1460013885,\n      \"date_text\":\"2016-04-07 16:24:45\",\n      \"status_code\":3,\n      \"status_text\":\"집화처리\"\n    },\n    {\n      \"area\":\"송파B직영(차상문)\",\n      \"tel\":\"02-6937-6842\",\n      \"date\":1460013885,\n      \"date_text\":\"2016-04-07 16:24:45\",\n      \"status_code\":2,\n      \"status_text\":\"SM입고\"\n    },\n    {\n      \"area\":\"송파A\",\n      \"tel\":\"02-6937-6836\",\n      \"date\":1460026859,\n      \"date_text\":\"2016-04-07 20:00:59\",\n      \"status_code\":4,\n      \"status_text\":\"간선상차\"\n    },\n    {\n      \"area\":\"용인HUB\",\n      \"date\":1460050614,\n      \"date_text\":\"2016-04-08 02:36:54\",\n      \"status_code\":5,\n      \"status_text\":\"간선하차\"\n    },\n    {\n      \"area\":\"용인HUB\",\n      \"date\":1460050669,\n      \"date_text\":\"2016-04-08 02:37:49\",\n      \"status_code\":5,\n      \"status_text\":\"간선하차\"\n    },\n    {\n      \"area\":\"용인HUB\",\n      \"date\":1460050694,\n      \"date_text\":\"2016-04-08 02:38:14\",\n      \"status_code\":4,\n      \"status_text\":\"간선상차\"\n    },\n    {\n      \"area\":\"용인HUB\",\n      \"date\":1460050750,\n      \"date_text\":\"2016-04-08 02:39:10\",\n      \"status_code\":4,\n      \"status_text\":\"간선상차\"\n    },\n    {\n      \"area\":\"노원\",\n      \"tel\":\"02-2129-1278\",\n      \"date\":1460067554,\n      \"date_text\":\"2016-04-08 07:19:14\",\n      \"status_code\":5,\n      \"status_text\":\"간선하차\"\n    },\n    {\n      \"area\":\"서울서노원\",\n      \"tel\":\"070-4191-7643\",\n      \"date\":1460068287,\n      \"date_text\":\"2016-04-08 07:31:27\",\n      \"status_code\":51,\n      \"status_text\":\"배달출발\"\n    },\n    {\n      \"area\":\"서울서노원\",\n      \"tel\":\"070-4191-7643\",\n      \"date\":1460098645,\n      \"date_text\":\"2016-04-08 15:57:25\",\n      \"status_code\":91,\n      \"status_text\":\"배달완료\"\n    }\n  ]\n}"
+            }
+          },
+          "default": {
+            "description": "에러",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Track": {
+      "type": "object",
+      "description": "배송정보",
+      "properties": {
+        "tracking_number": {
+          "type": "string",
+          "description": "송장번호"
+        },
+        "company_code": {
+          "type": "string",
+          "description": "배송업체 코드"
+        },
+        "company_name": {
+          "type": "string",
+          "description": "배송업체명"
+        },
+        "sender": {
+          "type": "string",
+          "description": "보낸이"
+        },
+        "receiver": {
+          "type": "string",
+          "description": "받는사람"
+        },
+        "signer": {
+          "type": "string",
+          "description": "수령인"
+        },
+        "status_code": {
+          "$ref": "#/definitions/TrackStatusCode"
+        },
+        "status_text": {
+          "type": "string",
+          "description": "상태"
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TrackHistory"
+          }
+        }
+      }
+    },
+    "TrackHistory": {
+      "type": "object",
+      "description": "배송내역",
+      "properties": {
+        "area": {
+          "type": "string",
+          "description": "지역"
+        },
+        "tel": {
+          "type": "string",
+          "description": "전화번호"
+        },
+        "date": {
+          "type": "number",
+          "description": "시간(timestamp)"
+        },
+        "date_text": {
+          "type": "string",
+          "description": "시간"
+        },
+        "status_code": {
+          "$ref": "#/definitions/TrackStatusCode"
+        },
+        "status_text": {
+          "type": "string",
+          "description": "상태"
+        }
+      }
+    },
+    "TrackStatusCode": {
+      "type": "integer",
+      "description": "상태코드",
+      "enum": [
+        "-1(알수없음)",
+        "1(접수대기)",
+        "2(영업점 접수)",
+        "3(집화처리)",
+        "4(간선상차)",
+        "5(간선하차)",
+        "51(배달출발)",
+        "91(배달완료)",
+        "99(미배달)"
+      ]
+    },
+    "Error": {
+      "type": "object",
+      "description": "에러",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

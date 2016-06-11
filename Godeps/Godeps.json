@@ -1,0 +1,110 @@
+{
+	"ImportPath": "github.com/purpleworks/delibird",
+	"GoVersion": "go1.6",
+	"GodepVersion": "v74",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/PuerkitoBio/goquery",
+			"Comment": "v0.3.2-86-g2e29ea4",
+			"Rev": "2e29ea41f0d13f4a303c75553f4eeadddc7a4c56"
+		},
+		{
+			"ImportPath": "github.com/andybalholm/cascadia",
+			"Rev": "3ad29d1ad1c4f2023e355603324348cf1f4b2d48"
+		},
+		{
+			"ImportPath": "github.com/codegangsta/negroni",
+			"Comment": "v0.2.0-22-gdc45282",
+			"Rev": "dc45282b3653ee198a3c06a82bc7847b03666497"
+		},
+		{
+			"ImportPath": "github.com/danryan/env",
+			"Rev": "bc567f4d372a17eb756004cdbfd8458ecc04b07e"
+		},
+		{
+			"ImportPath": "github.com/djimenez/iconv-go",
+			"Rev": "8960e66bd3dacbc8773962b40eb82fc18c63c127"
+		},
+		{
+			"ImportPath": "github.com/gopherjs/gopherjs/js",
+			"Comment": "go1.5-72-g244fe96",
+			"Rev": "244fe9679be7b935139f27fca1c190b7c3ee28fa"
+		},
+		{
+			"ImportPath": "github.com/gorilla/context",
+			"Comment": "v1.1-2-ga8d44e7",
+			"Rev": "a8d44e7d8e4d532b6a27a02dd82abb31cc1b01bd"
+		},
+		{
+			"ImportPath": "github.com/gorilla/mux",
+			"Comment": "v1.1-7-g9c19ed5",
+			"Rev": "9c19ed558d5df4da88e2ade9c8940d742aef0e7e"
+		},
+		{
+			"ImportPath": "github.com/jarcoal/httpmock",
+			"Rev": "145b10d659265440f062c31ea15326166bae56ee"
+		},
+		{
+			"ImportPath": "github.com/jtolds/gls",
+			"Comment": "v4.2.0",
+			"Rev": "8ddce2a84170772b95dd5d576c48d517b22cac63"
+		},
+		{
+			"ImportPath": "github.com/rs/cors",
+			"Rev": "3ca2b550f6a4333b63c845850f760a7d00412cd6"
+		},
+		{
+			"ImportPath": "github.com/rs/xhandler",
+			"Rev": "d9d9599b6aaf6a058cb7b1f48291ded2cbd13390"
+		},
+		{
+			"ImportPath": "github.com/smartystreets/assertions",
+			"Comment": "1.6.0-6-g40711f7",
+			"Rev": "40711f7748186bbf9c99977cd89f21ce1a229447"
+		},
+		{
+			"ImportPath": "github.com/smartystreets/assertions/internal/go-render/render",
+			"Comment": "1.6.0-6-g40711f7",
+			"Rev": "40711f7748186bbf9c99977cd89f21ce1a229447"
+		},
+		{
+			"ImportPath": "github.com/smartystreets/assertions/internal/oglematchers",
+			"Comment": "1.6.0-6-g40711f7",
+			"Rev": "40711f7748186bbf9c99977cd89f21ce1a229447"
+		},
+		{
+			"ImportPath": "github.com/smartystreets/goconvey/convey",
+			"Comment": "1.6.2",
+			"Rev": "d4c757aa9afd1e2fc1832aaab209b5794eb336e1"
+		},
+		{
+			"ImportPath": "github.com/smartystreets/goconvey/convey/gotest",
+			"Comment": "1.6.2",
+			"Rev": "d4c757aa9afd1e2fc1832aaab209b5794eb336e1"
+		},
+		{
+			"ImportPath": "github.com/smartystreets/goconvey/convey/reporting",
+			"Comment": "1.6.2",
+			"Rev": "d4c757aa9afd1e2fc1832aaab209b5794eb336e1"
+		},
+		{
+			"ImportPath": "github.com/unrolled/render",
+			"Rev": "198ad4d8b8a4612176b804ca10555b222a086b40"
+		},
+		{
+			"ImportPath": "golang.org/x/net/context",
+			"Rev": "ef00b378c73f107bf44d5c9b69875255ce89b79a"
+		},
+		{
+			"ImportPath": "golang.org/x/net/html",
+			"Rev": "ef00b378c73f107bf44d5c9b69875255ce89b79a"
+		},
+		{
+			"ImportPath": "golang.org/x/net/html/atom",
+			"Rev": "ef00b378c73f107bf44d5c9b69875255ce89b79a"
+		}
+	]
+}

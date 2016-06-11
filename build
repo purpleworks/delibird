@@ -1,0 +1,17 @@
+#!/bin/sh
+
+export GO15VENDOREXPERIMENT="1"
+
+GOLANG_VERSION=1.6
+PACKAGE_FULL_NAME=github.com/purpleworks/delibird
+WORKING_DIRECTORY=${WORKING_DIRECTORY:-"${PWD}"}
+
+if [ -z "$DOCKER_BUILD" ]; then
+    go build -o bin/delibird_server ./server
+else
+    docker run --rm \
+        -v ${WORKING_DIRECTORY}:/go/src/$PACKAGE_FULL_NAME \
+        -w /go/src/$PACKAGE_FULL_NAME \
+        golang:${GOLANG_VERSION}-alpine \
+        sh -c "apk --update add build-base && go build -v -o bin/delibird_server ./server"
+fi

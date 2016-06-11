@@ -1,0 +1,1012 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--[if lt IE 7]>
+<script type="text/JavaScript"> location.replace("http://www.epost.go.kr/comm/goodbye_ie6.jsp"); </script>
+<![endif]-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>국내우편 배송조회 - 원클릭 배송조회</title>
+<link href="/iwww/css/comm/shipping/epost_common.css" rel="stylesheet" type="text/css" />
+<link href="/iwww/css/comm/shipping/shipping.css" rel="stylesheet" type="text/css" />
+<link href="/iwww/css/comm/shipping/jquery-ui-1.9.2.custom.css" rel="stylesheet" type="text/css" />
+<link href="/iwww/css/comm/2011/footer.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="/iwww/jscripts/comm/common.js"></script>
+<script type="text/javascript" src="/iwww/jscripts/comm/jquery-1.9.1.min.js" ></script>
+<script type="text/javascript" src="/iwww/jscripts/comm/comnValidator.js"></script>
+<script type="text/javascript" src="/iwww/jscripts/comm/jquery-ui-1.9.2.custom.js" ></script>
+<script type="text/javascript" src="/iwww/jscripts/comm/shipping_comm.js"></script>
+
+<script type="text/javascript">
+//<![CDATA[
+
+$(document).ready(function(){
+	//등기번호 조회 input
+	var	shippingNumTxt = '예시) 1234567890123 ‘-’를 제외한 숫자만 입력해 주세요.'
+	
+		$("#sid1").val(shippingNumTxt).css('color','#999').focus(function(){
+			if($(this).val() == shippingNumTxt){
+				$(this).val('').css('color','#222');
+			}
+		}).blur(function(){
+			if($(this).val() == ''){
+				$(this).val(shippingNumTxt).css('color','#999');
+			}
+		});
+	
+	// 전화번호,영수증 조회 옵션선택
+	$('input[name=sendChkInfo]').click(function(){
+		$('input[name=sendChkInfo]').parent('p').find('input[type=text]').css('background-color','#f6f6f6').val('').attr('disabled','disabled');
+		$(this).parent('p').find('input[type=text]').css('background-color','#fff').removeAttr('disabled');
+	});
+
+//		$("#sid1").val("1441910483773");	// 개발 테스트용
+//		$("#reception_No").val("10801632");	// 개발 테스트용
+
+	var reception_Ymd_To = document.getElementById("reception_Ymd_To");
+	var reception_Ymd_From = document.getElementById("reception_Ymd_From");
+
+	fnSetDateObjText(reception_Ymd_From, "reception_Ymd_FromText");
+	fnSetDateObjText(reception_Ymd_To, "reception_Ymd_ToText");
+
+	// 나의우편물 조회 결과가 있을 때는 결과 부분으로 스크롤이동
+	if($('#searchMyTelResult').css('display')!='none'){
+		$('html,body').animate({scrollTop:$("#searchMyTelFrm").offset().top},0);
+	}
+
+	$(':radio[name="sendChkInfo"]:not(:checked)').parent('p').find('input[type=text]').css('background-color','#f6f6f6').val('').attr('disabled','disabled');
+	$(':radio[name="sendChkInfo"]:checked').parent('p').find('input[type=text]').css('background-color','#fff').removeAttr('disabled');
+
+	var noDataMsg = "";
+	if(noDataMsg != ""){
+		alert(noDataMsg);
+	}
+		
+
+});
+
+
+
+// 달력팝업 리턴 수신
+function fnRecevPopCalResult(fieldId, result){
+	var fieldObject = document.getElementById(fieldId);
+
+	fieldObject.value = result;
+	
+	fnCheckDate(fieldObject, document.getElementById("reception_Ymd_From"), document.getElementById("reception_Ymd_To"));
+
+	fnSetDateObjText(fieldObject, fieldId+"Text");
+}
+
+// 조회시작일, 조회종료일의 히든값으로 보여지는 텍스트를 세팅
+function fnSetDateObjText(hidnObj, viewObjId){
+	$("#"+viewObjId).text(hidnObj.value.substring(0, 4)+"-"+hidnObj.value.substring(4, 6)+"-"+hidnObj.value.substring(6, 8)+"("+lfnGetDayStr(hidnObj)+")");
+}
+
+
+// 국내우편물조회
+function onDomRigiTraceSubmit() {
+    if(('20160611164523' > '20110320100000') && ('20160611164523' < '20110320190000')){
+        return false;
+    }    
+    
+	var sid1 = document.getElementById("sid1");
+	if (!sid1.value) {
+		alert("등기번호 13자리를 입력하여 주십시오.");
+		sid1.focus();
+		return false;
+	}
+	sid1.value = sid1.value.trim();
+        
+	if (sid1.value.length != 13) {
+		alert("등기번호 13자리를 입력하여 주십시오.");
+		sid1.focus();
+		return false;
+	}
+
+    var num="1234567890";
+    for (i=0;i<sid1.value.length; i++) {
+        if (num.indexOf(sid1.value.charAt(i)) < 0) {
+			alert("등기번호 13자리를 숫자로 입력하여 주십시오.");
+			sid1.focus();
+			return false;
+        }
+    }
+
+
+
+	return true;
+}
+
+// 라디오버튼 선택값 구하기
+function lfnGetRadioValue(radioObject){
+	for(var i=0; i<radioObject.length; i++)
+	{
+		if(radioObject[i].checked)
+			return radioObject[i].value;
+	}
+	return null;
+}
+
+// onsubmit 개발용
+function onTraceOrderRelationSubmit(){
+	var validSubmit = false;
+	try{
+		var validSubmit = onTraceOrderRelationSubmit1();
+	}catch(e){
+			alert(e);
+	}
+	return validSubmit;
+//	return false;
+}
+// 나의우편물 조회
+function onTraceOrderRelationSubmit1() {
+
+
+    if(('20160611164523' > '20110320100000') && ('20160611164523' < '20110320190000')){
+        return false;
+    }
+	var reception_Ymd_From = document.getElementById("reception_Ymd_From");
+	var reception_Ymd_To = document.getElementById("reception_Ymd_To");
+    
+	var chDateVal = fnCheckDate(reception_Ymd_To, reception_Ymd_From, reception_Ymd_To);
+	if(!chDateVal){
+		return false;
+	}
+
+	if('' >= 5){
+		alert("5회 이상 잘못 입력 하셨습니다. \n10분 후에 다시 시도하시기 바랍니다.");
+		return false;
+	}
+	
+	var frm = document.getElementById("frmTraceOrderRelation");
+	var sendChkName = lfnGetRadioValue(frm.sendChkName);
+	var sendChkInfo = lfnGetRadioValue(frm.sendChkInfo);
+
+	if(!sendChkName){
+		alert("조회구분(보내는분/받는분)이 선택되지 않았습니다.");
+		return false;
+	}
+
+	if(!sendChkInfo){
+		alert("조회구분(휴대폰번호/전화번호/영수증번호)이 선택되지 않았습니다.");
+		return false;
+	}
+
+	if(sendChkInfo == "cellPhone"){
+		if(!frm.Mobile1.value && !frm.Mobile2.value && !frm.Mobile3.value){
+			alert("휴대전화번호를 입력 하십시오.");
+			frm.Mobile1.focus();
+			return false;
+		}
+		if( !comnValidator.isValidHpNoOnly(frm.Mobile1, frm.Mobile2, frm.Mobile3, "휴대전화 앞자리", "휴대전화 중간자리", "휴대전화 뒷자리") ){
+			return false;
+		}
+	}
+	else if(sendChkInfo == "telePhone"){
+		if(!frm.Phone1.value && !frm.Phone2.value && !frm.Phone3.value){
+			alert("일반전화번호를 입력 하십시오.");
+			frm.Phone1.focus();
+			return false;
+		}
+		if( !comnValidator.isValidTelNoOnly(frm.Phone1, frm.Phone2, frm.Phone3, "일반전화 지역번호", "일반전화 앞자리", "일반전화 뒷자리") ){
+			return false;
+		}
+	}
+	else if(sendChkInfo == "receiptNo"){
+		if(frm.reception_No.value.length != 8){
+			alert("영수증번호 8자리를 입력 하십시오.");
+			frm.reception_No.focus();
+			return false;
+		}
+	}
+
+
+	return true;
+}
+
+	// 날짜체크
+	function fnCheckDate(selBaseObject, startYmdObject, endYmdObject)
+	{
+	    var startYmdObjVal = startYmdObject.value;	  
+        var endYmdObjVal = endYmdObject.value;       
+	    	    
+        if(startYmdObjVal == "")
+        {
+            alert("조회시작일자를 입력해주십오.");
+            return false;
+        }
+	
+        if(endYmdObjVal == "" )
+        {
+            alert("조회종료일자를 입력해주십오.");
+            return false;
+        }
+	    var objStartYearDay = lfnGetDateObject(startYmdObject);
+	    var objEndYearDay = lfnGetDateObject(endYmdObject);
+	    var objInterval = (objEndYearDay - objStartYearDay) / 1000 /60 / 60 / 24;
+
+        if( objInterval < 0 )
+        {
+            alert("조회종료일자가 조회시작일자보다 이전 입니다.");
+			if(selBaseObject == startYmdObject)
+				lfnSetDate(startYmdObject, endYmdObject, 6);
+			else
+				lfnSetDate(endYmdObject, startYmdObject, -6);
+            return false;
+        }
+
+        if(objInterval >= 7 )
+        {
+			if(selBaseObject == startYmdObject){
+				lfnSetDate(startYmdObject, endYmdObject, 6);
+			}else{
+	            alert("조회기간은 7일을 넘길 수 없습니다.");
+				lfnSetDate(endYmdObject, startYmdObject, -6);
+			}
+            return false;
+        }
+
+	   return true;
+	}
+
+	// 날짜세팅
+	function lfnSetDate(orgObject, targetObject, targetDate)
+    {
+        var orgObjVal = orgObject.value;
+                
+        var orgObjYear = parseInt(orgObjVal.substring(0, 4));
+        var orgObjMonth = parseInt(lfnSubstringZero(orgObjVal.substring(4, 6)));
+        var orgObjDd = parseInt(lfnSubstringZero(orgObjVal.substring(6, 8)));
+        
+        var targetDate = new Date(orgObjYear, orgObjMonth -1, orgObjDd + targetDate);
+        var targetYear = targetDate.getFullYear();
+        var targetMonth = targetDate.getMonth()+1;
+        var targetDd = targetDate.getDate();
+        
+        if(targetMonth < 10) targetMonth = "0"+targetMonth;
+        if(targetDd < 10) targetDd = "0"+targetDd;
+
+		var targetYmd = targetYear +""+ targetMonth +""+ targetDd;
+        targetYmd = targetYmd.replace(/\-/g, "");
+        
+		targetObject.value = targetYmd;
+		fnSetDateObjText(targetObject, targetObject.getAttribute("id")+"Text");
+    }
+
+	
+	function lfnSubstringZero(val)
+	{
+	    var first = val.substring(0, 1);
+	    if(first == "0" && val.length != 1)         
+	        return val.substring(1, val.length);
+	    else if(first != 0)
+	        return val;
+	}
+
+	// 요일반환
+	function lfnGetDayStr(trgtObject)
+	{
+        var trgtObjDate = lfnGetDateObject(trgtObject);
+		var arrWeek = new Array('일', '월', '화', '수', '목', '금', '토');
+		var weekStr = arrWeek[trgtObjDate.getDay()];
+		return weekStr;
+		
+	}
+
+	// 필드value 로 Date 객체 반환
+	function lfnGetDateObject(trgtObject)
+	{
+        var trgtObjVal = trgtObject.value;
+                
+        var trgtObjYear = parseInt(trgtObjVal.substring(0, 4));
+        var trgtObjMonth = parseInt(lfnSubstringZero(trgtObjVal.substring(4, 6)));
+        var trgtObjDd = parseInt(lfnSubstringZero(trgtObjVal.substring(6, 8)));
+        
+        var trgtObjDate = new Date(trgtObjYear, trgtObjMonth -1, trgtObjDd);
+		return trgtObjDate;
+	}
+
+	// 숫자 1자리일경우 0을 더해서 반환
+	function lfnGetDateSubstr(val){
+		if(val < 10)
+			return "0"+val
+		return val;
+	}
+
+
+
+// 종적조회서비스중지안내
+function traceStop(){
+    if(('20160611164523' > '20110320100000') && ('20160611164523' < '20110320190000')){
+        alert("항상 인터넷우체국 서비스를 이용해 주셔서 감사합니다.\n전산시스템 개선작업으로 인터넷우체국 종적조회서비스(콜센터 1588-1300,\nARS조회포함)가 일시 중단되오니 양해하여 주시기 바랍니다.\n\n- 중지일시: 2011.03.20() 10:00 ~ 2011.03.20() 19:00 까지");
+        document.getElementById("sid1").value = "";
+    }
+}
+
+//배달조회(등기번호,ems번호)시 '-'가 포함될 경우 알람창 및 '-'삭제
+function checkPostNum(){
+	var chk=false;
+	var inputPostNum = document.getElementById("sid1").value;
+	
+    for (i = 0; i <  inputPostNum.length; i++) { 
+    	var Char = inputPostNum.charAt(i); 
+		if(Char == '-'){
+			chk=true;			
+			break;
+		}
+    }
+    if(chk){ 
+    	alert('"-" 을 제외하고 입력하시기 바랍니다.');
+    	for (i = 0; i <  inputPostNum.length; i++) { 
+			inputPostNum = inputPostNum.replace("-","");
+    	}
+    	document.getElementById("sid1").value = inputPostNum;
+    }
+}
+// 등기번호 링크 새창
+function newWinRegino(regino){
+	$("#sid1").val(regino);
+	document.getElementById("frmDomRigiTrace").target = "_new";
+
+	$("#frmDomRigiTrace").submit();
+
+	$("#sid1").val("");
+	document.getElementById("frmDomRigiTrace").target = "_self";
+}
+
+
+//결과내 검색 2014.05.15 추가
+function fncInSearch() {
+	    var rfrm = document.getElementById("reSearchForm");
+	    var key = rfrm.searchKey.value;
+		
+	    if(!rfrm.searchWords.value){
+	    	alert("검색어를 입력하세요.");
+	    	rfrm.searchWords.focus();
+	    	return false;
+	    }
+	    if(key == 'srchRcvNm' && rfrm.sendChkName.value == "recev"){
+	    		alert("받는분으로 결과내 검색을 이용 하려면 우선 전화번호/영수증번호로 조회를 보내는분으로 검색해 주시기 바랍니다.");
+	            rfrm.searchKey.focus();
+	            return false;
+		}
+	    if(key == 'srchRcvNm'){
+	    	if(rfrm.searchWords.value.length<2){
+	    		alert("검색어를 2글자 이상 입력하세요.");
+	            rfrm.searchWords.focus();
+	            return false;
+	    	}
+	    }
+		if(key == 'srchRNo'){
+			if(rfrm.searchWords.value.length !=13){
+				alert("우편물 번호를 다시 확인하세요.");
+				return false;
+			}
+		}
+	    return true;
+          
+}
+
+// 페이징
+function fncCurrPage(pno){
+	    var rfrm = document.getElementById("reSearchForm");
+		rfrm.pageNo.value = pno;
+	    rfrm.submit();
+}
+
+// 페이징
+function fncGoReFind(){
+	    var rfrm = document.getElementById("reSearchForm");
+    	rfrm.searchWords.value = "";
+		rfrm.pageNo.value = 1;
+	    rfrm.submit();
+}
+
+
+//]]>
+</script>         
+
+</head>
+<body>
+<div class="all_wrap" style="width:690px"><a name="top" id="top"></a>
+	<div class="accessibility-menu">
+		<ul>
+			<li><a href="#service">인터넷우체국 서비스메뉴 바로가기</a></li>
+			<li><a href="#menu">메뉴 바로가기</a></li>
+			<li><a href="#contents">본문 바로가기</a></li>
+			<li><a href="#footer">하단 주소 및 전화번호 바로가기</a></li>
+		</ul>
+	</div>
+	
+	<div class="header_area" style="display:none">
+	<!-- 공통서비스메뉴 -->
+		
+
+
+
+
+<!--[if lt IE 7]>
+<script type="text/JavaScript"> location.replace("http://www.epost.go.kr/comm/goodbye_ie6.jsp"); </script>
+<![endif]-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="https://www.epost.go.kr//jscripts/comm/MemAutoLogout.js" ></script>
+<form name="frmpeautoup" id="frmpeautoup" method="post" action="" target="ifCkReset">
+	<input type="hidden"  name="userId" id="userId" value="" />
+</form>
+
+<script type="text/javascript">
+//<![CDATA[
+   if(typeof jQuery == 'undefined'){  
+
+     document.write('   <script type=\"text/javascript\" src=\"https://www.epost.go.kr//jscripts/comm/jquery-1.9.1.min.js\" ><\/script>  ');
+     
+   }
+//]]>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+setCookie("ckstm", '1465631123194');
+//쿠키 셋팅
+function setCookie( name, value ) {
+    document.cookie = name + '=' + escape(value) + ';path=/;domain=epost.go.kr' ;
+}
+
+window.onunload=function() {
+
+    	if(event.clientY <0) {
+    		updateMemLoginStatusLogout('','https://www.epost.go.kr/');
+    	}
+
+}
+// 일부 페이지에서 onunload가 호출되지 않는경우를 위해서
+window.onbeforeunload=function() {
+		if(event.clientY <0) {
+    		updateMemLoginStatusLogout('','https://www.epost.go.kr/');
+    	}
+}
+
+//]]>
+</script>
+<iframe name="ifCkReset" title="예외페이지 쿠키리셋 프레임" width="0" height="0"></iframe>
+
+
+<!-- 키보드 해킹 방지 프로그램 설치 -->
+<script type="text/javascript" src="https://www.epost.go.kr/comm/easykeytec/easykeytec.js"></script>
+<script type="text/JavaScript" src="https://www.epost.go.kr/jscripts/comm/logininfoURL.js"></script>
+&nbsp;
+<div id="nepostTopMenu"><a name="service" id="service"></a>
+    <ul>
+      
+		<li class="btn"><a href="http://www.epost.go.kr/usr/login/cafzc008k01.jsp"><img src="https://www.epost.go.kr/images/comm/2010/comm/co_EpostbtnLogin.gif" width="43" height="15" alt="로그인" /></a></li>
+      
+      <li><a href="http://service.epost.go.kr/">우편</a></li>
+      <li><a href="http://parcel.epost.go.kr/">택배</a></li>
+      <li><a href="http://ems.epost.go.kr/">EMS</a></li>
+      <li><a href="http://service.epost.go.kr/comm.RetrieveStampSrvcMain.postal" target="_top">우표</a></li>
+      <li><a href="http://mall.epost.go.kr/">쇼핑</a></li>
+      <li><a href="">메일</a></li>
+      <li class="nobg"><a href="http://www.epost.go.kr/bbs.RetrieveBbsMain.comm" target="_blank"><strong>고객의소리</strong></a></li>
+    </ul>
+  </div>
+  <div id="LaynWrapToplogo"><a href="http://www.epost.go.kr/"><img src="https://www.epost.go.kr/images/comm/2010/comm/co_TopLogo.gif"  alt="인터넷우체국 ePOST.kr" /></a></div>
+
+
+	<!--//공통서비스메뉴 -->
+	</div>
+
+	<!--상단메뉴-->
+	<div style="display:none">
+		<div style="display:none">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 키보드 해킹 방지 프로그램 설치 -->
+<script type="text/javascript" src="https://www.epost.go.kr/comm/easykeytec/easykeytec.js"></script>
+<script type="text/JavaScript" src="/iwww/jscripts/comm/logininfoURL.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+function tab(n){
+	if(n == 1)
+		location.href = "/iservice/usr/trace/usrtrc001k01.jsp";
+	if(n == 2)
+		location.href = "/iservice/usr/trace/usrtrc004k01.jsp";
+	if(n == 3)
+		location.href = "http://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=mall_bsearch&amp;s_url=https://mall.epost.go.kr/purchase.benefit.RetrieveDeliveryPage.mall";
+}
+
+//]]>
+</script>         
+
+	<div class="topmenu_area_shipping"><a name="menu" id="menu"></a>
+		<h1><img src="/iwww/images/comm/shipping/logo_title.gif" alt="원클릭 배송조회" /></h1>
+		<ul class="topmenulist">
+			<li><a href="/iservice/usr/trace/usrtrc001k01.jsp"><img src="/iwww/images/comm/shipping/topmenu01_on.gif" alt="국내우편(등기/택배)배송조회" /></a></li>
+			<li><a href="/iservice/usr/trace/usrtrc004k01.jsp"><img src="/iwww/images/comm/shipping/topmenu02_off.gif" alt="국제우편(EMS)배송조회" /></a></li>
+			<li><a href="http://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=mall_bsearch&amp;s_url=https://mall.epost.go.kr/purchase.benefit.RetrieveDeliveryPage.mall"><img src="/iwww/images/comm/shipping/topmenu03_off.gif" alt="우체국쇼핑 주문배송조회" /></a></li>
+		</ul>
+	</div>
+
+		</div>
+	</div>
+	<!--//상단메뉴-->
+	
+	<div class="accessibility-top"><a href="#top">위로가기</a></div>
+	
+	<!-- 컨텐츠영역 -->
+	<div class="contents_wrap" style="width:690px"><a name="contents" id="contents"></a>
+		<!-- left area -->
+		<div style="display:none">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<div class="leftmenu_wrap">
+			<dl class="leftmenu_list">
+				<dt><a href="/iservice/usr/trace/usrtrc001k01.jsp"><img src="/iwww/images/comm/shipping/leftmenu_title.gif" alt="원클릭 배송조회 "/></a></dt>
+				<dd>
+					<ul class="leftmenu_list_depth">
+						<li><a href="/iservice/usr/trace/usrtrc001k01.jsp"><img src="/iwww/images/comm/shipping/leftmenu01_on.gif" alt="국내우편(등기/택배)배송조회" /></a></li>
+						<li><a href="/iservice/usr/trace/usrtrc004k01.jsp"><img src="/iwww/images/comm/shipping/leftmenu02_off.gif" alt="국제우편(EMS)배송조회" /></a></li>
+						<li class="end"><a href="http://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=mall_bsearch&amp;s_url=https://mall.epost.go.kr/purchase.benefit.RetrieveDeliveryPage.mall"><img src="/iwww/images/comm/shipping/leftmenu03_off.gif" alt="우체국쇼핑 주문배송조회" /></a></li>
+					</ul>
+				</dd>
+			</dl>
+		</div>
+
+		</div>
+
+		<!-- //left area -->
+		<!-- center area -->
+		<div class="incontents_wrap">
+			<h2 class="page01">국내우편 배송조회</h2>
+			<!-- 배송조회 선택 -->
+			<div class="shipping_area">
+				<div class="shipping_tabmenu" style="display:none">
+					<ul>
+						<li class="on"><a href="javascript:tab(1);"><span>국내우편(등기/택배)배송조회</span></a></li>
+						<li><a href="javascript:tab(2);"><span>국제우편(EMS)배송조회</span></a></li>
+						<li><a href="javascript:tab(3);"><span>우체국쇼핑 주문배송조회</span></a></li>
+					</ul>
+				</div>
+			</div>
+			<!-- 조회 번호 -->
+			<div class="shipping_area">
+			<form name="frmDomRigiTrace" id="frmDomRigiTrace" action="/trace.RetrieveDomRigiTraceList.comm" onsubmit="return onDomRigiTraceSubmit();" method="post">
+				<h3>등기번호로 조회</h3>
+				<div class="box">
+					<label for="sid1">등기번호 입력</label>
+					<input type="text" id="sid1" name="sid1" class="input_text" value="" onclick="return traceStop();" maxlength="13" onkeypress="return traceStop();" onkeyup="checkPostNum();"/>
+				</div>
+				<p class="btn">
+					<input type="image" src="/iwww/images/comm/shipping/btn_shipping_search.gif" alt="조회하기"/>
+				</p>
+		        <input type="hidden" id="displayHeader" name="displayHeader" value="N" />
+			</form>
+			</div>
+
+			<!-- 전화번호/영수증번호로 조회 폼 -->
+			<div style="display:none">
+			<div class="shipping_area"  style="display:none;" id="searchMyTelFrm">
+			<form name="frmTraceOrderRelation" id="frmTraceOrderRelation" action="/trace.RetrieveTraceOrderRelationList.comm" onsubmit="return onTraceOrderRelationSubmit();" method="post">
+				<input type="hidden" id="targetRow" name="targetRow" value="" /> 
+				<input type="hidden" name="relation_Work" value="EPOST01" /> 
+				<input type="hidden" name="pageNo" value="1" /> 
+				<input type="hidden" name="pageSize" value="10" /> 
+				<input type="hidden" name="domYn" value="true" /> 
+				
+				<h3>전화번호/영수증번호로 조회</h3>
+				<div class="box">
+					<ul>
+						<li>- 사업자 회원의 경우 영수증 번호 조회만 가능합니다.</li>
+						<li>- 회원명과 전화번호가 일치한 경우에만 조회가 가능합니다.</li>
+					</ul>
+				</div>
+				<table summary="국내우편(등기/택배)배송조회 테이블">
+					<caption>전화번호/영수증번호로 조회</caption>
+					<colgroup>
+						<col style="width:20%;" />
+						<col style="" />
+					</colgroup>
+					<tr>
+						<th>접수일</th>
+						<td class="calendar"><span id="reception_Ymd_FromText"></span><input type="hidden" id="reception_Ymd_From" name="reception_Ymd_From" class="date ui-datepicker-trigger" value="20160605" /> ~ <span id="reception_Ymd_ToText"></span><input type="hidden" id="reception_Ymd_To" name="reception_Ymd_To" class="date" value="20160611" /></td>
+					</tr>
+					<tr>
+						<th class="noBold">
+							<p><input type="radio" name="sendChkName" id="sendChkNameSend" value = "send" checked="checked" /><label for="sendChkNameSend">보내는 분</label></p>
+							<p><input type="radio" name="sendChkName" id="sendChkNameRecev" value = "recev"  /><label for="sendChkNameRecev">받는 분</label></p>
+						</th>
+						<td class="selectInput">
+							<p><input type="radio" name="sendChkInfo" id="sendChkPhone" value="cellPhone" checked="checked" /><label for="sendChkPhone">휴대폰번호 : </label><input type="text" name="Mobile1" class="inputText" maxlength="3" value="" /> - <input type="text" name="Mobile2" class="inputText" maxlength="4" value="" /> - <input type="text" name="Mobile3" class="inputText" maxlength="4" value="" /></p>
+							
+							<p><input type="radio" name="sendChkInfo" id="sendChkTelNo" value="telePhone"  /><label for="sendChkTelNo" style="margin-right:1px;">전 화 번 호 : </label><input type="text" name="Phone1" class="inputText" maxlength="4" value="" /> - <input type="text" name="Phone2" class="inputText" maxlength="4" value="" /> - <input type="text" name="Phone3" class="inputText" maxlength="4" value="" /></p>
+							
+							<p><input type="radio" name="sendChkInfo" id="sendChkRecvNo" value="receiptNo"  /><label for="sendChkRecvNo">영수증번호 : </label><input type="text" name="reception_No" id="reception_No" class="inputText" style="width:165px;" maxlength="13" value="" /></p>
+						</td>
+					</tr>
+					<tr>
+						<th>회원성명</th>
+						<td></td>
+					</tr>
+				</table>
+				<p class="btn">
+					<input type="image" src="/iwww/images/comm/shipping/btn_shipping_search.gif" alt="조회하기" />
+				</p>
+
+		        <input type="hidden" id="displayHeader" name="displayHeader" value="N" />
+			</form>
+			</div>
+
+			<div class="shipping_area" >
+				<h3>전화번호/영수증번호로 조회</h3>
+				<div class="box">
+					고객님의 개인정보 보호를 위해 로그인한 회원의 경우에만 이용가능합니다.
+				</div>
+				<p class="btn">
+					<a href="http://www.epost.go.kr/usr/login/cafzc008k01.jsp?s_url=http://service.epost.go.kr/iservice/usr/trace/usrtrc001k01.jsp?displayHeader=N"><img src="/iwww/images/comm/shipping/btn_shipping_login.gif" alt="로그인하기" /></a>
+				</p>
+			</div>
+			</div> <!--전화번호/영수증번호로 조회 폼 종료-->
+
+			<!-- 나의 우편물 검색결과 -->
+			<div class="shipping_area" id="searchMyTelResult"  style="display:none;">
+				<h3>우편물 검색결과</h3>
+				<table summary="우편물 검색 결과 접수번호,접수일자,발송인을 나타 내는 표" class="tdC">
+					<caption>전화번호/영수증번호로 조회</caption>
+					<colgroup>
+						<col style="width:30%;" />
+						<col style="width:40%;" />
+						<col style="width:30%;" />
+					</colgroup>
+					<tr>
+						<th>휴대폰번호</th>
+						<th>접수일자</th>
+						<th>보내는분</th>
+					</tr>
+					<tr>
+						<td></td>
+						<td>2016-06-05 ~ 2016-06-11</td>
+						<td></td>
+					</tr>
+				</table>
+				<div class="searchResult">
+					<form method="post" name="reSearchForm" id="reSearchForm" onsubmit="return fncInSearch();" action="/trace.RetrieveTraceOrderRelationList.comm">
+						<input type="hidden" name="relation_Work" value="EPOST01" /> 
+						<input type="hidden" name="domYn" value="" /> 
+						<input type="hidden" name="pageNo" value="1" /> 
+						<input type="hidden" name="pageSize" value="10" /> 
+						<input type="hidden" name="sendChkName" value="" /> 
+						<input type="hidden" name="sendChkInfo" value="" /> 
+						<input type="hidden" name="reception_Ymd_From" value="" /> 
+						<input type="hidden" name="reception_Ymd_To" value="" /> 
+						<input type="hidden" name="Mobile1" value="" /> 
+						<input type="hidden" name="Mobile2" value="" /> 
+						<input type="hidden" name="Mobile3" value="" /> 
+						<input type="hidden" name="Phone1" value="" /> 
+						<input type="hidden" name="Phone2" value="" /> 
+						<input type="hidden" name="Phone3" value="" /> 
+						<input type="hidden" name="reception_No" value="" /> 
+					<ul class="rescan">
+						<li>검색결과: (총 0건 )</li>
+						<li>
+							<select name="searchKey" id="searchKey" title="검색방법선택">
+								<option value="srchRNo" selected="selected">등기번호</option>
+								<option value="srchRcvNm" >받는분</option>
+							</select>
+							<input type="text" name="searchWords" id="searchWords" value="" title="결과내검색어" /><input type="image" src="/iwww/images/comm/shipping/btn_rescan.gif" alt="결과내검색" />
+						</li>
+					</ul>
+				        <input type="hidden" id="displayHeader" name="displayHeader" value="N" />
+					</form>
+					<table summary="우편물 검색 결과 접수번호,접수일자,발송인을 나타 내는 표" class="tdC marT50">
+						<caption>전화번호/영수증번호로 조회</caption>
+						<colgroup>
+							<col style="" />
+							<col style="width:14%;" />
+							<col style="width:14%;" />
+							<col style="width:14%;" />
+							<col style="width:14%;" />
+							<col style="width:14%;" />
+							<col style="width:14%;" />
+						</colgroup>
+						<tr>
+							<th>등기번호</th>
+							<th>접수일자</th>
+							<th>접수우체국</th>
+							<th>배달결과</th>
+							<th>배달일자</th>
+							<th>배달우체국</th>
+							<th>수취인</th>
+						</tr>
+
+					</table>
+					<!-- paginate -->
+					<div class="paginate">
+
+
+
+					</div>
+					<!-- //paginate -->
+				</div>
+				<p class="btn">
+					<a href="javascript:fncGoReFind();"><img src="/iwww/images/comm/shipping/btn_shipping_research.gif" alt="재검색" /></a>
+				</p>
+			</div>
+			<!-- 나의 우편물 검색결과 종료 -->
+
+
+
+		</div>
+	</div>
+	<!-- //컨텐츠영역 -->
+	<div class="accessibility-top"><a href="#top">위로가기</a></div>
+	<!-- footer 영역 -->
+	<div style="display:none">
+		
+
+
+
+
+
+
+
+
+
+
+<script language="JavaScript" type="text/JavaScript">
+//<![CDATA[
+
+function goNewLink(no,e) {
+	if(isAccess(e)) {
+	
+	if(no=="1") { //Window XP 서비스팩2 설치고객에 대한 안내
+  	window.open('http://www.epost.go.kr/popup/guide_xp202.html','_blank','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,top=50,left=50,width=635,height=650');
+  } else if(no=="2") {	//비스타 사용자 안내
+  	window.open('http://www.epost.go.kr/popup/win_vista_pop0131.html','vistaPop','toolbar=no, width=496, height=530, location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,top=50,left=200'); 
+  }
+  
+  return false;
+  }
+}
+function openPipl(){
+	    var topSize = screen.height/2 - 360;
+	    var leftSize = screen.width/2 - 260;
+	    window.open("http://www.epost.go.kr/popup/piplmark.html", "piplmark", "height=720,width=520,top="+topSize+",letf="+leftSize+", menubar=no,directories=no,resizable=no,status=no,scrollbars=yes");
+}
+
+/**인증서 링크 모음**/
+function cert_status(code, url, e) {
+    if(isAccess(e)) {
+        if (code==1) {
+            window.open(url, "cert_status1","height=600,width=570, menubar=no,directories=no,resizable=no,status=no,scrollbars=yes");
+        } else if (code==2) {
+            window.open(url, "cert_status2","height=600,width=570, menubar=no,directories=no,resizable=no,status=no,scrollbars=yes");
+        } else if (code==3) {
+            window.open(url,"iafewin","topmargin=0 marginleft=0 marginwidth=0 marginheight=0 width=365 height=610");
+        } else if (code==4) {
+            var v_top = (screen.height - 830)/2;
+            var v_left = (screen.width - 520)/2;
+        	window.open(url,"privacywin","width=520,height=830,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,top=" + v_top + ",left=" + v_left);
+        }
+        return false;
+  }
+}
+
+function goLinkRef(){
+
+        var frm = document.getElementById("linkselectFrm");
+        var ref = document.getElementById("linkselect").value;
+
+        if( ref == 1 ) {
+            frm.action = "http://www.koreapost.go.kr/";
+        }else if( ref == 2 ) {
+            frm.action = "http://www.koreapost.go.kr/se/";
+        }else if( ref == 3 ) {
+            frm.action = "http://www.koreapost.go.kr/bs/";
+        }else if( ref == 4 ) {
+            frm.action = "http://www.koreapost.go.kr/kw/";
+        }else if( ref == 5 ) {
+            frm.action = "http://www.koreapost.go.kr/kb/";
+        }else if( ref == 6 ) {
+            frm.action = "http://www.koreapost.go.kr/jn/";
+        }else if( ref == 7) {
+            frm.action = "http://www.koreapost.go.kr/jb/";
+        }else if( ref == 8 ) {
+            frm.action = "http://www.koreapost.go.kr/cc/";
+        }else if( ref == 9 ) {
+            frm.action = "http://www.koreapost.go.kr/jj/";
+        }else if( ref == 10 ) {
+            frm.action = "http://www.postmuseum.go.kr/";
+        }else if( ref == 11 ) {
+            frm.action = "http://www.posa.or.kr/";
+	    }else if( ref == 12 ) {
+	      frm.action = "http://kpic.koreapost.go.kr/";
+	    }else if( ref == 13 ) {
+	      frm.action = "http://www.keoti.go.kr/";
+	    }else if( ref == 14 ) {
+	      frm.action = "http://jodal.koreapost.go.kr/";
+	    }else if( ref == 15 ) {
+	      frm.action = "http://www.msip.go.kr/";
+	    }else if( ref == 16 ) {
+        frm.action = "http://www.koreapost.go.kr/gi/";
+      }
+
+       if( ref == 0 ) {
+         frm.action = "";
+         return false;
+        }
+
+       return true;
+}
+//]]>
+</script>
+  <div id="newLaynfootersubp" style="height:auto !important;"><a name="footer" id="footer"></a>
+    <div class="newfooteraddAreasubp">
+    	<span style="display:none;"><img src="/iwww/images/main/2011/footerGraylogo.gif" alt="인터넷우체국 ePOST.kr" /></span>
+        <div class="newaddcontentsubp">         
+            <ul class="newssmenu">
+                <li><a href="http://www.epost.go.kr/affair/notice/cbfyb004k01.jsp" target="_top"><img src="/iwww/images/main/2011/footerSsmenu01.gif" alt="이용약관" /></a></li>
+                <li><a href="http://www.epost.go.kr/affair/notice/cbfyb005k01.jsp" target="_top"><img src="/iwww/images/main/2011/footerSsmenu02.gif" alt="개인정보취급방침" /></a></li>
+                <li><a href="http://www.epost.go.kr/affair/notice/cbfyb008k01.jsp" target="_top"><img src="/iwww/images/main/2011/footerSsmenu03.gif" alt="웹접근성정책" /></a></li>
+                <li class="newselarea">
+                    <form name="linkselectFrm" id="linkselectFrm" method="post" action="http://www.epost.go.kr/main/linkRedirect.jsp" onsubmit="return goLinkRef()" target="_blank" class="newfootlink">
+                        <select name="linkselect" id="linkselect" title="관련사이트"  style="width:115px;">
+                        <option value="0" selected="selected">관련사이트</option>
+                        <option value="1">우정사업본부</option>
+                        <option value="2">서울지방우정청</option>
+                        <option value="16">경인지방우정청 </option>
+                        <option value="3">부산지방우정청</option>
+                        <option value="4">강원지방우정청</option>
+                        <option value="5">경북지방우정청</option>
+                        <option value="6">전남지방우정청</option>
+                        <option value="7">전북지방우정청</option>
+                        <option value="8">충청지방우정청</option>
+                        <option value="9">제주지방우정청</option>
+                        <option value="10">사이버우정박물관</option>
+                        <option value="11">한국우편사업진흥원</option>
+                        <option value="12">우정사업정보센터</option>
+                        <option value="13">우정공무원교육원</option>
+                        <option value="14">우정사업조달사무소</option>
+                        <option value="15">미래창조과학부</option>
+                        </select>
+	                    <input type="image" src="/iwww/images/main/2010/nMfootBtn.gif" alt="이동 - 새창열림" />
+                    </form>
+                </li>
+            </ul>
+				<ul style="clear:both;overflow:hidden;margin:0;padding:0;">
+					<li style="float:left;margin:0;padding:0 10px 5px 10px;clear:none !important;background:url(https://www.epost.go.kr//images/main/2013/newaddr_line.gif) no-repeat right 1px;white-space:nowrap">인터넷우체국 대표 : 김재수</li>
+					<li style="float:left;margin:0;padding:0 10px 5px 10px;white-space:nowrap">사업자등록번호 : 206-83-02050</li>
+					<li style="float:left;background:none;padding:0 0 5px 10px;margin:0;width:650px;">58217 전라남도 나주시 정보화길 1, 인터넷우체국 (빛가람동) </li>
+					
+					<li style="line-height:13px;float:left;margin:0;padding:0 10px 5px 10px;clear:both !important;background:url(https://www.epost.go.kr//images/main/2013/newaddr_line.gif) no-repeat right 1px;white-space:nowrap">우편고객만족센터 :<strong style="color:#ff0000">1588-1300</strong></li>
+					<li style="line-height:13px;float:left;margin:0;padding:0 10px 5px 10px;background:url(https://www.epost.go.kr//images/main/2013/newaddr_line.gif) no-repeat right 1px;white-space:nowrap;">팩스 : 0505-005-1037</li>
+					<li style="float:left;line-height:13px;background:none;padding:0 0 5px 10px;margin:0;white-space:nowrap;">이메일 : privacy@epost.kr</li>
+				</ul>       
+        </div>
+        <div class="newfootmarksubp" style="float:right !important;margin-top:14px;">
+            <ul>
+            	<li><a href="#" onclick="openPipl();"><img src="https://www.epost.go.kr//images/main/2011/footerMark03.gif" alt="PIPL인증마크획득 - 새창 열림" /></a></li>
+                <li style="padding-left:25px;"><a href="http://www.epost.go.kr/popup/privacymark.html" onclick="return cert_status(4,this.href,event);" onkeypress="return cert_status(4,this.href,event);" target="_blank"><img src="https://www.epost.go.kr//images/main/2011/footerMark02.gif" alt="개인정보보호마크 - 새창 열림" /></a></li>
+                <li style="padding-left:25px;"><a href="http://www.epost.go.kr/popup/sign1.html" onclick="return cert_status(2,this.href,event);" onkeypress="return cert_status(2,this.href,event);" target="_blank"><img src="https://www.epost.go.kr//images/main/2011/footerMark01.gif" alt="보안마크획득 - 새창 열림" /></a></li>
+            </ul>
+        </div>        
+    </div>
+  </div>
+<div id="flashbody" style="display:none;"></div>
+
+<script type="text/javascript" src="https://www.epost.go.kr/jscripts/comm/flash_conf.js"></script>
+<script type="text/javascript" src="https://www.epost.go.kr/jscripts/comm/flash_load.js"></script>
+
+ 
+<script type="text/javascript">
+//<![CDATA[
+var _NGUL = "wcs.naver.net/wcslog.js";
+if(location.protocol=="https:"){var nUrl="https://"+_NGUL;}else{var nUrl="http://"+_NGUL;}
+document.write("<scr"+"ipt type='text/javascript' src='"+nUrl+"'><\/scr"+"ipt>");
+//]]>
+</script>
+<script type="text/javascript"> 
+if (!wcs_add) var wcs_add={};
+wcs_add["wa"] = "s_f96b42ead65";
+if (!_nasa) var _nasa={};
+wcs.inflow("epost.go.kr");
+wcs_do(_nasa);
+</script> 
+
+
+
+
+	</div>
+	<!-- //footer 영역 -->
+	<div class="accessibility-top"><a href="#top">위로가기</a></div>
+</div>
+</body>
+</html>
+
