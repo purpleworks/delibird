@@ -1,0 +1,8 @@
+language: go
+go:
+  - 1.6
+before_install:
+  - go get github.com/smartystreets/goconvey
+script:
+  - go test -v
+  - go test -v ./server

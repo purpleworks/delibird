@@ -1,4 +1,6 @@
 # Delibird
+![License](https://img.shields.io/npm/l/angular-ladda.svg)
+[![Build Status](https://travis-ci.org/purpleworks/delibird.svg?branch=master)](https://travis-ci.org/purpleworks/delibird)
 
 <p align="center">
 <img src="Document/img/delibird.logo.png" alt="Delibird" title="Delibird" />
@@ -237,4 +239,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/purple
 
 ## License
 
-Released under the [MIT License](https://github.com/purpleworks/delibird/blob/master/License).
+Released under the [MIT License](https://github.com/purpleworks/delibird/blob/master/LICENSE).
