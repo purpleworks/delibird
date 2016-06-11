@@ -4,6 +4,7 @@
 [![Go Report Card](http://goreportcard.com/badge/purpleworks/delibird)](http://goreportcard.com/report/purpleworks/delibird)
 [![Coverage Status](http://img.shields.io/coveralls/purpleworks/delibird.svg)](https://coveralls.io/r/purpleworks/delibird)
 [![Build Status](https://travis-ci.org/purpleworks/delibird.svg?branch=master)](https://travis-ci.org/purpleworks/delibird)
+[![Swagger Status](http://online.swagger.io/validator?url=https://raw.githubusercontent.com/purpleworks/delibird/master/Document/swagger.json)](http://petstore.swagger.io/?url=https://raw.githubusercontent.com/purpleworks/delibird/master/Document/swagger.json#!/default/get_tracking_code_tracking_number)
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/purpleworks/delibird)
 
@@ -72,6 +73,7 @@ Server Configuration
 
 - local: http://localhost:9000/tracking/{COURIER_CODE}/{TRACKING_NUMBER}
 - try now: https://delibird.herokuapp.com/tracking/{COURIER_CODE}/{TRACKING_NUMBER}
+- swagger ui: [http://petstore.swagger.io](http://petstore.swagger.io/?url=https://raw.githubusercontent.com/purpleworks/delibird/master/Document/swagger.json#!/default/get_tracking_code_tracking_number)
 
 **Request Parameters**
 
