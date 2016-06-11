@@ -4,7 +4,6 @@
 [![Go Report Card](http://goreportcard.com/badge/purpleworks/delibird)](http://goreportcard.com/report/purpleworks/delibird)
 [![Coverage Status](http://img.shields.io/coveralls/purpleworks/delibird.svg)](https://coveralls.io/r/purpleworks/delibird)
 [![Build Status](https://travis-ci.org/purpleworks/delibird.svg?branch=master)](https://travis-ci.org/purpleworks/delibird)
-[![Swagger Status](http://online.swagger.io/validator?url=https%3A%2F%2Fraw.githubusercontent.com%2Fpurpleworks%2Fdelibird%2Fmaster%2FDocument%2Fswagger.json)](http://petstore.swagger.io/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fpurpleworks%2Fdelibird%2Fmaster%2FDocument%2Fswagger.json#!/default/get_tracking_code_tracking_number)
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/purpleworks/delibird)
 
