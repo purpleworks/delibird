@@ -1,8 +1,19 @@
 language: go
 go:
   - 1.6
+  - tip
+env:
+  global:
+  - secure: m1NUJe8noNWaA+LihzI/AnmM9jNPayt0PKd/vhkPrwIbadkY0ThfDjOo1Iv9X6PYdRtYh8B0U6S0eJ3dldb8400bYFcDAHKbWrgWdW2wQ6DJwrxyX2pC92p4aqdjTvIABNAlbeLfM+Zxl9ah8KoGHOuuiF9uVtuCCtva11LJahQm699YRM4kYGcLUj2kAhFA1Fmi+szoj1ZncffKjCxkP+Z7EyWog47WKcN7jNlTWqFmqev6doNBTbLik8EM4ti+WswAX9NL5wa7F74yqFbAqXabqgBvvoi/IQahMa/YQzcA9Wg1muuGwIS2RIyEjlDGtLkywmCHdGLbbZIpVDHh5KBevAWTiMRc3aAb8P8f/MQ5qqf/P9OYufqKottKL0pGEk/oYkhynFHQzR+ifpMUnauAxMikfN1aeErDkyp/4EFt5xXGvYkvXMXkB1fMvYZrli/gLOJu5sutIlpglUrbyaFqcqtHr7hRmb8uTyf6/BJyiaX0Uy1cQRQnedba4fso03AKVADsSCnE3A8UrHz15ls6bv5vDjtY3GWeO0QVzqw5tyR77ydxudnuxA+lRZY4NfTpalXeVuLhrAeRYLfLED21ZqnPw6vh44mzev6iu5QjYVGuCcNg5gkKkgt0YntQY8FRc9OdTl3Bd6bFh5hIbBxltu5p1eVQHbChS4sF4jI=
 before_install:
+  - go get github.com/modocache/gover
   - go get github.com/smartystreets/goconvey
+  - go get github.com/mattn/goveralls
+  - go get golang.org/x/tools/cmd/cover
 script:
-  - go test -v
-  - go test -v ./server
+  - go test -v -coverprofile=delibird.coverprofile
+  - go test -v -coverprofile=server.coverprofile ./server
+  - $HOME/gopath/bin/gover
+  - $HOME/gopath/bin/goveralls -coverprofile=gover.coverprofile -service=travis-ci
+after_success:
+  - GOPATH=`pwd`:$GOPATH $HOME/gopath/bin/goveralls -coverprofile=profile.cov -service=travis-ci
