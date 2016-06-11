@@ -3,3 +3,6 @@ engines:
     enabled: true
     exclude_fingerprints:
     - eca41bc570508483011e891fed7cf881
+exclude_paths:
+- "testhtml/"
+- "vendor/"
