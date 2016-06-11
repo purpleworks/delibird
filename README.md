@@ -211,6 +211,25 @@ History | 배송 상황(array) | 하단 참고
 }
 ```
 
+## Docker
+
+docker build
+
+```
+$ DOCKER_BUILD=1 ./build
+$ docker build -t purpleworks/delibird .
+```
+
+docker run
+
+```
+$ docker run --rm \
+  -p 9000:9000 \
+  -e ENVIRONMENT=production \
+  -e ENABLE_CORS=ture \
+  purpleworks/delibird
+```
+
 ## Test
 
 Test with [goconvey](http://goconvey.co/)

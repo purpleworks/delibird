@@ -5,11 +5,11 @@
   "keywords": ["go", "shipment", "tracking", "courier"],
   "env": {
     "ENVIRONMENT": {
-      "description": "environment",
+      "description": "server environment (development or production)",
       "value": "production"
     },
     "ENABLE_CORS": {
-      "description": "enable cors (true/false)",
+      "description": "enable cors (true or false)",
       "value": "true"
     }
   }
