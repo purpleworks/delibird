@@ -5,6 +5,8 @@
 [![Coverage Status](http://img.shields.io/coveralls/purpleworks/delibird.svg)](https://coveralls.io/r/purpleworks/delibird)
 [![Build Status](https://travis-ci.org/purpleworks/delibird.svg?branch=master)](https://travis-ci.org/purpleworks/delibird)
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/purpleworks/delibird)
+
 <p align="center">
 <img src="Document/img/delibird.logo.png" alt="Delibird" title="Delibird" />
 </p>

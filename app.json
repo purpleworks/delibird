@@ -1,0 +1,16 @@
+{
+  "name": "Delibird API Server",
+  "description": "Shipment tracking api server",
+  "repository": "https://github.com/purpleworks/delibird",
+  "keywords": ["go", "shipment", "tracking", "courier"],
+  "env": {
+    "ENVIRONMENT": {
+      "description": "environment",
+      "value": "production"
+    },
+    "ENABLE_CORS": {
+      "description": "enable cors (true/false)",
+      "value": "true"
+    }
+  }
+}
