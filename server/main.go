@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+	"strings"
+
 	"github.com/codegangsta/negroni"
 	"github.com/danryan/env"
 	"github.com/gorilla/mux"
 	"github.com/purpleworks/delibird"
 	"github.com/rs/cors"
 	"github.com/unrolled/render"
-	"net/http"
-	"strings"
 )
 
 type Config struct {

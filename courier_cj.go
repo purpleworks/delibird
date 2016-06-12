@@ -3,14 +3,15 @@ package delibird
 import (
 	"bytes"
 	"fmt"
-	"github.com/PuerkitoBio/goquery"
-	"github.com/djimenez/iconv-go"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"regexp"
 	"strings"
 	"time"
+
+	"github.com/PuerkitoBio/goquery"
+	"github.com/djimenez/iconv-go"
 )
 
 type Cj struct{}

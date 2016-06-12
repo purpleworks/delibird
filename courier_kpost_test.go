@@ -2,9 +2,10 @@ package delibird
 
 import (
 	"fmt"
+	"testing"
+
 	"github.com/jarcoal/httpmock"
 	. "github.com/smartystreets/goconvey/convey"
-	"testing"
 )
 
 func TestKpostCourier(t *testing.T) {
