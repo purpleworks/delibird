@@ -24,7 +24,8 @@ const (
 )
 
 const (
-	NoCode         string = "NO_CODE_AVAILABLE"
-	NoTrackingInfo string = "NO_TRACKING_INFO"
-	ParseError     string = "PARSE_ERROR"
+	NoCode           string = "NO_CODE_AVAILABLE"
+	NoTrackingInfo   string = "NO_TRACKING_INFO"
+	ParseError       string = "PARSE_ERROR"
+	RequestPageError string = "REQUEST_PAGE_ERROR"
 )

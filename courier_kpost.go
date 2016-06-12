@@ -37,7 +37,7 @@ func (t Kpost) Parse(trackingNumber string) (Track, *ApiError) {
 	body, err := t.getHtml(trackingNumber)
 
 	if err != nil {
-		return track, NewApiError(ParseError, err.Error())
+		return track, NewApiError(RequestPageError, err.Error())
 	}
 
 	doc, err := goquery.NewDocumentFromReader(body)
