@@ -23,6 +23,7 @@ Name | Contributor
 ---- | ----
 Korean Post / 우체국택배 | @purpleworks
 CJ KoreaExpress / CJ대한통운 | @purpleworks
+KG Logis / KG로지스 | @serendip811
 
 ## Installation
 
@@ -81,7 +82,8 @@ COURIER_CODE
 Code | Name
 ---- | ----
 KPOST | Korean Post / 우체국택배
-CJ | CJ Korea express / CJ 대한통운
+CJ | CJ Korea express / CJ대한통운
+KG | KG Logis / KG로지스
 
 **Response**
 

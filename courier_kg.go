@@ -79,7 +79,7 @@ func (t Kg) Parse(trackingNumber string) (Track, *ApiError) {
 			track.StatusCode = t.getStatus(statusText)
 			track.StatusText = statusText
 
-			area_tel := strings.Split(strings.TrimSpace(s.Find("td span").Eq(2).Text()), "/");
+			area_tel := strings.Split(strings.TrimSpace(s.Find("td span").Eq(2).Text()), "/")
 			tel := numberReg.ReplaceAllString(area_tel[1], "")
 			if tel == "--" {
 				tel = ""
