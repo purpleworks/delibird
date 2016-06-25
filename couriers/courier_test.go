@@ -1,9 +1,10 @@
-package delibird
+package couriers
 
 import (
 	"io/ioutil"
 	"testing"
 
+	"github.com/purpleworks/delibird"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -15,8 +16,8 @@ func (t SampleCourier) Code() string {
 func (t SampleCourier) Name() string {
 	return "SampleCourier"
 }
-func (t SampleCourier) Parse(invoice string) (Track, *ApiError) {
-	return Track{}, nil
+func (t SampleCourier) Parse(invoice string) (delibird.Track, *delibird.ApiError) {
+	return delibird.Track{}, nil
 }
 
 // test html mock file
