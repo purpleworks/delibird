@@ -250,8 +250,8 @@ $ goconvey
 ### In the terminal
 
 ```
-$ go test && go test ./server
-$ go test -v && go test -v ./server # include the story
+$ go test && go test ./server && go test ./couriers
+$ go test -v && go test -v ./server && go test ./couriers # include the story
 ```
 
 ## Contributing
