@@ -11,7 +11,7 @@ import (
 
 func TestCJCourier(t *testing.T) {
 	// create cj courier
-	courier, _ := NewCourier("CJ")
+	courier, _ := New("CJ")
 
 	// create http mock
 	httpmock.Activate()

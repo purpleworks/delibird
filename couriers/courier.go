@@ -20,7 +20,7 @@ type Courier interface {
 var courierMap = map[string]Courier{}
 
 // NewCourier creates courier object by courier company code
-func NewCourier(name string) (Courier, *delibird.ApiError) {
+func New(name string) (Courier, *delibird.ApiError) {
 	if value, ok := courierMap[name]; ok {
 		courier := reflect.New(reflect.TypeOf(value).Elem()).Interface().(Courier)
 		return courier, nil

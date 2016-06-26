@@ -51,7 +51,7 @@ func App() http.Handler {
 	r.HandleFunc("/tracking/{code}/{trackingNumber}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 
-		courier, err := couriers.NewCourier(vars["code"])
+		courier, err := couriers.New(vars["code"])
 		if err != nil {
 			fmt.Println(err)
 			renderErrorJson(w, err, 400)

@@ -39,9 +39,10 @@ $ go get github.com/purpleworks/delibird
 package package_name
 
 import "github.com/purpleworks/delibird"
+import "github.com/purpleworks/delibird/couriers"
 
 func GetCjTracking(n string) {
-	courier, _ := delibird.NewCourier("CJ")
+	courier, _ := couriers.New("CJ")
 	data, _ := courier.Parse(n)
 
 	fmt.Println("%s -> %s : %s", data.Sender, data.Receiver, data.StatusText)

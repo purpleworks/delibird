@@ -11,7 +11,7 @@ import (
 
 func TestKpostCourier(t *testing.T) {
 	// create epost courier
-	courier, _ := NewCourier("KPOST")
+	courier, _ := New("KPOST")
 
 	// create http mock
 	httpmock.Activate()

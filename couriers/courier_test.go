@@ -30,14 +30,14 @@ func readTestResponseFile(filename string) string {
 func TestCourier(t *testing.T) {
 	Convey("Courier create test", t, func() {
 		Convey("Return error when invalid code", func() {
-			_, err := NewCourier("TEST")
+			_, err := New("TEST")
 			So(err, ShouldNotBeNil)
 		})
 
 		Convey("Return Courier object when valid code", func() {
 			RegisterCourier("SampleCourier", &SampleCourier{})
 
-			courier, err := NewCourier("SampleCourier")
+			courier, err := New("SampleCourier")
 			So(courier.Code(), ShouldEqual, "SampleCourier")
 			So(courier.Name(), ShouldEqual, "SampleCourier")
 			So(err, ShouldBeNil)

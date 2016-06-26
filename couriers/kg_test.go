@@ -11,7 +11,7 @@ import (
 
 func TestKGCourier(t *testing.T) {
 	// create kg courier
-	courier, _ := NewCourier("KG")
+	courier, _ := New("KG")
 
 	// create http mock
 	httpmock.Activate()
