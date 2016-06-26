@@ -9,6 +9,7 @@ import (
 	"github.com/danryan/env"
 	"github.com/gorilla/mux"
 	"github.com/purpleworks/delibird"
+	"github.com/purpleworks/delibird/couriers"
 	"github.com/rs/cors"
 	"github.com/unrolled/render"
 )
@@ -50,7 +51,7 @@ func App() http.Handler {
 	r.HandleFunc("/tracking/{code}/{trackingNumber}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 
-		courier, err := delibird.NewCourier(vars["code"])
+		courier, err := couriers.NewCourier(vars["code"])
 		if err != nil {
 			fmt.Println(err)
 			renderErrorJson(w, err, 400)

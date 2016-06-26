@@ -1,10 +1,11 @@
-package delibird
+package couriers
 
 import (
 	"fmt"
 	"testing"
 
 	"github.com/jarcoal/httpmock"
+	"github.com/purpleworks/delibird"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -42,7 +43,7 @@ func TestKGCourier(t *testing.T) {
 		Convey("Complete courier test", func() {
 			data, _ := courier.Parse(completeTrackingNumber)
 
-			So(data.StatusCode, ShouldEqual, DeleveryComplete)
+			So(data.StatusCode, ShouldEqual, delibird.DeleveryComplete)
 			So(data.Sender, ShouldEqual, "웨일런샵 님")
 			So(data.Receiver, ShouldEqual, "김예준 님")
 			So(data.CompanyCode, ShouldEqual, "KG")

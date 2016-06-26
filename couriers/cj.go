@@ -1,4 +1,4 @@
-package delibird
+package couriers
 
 import (
 	"bytes"
@@ -12,6 +12,7 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/djimenez/iconv-go"
+	"github.com/purpleworks/delibird"
 )
 
 type Cj struct{}
@@ -32,26 +33,26 @@ func (t Cj) TrackingUrl() string {
 	return "http://nexs.cjgls.com/web/info.jsp?slipno=%s"
 }
 
-func (t Cj) Parse(trackingNumber string) (Track, *ApiError) {
-	track := Track{}
+func (t Cj) Parse(trackingNumber string) (delibird.Track, *delibird.ApiError) {
+	track := delibird.Track{}
 
 	body, err := t.getHtml(trackingNumber)
 
 	if err != nil {
-		return track, NewApiError(RequestPageError, err.Error())
+		return track, delibird.NewApiError(delibird.RequestPageError, err.Error())
 	}
 
 	doc, err := goquery.NewDocumentFromReader(body)
 	if err != nil {
-		return track, NewApiError(ParseError, err.Error())
+		return track, delibird.NewApiError(delibird.ParseError, err.Error())
 	}
 
 	trackingStatus := doc.Find("table").Eq(0).Find("tbody tr td").Text()
 	if strings.Index(trackingStatus, "미등록운송장") > -1 {
-		return track, NewApiError(NoTrackingInfo, "등록되지 않은 운송장이거나 배송준비중입니다.")
+		return track, delibird.NewApiError(delibird.NoTrackingInfo, "등록되지 않은 운송장이거나 배송준비중입니다.")
 	}
 
-	track = Track{
+	track = delibird.Track{
 		TrackingNumber: trackingNumber,
 		CompanyCode:    t.Code(),
 		CompanyName:    t.Name(),
@@ -60,7 +61,7 @@ func (t Cj) Parse(trackingNumber string) (Track, *ApiError) {
 		Signer:         strings.TrimSpace(doc.Find("table").Eq(2).Find("tbody tr").Eq(1).Find("td").Eq(3).Text()),
 	}
 
-	history := []History{}
+	history := []delibird.History{}
 
 	numberReg, _ := regexp.Compile("[^0-9-]")
 
@@ -81,8 +82,8 @@ func (t Cj) Parse(trackingNumber string) (Track, *ApiError) {
 				if tel == "--" {
 					tel = ""
 				}
-				history = append([]History{
-					History{
+				history = append([]delibird.History{
+					delibird.History{
 						Date:       date.Add(-time.Hour * 9).Unix(),
 						DateText:   date.Format("2006-01-02 15:04"),
 						Area:       strings.TrimSpace(s.Find("td table tr td").Eq(0).Text()),
@@ -121,23 +122,23 @@ func (t Cj) getHtml(trackingNumber string) (*iconv.Reader, error) {
 	return convertedBody, nil
 }
 
-func (t Cj) getStatus(status_text string) TrackingStatus {
+func (t Cj) getStatus(status_text string) delibird.TrackingStatus {
 	switch status_text {
 	case "SM입고":
-		return Ready
+		return delibird.Ready
 	case "집화처리":
-		return PickupComplete
+		return delibird.PickupComplete
 	case "간선상차":
-		return Loading
+		return delibird.Loading
 	case "간선하차":
-		return Unloading
+		return delibird.Unloading
 	case "배달출발":
-		return DeleveryStart
+		return delibird.DeleveryStart
 	case "배달완료":
-		return DeleveryComplete
+		return delibird.DeleveryComplete
 	case "미배달":
-		return DoNotDelevery
+		return delibird.DoNotDelevery
 	}
 
-	return UnknownStatus
+	return delibird.UnknownStatus
 }

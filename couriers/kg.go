@@ -1,4 +1,4 @@
-package delibird
+package couriers
 
 import (
 	"bytes"
@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/purpleworks/delibird"
 )
 
 type Kg struct{}
@@ -32,29 +33,29 @@ func (t Kg) TrackingUrl() string {
 	return "http://www.kglogis.co.kr/contents/waybill.jsp?item_no=%s"
 }
 
-func (t Kg) Parse(trackingNumber string) (Track, *ApiError) {
-	track := Track{}
+func (t Kg) Parse(trackingNumber string) (delibird.Track, *delibird.ApiError) {
+	track := delibird.Track{}
 
 	body, err := t.getHtml(trackingNumber)
 
 	if err != nil {
-		return track, NewApiError(RequestPageError, err.Error())
+		return track, delibird.NewApiError(delibird.RequestPageError, err.Error())
 	}
 
 	doc, err := goquery.NewDocumentFromReader(body)
 	if err != nil {
-		return track, NewApiError(ParseError, err.Error())
+		return track, delibird.NewApiError(delibird.ParseError, err.Error())
 	}
 
 	if strings.HasPrefix(strings.TrimSpace(doc.Text()), "alert") {
-		return track, NewApiError(NoTrackingInfo, "등록되지 않은 운송장이거나 배송준비중입니다.")
+		return track, delibird.NewApiError(delibird.NoTrackingInfo, "등록되지 않은 운송장이거나 배송준비중입니다.")
 	}
 
 	if strings.TrimSpace(doc.Find("table").Eq(1).Find("tbody tr td").Eq(0).Text()) == "물품 이동경로정보가 없습니다." {
-		return track, NewApiError(NoTrackingInfo, "등록되지 않은 운송장이거나 배송준비중입니다.")
+		return track, delibird.NewApiError(delibird.NoTrackingInfo, "등록되지 않은 운송장이거나 배송준비중입니다.")
 	}
 
-	track = Track{
+	track = delibird.Track{
 		TrackingNumber: trackingNumber,
 		CompanyCode:    t.Code(),
 		CompanyName:    t.Name(),
@@ -63,7 +64,7 @@ func (t Kg) Parse(trackingNumber string) (Track, *ApiError) {
 		Signer:         "",
 	}
 
-	history := []History{}
+	history := []delibird.History{}
 
 	numberReg, _ := regexp.Compile("[^0-9-]")
 
@@ -85,7 +86,7 @@ func (t Kg) Parse(trackingNumber string) (Track, *ApiError) {
 				tel = ""
 			}
 			history = append(history,
-				History{
+				delibird.History{
 					Date:       date.Add(-time.Hour * 9).Unix(),
 					DateText:   date.Format("2006-01-02 15:04"),
 					Area:       strings.TrimSpace(area_tel[0]),
@@ -117,21 +118,21 @@ func (t Kg) getHtml(trackingNumber string) (io.Reader, error) {
 	return bytes.NewBuffer(body), nil
 }
 
-func (t Kg) getStatus(status_text string) TrackingStatus {
+func (t Kg) getStatus(status_text string) delibird.TrackingStatus {
 	switch status_text {
 	case "집하":
-		return PickupComplete
+		return delibird.PickupComplete
 	case "간선입고":
-		return Loading
+		return delibird.Loading
 	case "간선출고":
-		return Unloading
+		return delibird.Unloading
 	case "배송출발":
-		return DeleveryStart
+		return delibird.DeleveryStart
 	case "배송완료":
-		return DeleveryComplete
+		return delibird.DeleveryComplete
 	case "미배달":
-		return DoNotDelevery
+		return delibird.DoNotDelevery
 	}
 
-	return UnknownStatus
+	return delibird.UnknownStatus
 }

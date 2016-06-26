@@ -13,6 +13,7 @@ before_install:
 script:
   - go test -v -coverprofile=delibird.coverprofile
   - go test -v -coverprofile=server.coverprofile ./server
+  - go test -v -coverprofile=couriers.coverprofile ./couriers
   - $HOME/gopath/bin/gover
   - $HOME/gopath/bin/goveralls -coverprofile=gover.coverprofile -service=travis-ci
 after_success:

@@ -1,4 +1,4 @@
-package delibird
+package couriers
 
 import (
 	"bytes"
@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/purpleworks/delibird"
 )
 
 type Kpost struct{}
@@ -32,18 +33,18 @@ func (t Kpost) TrackingUrl() string {
 	return "https://service.epost.go.kr/trace.RetrieveDomRigiTraceList.comm?sid1=%s&displayHeader=N"
 }
 
-func (t Kpost) Parse(trackingNumber string) (Track, *ApiError) {
-	track := Track{}
+func (t Kpost) Parse(trackingNumber string) (delibird.Track, *delibird.ApiError) {
+	track := delibird.Track{}
 
 	body, err := t.getHtml(trackingNumber)
 
 	if err != nil {
-		return track, NewApiError(RequestPageError, err.Error())
+		return track, delibird.NewApiError(delibird.RequestPageError, err.Error())
 	}
 
 	doc, err := goquery.NewDocumentFromReader(body)
 	if err != nil {
-		return track, NewApiError(ParseError, err.Error())
+		return track, delibird.NewApiError(delibird.ParseError, err.Error())
 	}
 
 	senderInfo, _ := doc.Find(".shipping_area table").Eq(0).Find("tbody tr").Eq(1).Find("td").Eq(1).Html()
@@ -53,7 +54,7 @@ func (t Kpost) Parse(trackingNumber string) (Track, *ApiError) {
 	}
 
 	if sender == "" {
-		return track, NewApiError(NoTrackingInfo, "등록되지 않은 운송장이거나 배송준비중입니다.")
+		return track, delibird.NewApiError(delibird.NoTrackingInfo, "등록되지 않은 운송장이거나 배송준비중입니다.")
 	}
 
 	receiverInfo, _ := doc.Find(".shipping_area table").Eq(0).Find("tbody tr").Eq(1).Find("td").Eq(2).Html()
@@ -67,7 +68,7 @@ func (t Kpost) Parse(trackingNumber string) (Track, *ApiError) {
 	if match := regexp.MustCompile("\\(수령인:(.*)\\)").FindAllStringSubmatch(signerInfo, -1); len(match) > 0 {
 		signer = match[0][1]
 	}
-	track = Track{
+	track = delibird.Track{
 		TrackingNumber: trackingNumber,
 		CompanyCode:    t.Code(),
 		CompanyName:    t.Name(),
@@ -76,7 +77,7 @@ func (t Kpost) Parse(trackingNumber string) (Track, *ApiError) {
 		Signer:         signer,
 	}
 
-	history := []History{}
+	history := []delibird.History{}
 
 	//배송정보
 	doc.Find(".shipping_area table").Eq(2).Find("tbody tr").Each(func(i int, s *goquery.Selection) {
@@ -99,7 +100,7 @@ func (t Kpost) Parse(trackingNumber string) (Track, *ApiError) {
 				// TODO: popup?
 				tel := ""
 				history = append(history,
-					History{
+					delibird.History{
 						Date:       date.Add(-time.Hour * 9).Unix(),
 						DateText:   date.Format("2006-01-02 15:04"),
 						Area:       strings.TrimSpace(s.Find("td table tr td").Eq(0).Text()),
@@ -132,21 +133,21 @@ func (t Kpost) getHtml(trackingNumber string) (io.Reader, error) {
 	return bytes.NewBuffer(body), nil
 }
 
-func (t Kpost) getStatus(status_text string) TrackingStatus {
+func (t Kpost) getStatus(status_text string) delibird.TrackingStatus {
 	switch status_text {
 	case "접수":
-		return Ready
+		return delibird.Ready
 	case "발송":
-		return Loading
+		return delibird.Loading
 	case "도착":
-		return Unloading
+		return delibird.Unloading
 	case "배달준비":
-		return DeleveryStart
+		return delibird.DeleveryStart
 	case "배달완료":
-		return DeleveryComplete
+		return delibird.DeleveryComplete
 	case "미배달":
-		return DoNotDelevery
+		return delibird.DoNotDelevery
 	}
 
-	return UnknownStatus
+	return delibird.UnknownStatus
 }

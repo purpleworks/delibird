@@ -1,7 +1,8 @@
-package delibird
+package couriers
 
 import (
 	"fmt"
+	"github.com/purpleworks/delibird"
 	"reflect"
 )
 
@@ -9,7 +10,7 @@ import (
 // parse shipment tracking html
 type Courier interface {
 	// Parse html to tracking object
-	Parse(invoice string) (Track, *ApiError)
+	Parse(invoice string) (delibird.Track, *delibird.ApiError)
 	// Courier code
 	Code() string
 	// Courier name
@@ -19,13 +20,13 @@ type Courier interface {
 var courierMap = map[string]Courier{}
 
 // NewCourier creates courier object by courier company code
-func NewCourier(name string) (Courier, *ApiError) {
+func NewCourier(name string) (Courier, *delibird.ApiError) {
 	if value, ok := courierMap[name]; ok {
 		courier := reflect.New(reflect.TypeOf(value).Elem()).Interface().(Courier)
 		return courier, nil
 	}
 
-	return nil, NewApiError(NoCode, fmt.Sprintf("%v is not supported.", name))
+	return nil, delibird.NewApiError(delibird.NoCode, fmt.Sprintf("%v is not supported.", name))
 }
 
 // RegisterCourier register new courier
