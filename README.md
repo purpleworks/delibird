@@ -1,7 +1,7 @@
 # Delibird
 ![License](https://img.shields.io/github/license/purpleworks/delibird.svg)
 [![GoDoc](https://godoc.org/github.com/purpleworks/delibird?status.svg)](https://godoc.org/github.com/purpleworks/delibird)
-[![Go Report Card](http://goreportcard.com/badge/purpleworks/delibird)](http://goreportcard.com/report/purpleworks/delibird)
+[![Go Report Card](https://goreportcard.com/badge/purpleworks/delibird)](http://goreportcard.com/report/purpleworks/delibird)
 [![Coverage Status](http://img.shields.io/coveralls/purpleworks/delibird.svg)](https://coveralls.io/r/purpleworks/delibird)
 [![Build Status](https://travis-ci.org/purpleworks/delibird.svg?branch=master)](https://travis-ci.org/purpleworks/delibird)
 
