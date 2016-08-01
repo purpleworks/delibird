@@ -48,6 +48,10 @@ func renderErrorJson(w http.ResponseWriter, err *delibird.ApiError, status int) 
 func App() http.Handler {
 	// router
 	r := mux.NewRouter()
+	r.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
+		renderer.Text(w, http.StatusOK, "pong")
+	})
+
 	r.HandleFunc("/tracking/{code}/{trackingNumber}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 
