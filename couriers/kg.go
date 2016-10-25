@@ -59,8 +59,8 @@ func (t Kg) Parse(trackingNumber string) (delibird.Track, *delibird.ApiError) {
 		TrackingNumber: trackingNumber,
 		CompanyCode:    t.Code(),
 		CompanyName:    t.Name(),
-		Sender:         strings.TrimSpace(doc.Find("table").Eq(0).Find("tbody tr").Eq(1).Find("td span").Eq(0).Text()),
-		Receiver:       strings.TrimSpace(doc.Find("table").Eq(0).Find("tbody tr").Eq(2).Find("td span").Eq(0).Text()),
+		Sender:         strings.TrimRight(doc.Find("table").Eq(0).Find("tbody tr").Eq(1).Find("td span").Eq(0).Text(), "님 "),
+		Receiver:       strings.TrimRight(doc.Find("table").Eq(0).Find("tbody tr").Eq(2).Find("td span").Eq(0).Text(), "님 "),
 		Signer:         "",
 	}
 

@@ -44,8 +44,8 @@ func TestKGCourier(t *testing.T) {
 			data, _ := courier.Parse(completeTrackingNumber)
 
 			So(data.StatusCode, ShouldEqual, delibird.DeleveryComplete)
-			So(data.Sender, ShouldEqual, "웨일런샵 님")
-			So(data.Receiver, ShouldEqual, "김예준 님")
+			So(data.Sender, ShouldEqual, "웨일런샵")
+			So(data.Receiver, ShouldEqual, "김예준")
 			So(data.CompanyCode, ShouldEqual, "KG")
 		})
 	})
