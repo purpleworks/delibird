@@ -47,7 +47,7 @@ func (t Kpost) Parse(trackingNumber string) (delibird.Track, *delibird.ApiError)
 		return track, delibird.NewApiError(delibird.ParseError, err.Error())
 	}
 
-	senderInfo, _ := doc.Find(".shipping_area table").Eq(0).Find("tbody tr").Eq(1).Find("td").Eq(1).Html()
+	senderInfo, _ := doc.Find(".contents .table_col").Eq(0).Find("tbody tr").Eq(0).Find("td").Eq(0).Html()
 	sender := ""
 	if tmp := strings.Split(senderInfo, "<br/>"); len(tmp) == 2 {
 		sender = tmp[0]
@@ -57,17 +57,17 @@ func (t Kpost) Parse(trackingNumber string) (delibird.Track, *delibird.ApiError)
 		return track, delibird.NewApiError(delibird.NoTrackingInfo, "등록되지 않은 운송장이거나 배송준비중입니다.")
 	}
 
-	receiverInfo, _ := doc.Find(".shipping_area table").Eq(0).Find("tbody tr").Eq(1).Find("td").Eq(2).Html()
+	receiverInfo, _ := doc.Find(".contents .table_col").Eq(0).Find("tbody tr").Eq(0).Find("td").Eq(1).Html()
 	receiver := ""
 	if tmp := strings.Split(receiverInfo, "<br/>"); len(tmp) == 2 {
 		receiver = tmp[0]
 	}
-
-	signerInfo, _ := doc.Find(".shipping_area table").Eq(2).Find("tbody tr").Last().Find("td").Eq(3).Html()
+	signerInfo, _ := doc.Find(".detail_off").Eq(0).Find("tbody tr").Last().Find("td").Eq(3).Html()
 	signer := ""
 	if match := regexp.MustCompile("\\(수령인:(.*)\\)").FindAllStringSubmatch(signerInfo, -1); len(match) > 0 {
 		signer = match[0][1]
 	}
+
 	track = delibird.Track{
 		TrackingNumber: trackingNumber,
 		CompanyCode:    t.Code(),
@@ -80,7 +80,7 @@ func (t Kpost) Parse(trackingNumber string) (delibird.Track, *delibird.ApiError)
 	history := []delibird.History{}
 
 	//배송정보
-	doc.Find(".shipping_area table").Eq(2).Find("tbody tr").Each(func(i int, s *goquery.Selection) {
+	doc.Find(".detail_off").Eq(0).Find("tbody tr").Each(func(i int, s *goquery.Selection) {
 		if i > 0 {
 			dateText := strings.TrimSpace(s.Find("td").Eq(0).Text()) + " " + strings.TrimSpace(s.Find("td").Eq(1).Text())
 			date, err := time.Parse("2006.01.02 15:04", dateText)
@@ -92,7 +92,7 @@ func (t Kpost) Parse(trackingNumber string) (delibird.Track, *delibird.ApiError)
 					statusText = statusText[0:strings.Index(statusText, "\n")]
 				}
 
-				if i == doc.Find(".shipping_area table").Eq(2).Find("tbody tr").Size()-1 {
+				if i == doc.Find(".detail_off").Eq(0).Find("tbody tr").Size()-1 {
 					track.StatusCode = t.getStatus(statusText)
 					track.StatusText = statusText
 				}
@@ -103,7 +103,7 @@ func (t Kpost) Parse(trackingNumber string) (delibird.Track, *delibird.ApiError)
 					delibird.History{
 						Date:       date.Add(-time.Hour * 9).Unix(),
 						DateText:   date.Format("2006-01-02 15:04"),
-						Area:       strings.TrimSpace(s.Find("td table tr td").Eq(0).Text()),
+						Area:       strings.TrimSpace(s.Find("td").Eq(2).Text()),
 						Tel:        tel,
 						StatusCode: t.getStatus(statusText),
 						StatusText: statusText,
