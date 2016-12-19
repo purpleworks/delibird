@@ -38,19 +38,16 @@
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>국내우편 배송조회 - 원클릭 배송조회</title>
-<link href="/iwww/css/comm/shipping/epost_common.css" rel="stylesheet" type="text/css" />
-<link href="/iwww/css/comm/shipping/shipping.css" rel="stylesheet" type="text/css" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<title>원클릭배송조회-국내우편(등기/택배) 배송조회</title>
+<link type="text/css" rel="stylesheet" href="/np2assets/css/sub.css" />
 <link href="/iwww/css/comm/shipping/jquery-ui-1.9.2.custom.css" rel="stylesheet" type="text/css" />
-<link href="/iwww/css/comm/2011/footer.css" rel="stylesheet" type="text/css" />
 
-
-
+<script type="text/javascript" src="/np2assets/js/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="/iwww/jscripts/comm/common.js"></script>
-<script type="text/javascript" src="/iwww/jscripts/comm/jquery-1.9.1.min.js" ></script>
 <script type="text/javascript" src="/iwww/jscripts/comm/comnValidator.js"></script>
 <script type="text/javascript" src="/iwww/jscripts/comm/jquery-ui-1.9.2.custom.js" ></script>
 <script type="text/javascript" src="/iwww/jscripts/comm/shipping_comm.js"></script>
@@ -59,8 +56,7 @@
 //<![CDATA[
 
 	// 우체국정보 상세조회
-	function goPostDetail(pcode, eventnm,  e) {
-		if(isAccess(e)){
+	function goPostDetail(pcode, eventnm) {
 			//윈도우 팝업 생성 변경 (기존의 네비게이션을 제거 하면서 return Jsp 로 포워드 하게 변경) 2012.04.09 이철재
 			window.open('','poInfo','width=330,height=232,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no');
 			document.poInfoForm.target_command.value = "kpl.tts.tt.epost.cmd.RetrievePostOfficeInfoCmd";
@@ -69,18 +65,14 @@
 			document.poInfoForm.target = "poInfo";
 			document.poInfoForm.submit();
 			return false;
-		}
 	}
 
-        function goTermsDetail(terms, e){
-            if(isAccess(e)){
+        function goTermsDetail(terms){
                 window.open('http://trace.epost.go.kr/xtts/tt/epost/trace/terms_detail.jsp','termsInfo','width=330,height=232,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no');
                 document.termsForm.terms.value = terms;
                 document.termsForm.target = "termsInfo";
                 document.termsForm.submit();
                 return false;
-            }
-            
         }
 		
 		// 집배원 정보조회 팝업
@@ -113,7 +105,7 @@
 
 	// 마스킹해제조회팝업
         function fnPopupMaskingSolv() {
-                window.open('','details','width=330,height=262,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no');
+                window.open('','details','width=410,height=280,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no');
                 document.frmReqMasking.target = "details";
                 document.frmReqMasking.submit();
         }
@@ -127,11 +119,9 @@
         }
 
 	// 프린트하기
-	function js_winPrint(e){
-		if(isAccess(e)){
+	function js_winPrint(){
 			window.print();
 		return false;
-		}   
 	}
 
 // 변경전 화면으로 보기
@@ -217,16 +207,26 @@ function chkTrace1() {
     return true;
 }
 
-$(document).ready(function () {
+function popupSetting() {
 
+	wWidth = 630;
+	wHight = 790;
+	
+	wX = (window.screen.width - wWidth) / 2;
+	wY = (window.screen.height - wHight) / 2;
+	
+	var w = window.open("http://service.epost.go.kr/main/popup/ePOSTtextGuide.jsp?req=service", "popupSetting", "directories=no,toolbar=no,scrollbars=yes,left="+wX+",top="+wY+",width="+wWidth+",height="+wHight);
+	
+	return false;
+}
+
+$(document).ready(function () {
+	$(".detail_off").css({'visibility':'hidden','position':'absolute','left':'0'});
+	$(".masking div").css('visibility','hidden');
 	//마스킹 제한 표시에 대한 근거
-	$(".btn_masking").click(function(){
-		var masking = $(".masking div").css('visibility');
-		if(masking == 'hidden'){
-			$(".masking div").css('visibility','visible');
-		}else{
-			$(".masking div").css('visibility','hidden');
-		}
+	$("#btn_masking").click(function(){
+		 window.open('/iservice/usr/trace/usrtrc002p02.jsp','details','width=360,height=200,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no');
+         return false;
 	});
 
 	
@@ -236,51 +236,46 @@ $(document).ready(function () {
 //		var myClass = $('.here').index();
 		var myClass = $("#prgsHere").val();
 		var myIndex = $(this).index();
+		var liIndex = myIndex + 1;
 		if (myIndex < myClass)
 		{
-			 $(this).css('background-image',$(this).css('background-image').replace('_off','_on'))
+			 $(this).removeClass("m"+liIndex);
+			 $(this).addClass("n"+liIndex);
 		}
 	});
 	//배송진행상황 상세보기(테이블)
-	$(".btn_detailView").click(function(){
+	$("#btn_detailView").click(function(){
 		var masking = $(".detail_on").css('visibility');
 		if(masking == 'hidden'){
 			$(this).html('(+)자세히보기<span>▶</span>');
-			$(".detail_on").css({'visibility':'visible','position':'static'});
+			$(".detail_on").css({'visibility':'visible','position':'relative'});
 			$(".detail_off").css({'visibility':'hidden','position':'absolute','left':'0'});
 			$(".btnSetC").css({'display':'none'});
+			$("#sbody_layout").css({'overflow':'hidden'});
 		}else{
 			$(this).html('(-)자세히보기<span>▼</span>');
 			$(".detail_on").css({'visibility':'hidden','position':'absolute','left':'0'});
-			$(".detail_off").css({'visibility':'visible','position':'static'});
-			$(".btnSetC").css({'display':'block'});
+			$(".detail_off").css({'visibility':'visible','position':'relative'});
+			$(".btnSetC").css({'display':'table'});
+			$("#sbody_layout").css({'overflow':'visible'});
 		}
 	});
 
 	//국제우편 배달정보 프린트
-	$(".print").on("click", function(){
+	$("#btnPrint").on("click", function(){
 		$(".detail_on").css({'visibility':'hidden','position':'absolute','left':'0'});
 		$(".detail_off").css({'visibility':'visible','position':'static'});
 
 		var theWork = window.open('','PrintWindow');
 		var content = $('#print').html();
 		var html = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'><html xmlns='http://www.w3.org/1999/xhtml' lang='ko' xml:lang='ko'><head>";
-		html += "<link href='/iwww/css/comm/shipping/epost_common.css' rel='stylesheet' type='text/css' />";
-		html += "<link href='/iwww/css/comm/shipping/shipping.css' rel='stylesheet' type='text/css' />";
+		html += "<link type='text/css' rel='stylesheet' href='/np2assets/css/sub.css' />";
 		html += "<style type='text/css'>";
-		html += "table{margin-top:15px;width:100%;border-top:2px solid #222;border-collapse:collapse;}";
-		html += "table th{padding:5px;border:1px solid #aaa;background-color:#f6f6f6;border-right:0;}";
-		html += "table th:first-child{border-left:0;}";
-		html += "table th.noBold{padding-left:20px;text-align:left;font-weight:normal;line-height:30px;}";
-		html += "table td{padding:7px;border:1px solid #aaa;border-right:0;}";
-		html += "table td:first-child{border-left:0;}";
-		html += "table td>p{padding:5px;}";
+		html += "body, input, select, textarea, a, button{font-family:'dotum',돋움 !important;height:100%;}";
 		html += ".detail_on{display:none;}";
-		html += ".btnSetC{display:none;}";
-		html += ".print{display:none;}";
-		html += ".processOld{display:none;}";
-		html += "#shipping_area_prgs{display:none;}";
-		html += ".footBanner{display:none;}";
+		html += ".dpno{display:none;}";
+		html += ".masking{display:none;}";
+		html += ".shipping_process{display:none;}";
 		html += "</style>";
 		html += "</head>";
 		html += "<body><div id='print' style='width:700px;'>" + content;
@@ -301,26 +296,23 @@ $(document).ready(function () {
 </head>
 
 <body>
-<div class="all_wrap" style="width:690px"><a name="top" id="top"></a>
-	<div class="accessibility-menu">
-		<ul>
-			<li><a href="#service">인터넷우체국 서비스메뉴 바로가기</a></li>
-			<li><a href="#menu">메뉴 바로가기</a></li>
-			<li><a href="#contents">본문 바로가기</a></li>
-			<li><a href="#footer">하단 주소 및 전화번호 바로가기</a></li>
-		</ul>
-	</div>
-	
-	<div class="header_area" style="display:none">
-	<!-- 공통서비스메뉴 -->
-		
+<!-- 스킵네비게이션 시작 -->
+<ul id="skipnavi">
+	<li><a href="#top_layout_focus001">주 메뉴바로가기</a></li>
+	<li><a href="#contents_layout">본문 내용바로가기</a></li>
+	<li><a href="#bottom_layout">하단 내용바로가기</a></li>
+</ul>
+<!-- 스킵네비게이션 끝 -->
+<!-- 탑레이아웃 시작 -->
+<div style="display:none">
 
 
 
 
-<!--[if lt IE 7]>
-<script type="text/JavaScript"> location.replace("http://www.epost.go.kr/comm/goodbye_ie6.jsp"); </script>
-<![endif]-->
+
+
+
+
 
 
 
@@ -356,7 +348,7 @@ $(document).ready(function () {
 
 <script type="text/javascript">
 //<![CDATA[
-setCookie("ckstm", '1465631106141');
+setCookie("ckstm", '1482021027464');
 //쿠키 셋팅
 function setCookie( name, value ) {
     document.cookie = name + '=' + escape(value) + ';path=/;domain=epost.go.kr' ;
@@ -381,265 +373,1004 @@ window.onbeforeunload=function() {
 <iframe name="ifCkReset" title="예외페이지 쿠키리셋 프레임" width="0" height="0"></iframe>
 
 
-<!-- 키보드 해킹 방지 프로그램 설치 -->
-<script type="text/javascript" src="https://www.epost.go.kr/comm/easykeytec/easykeytec.js"></script>
+
+
+
+
+<script type="text/javascript" src="/np2assets/js/navi_focus.js"></script>
 <script type="text/JavaScript" src="https://www.epost.go.kr/jscripts/comm/logininfoURL.js"></script>
-&nbsp;
-<div id="nepostTopMenu"><a name="service" id="service"></a>
-    <ul>
-      
-		<li class="btn"><a href="http://www.epost.go.kr/usr/login/cafzc008k01.jsp"><img src="https://www.epost.go.kr/images/comm/2010/comm/co_EpostbtnLogin.gif" width="43" height="15" alt="로그인" /></a></li>
-      
-      <li><a href="http://service.epost.go.kr/">우편</a></li>
-      <li><a href="http://parcel.epost.go.kr/">택배</a></li>
-      <li><a href="http://ems.epost.go.kr/">EMS</a></li>
-      <li><a href="http://service.epost.go.kr/comm.RetrieveStampSrvcMain.postal" target="_top">우표</a></li>
-      <li><a href="http://mall.epost.go.kr/">쇼핑</a></li>
-      <li><a href="">메일</a></li>
-      <li class="nobg"><a href="http://www.epost.go.kr/bbs.RetrieveBbsMain.comm" target="_blank"><strong>고객의소리</strong></a></li>
-    </ul>
-  </div>
-  <div id="LaynWrapToplogo"><a href="http://www.epost.go.kr/"><img src="https://www.epost.go.kr/images/comm/2010/comm/co_TopLogo.gif"  alt="인터넷우체국 ePOST.kr" /></a></div>
+<script type="text/JavaScript">
+var headTitle="";
 
+$(document).ready(function(){
+	//로그인,로그아웃  surl 세팅
+    
+	    if($('.lnb > h2').text() == "우편"){
+			document.getElementById("loginSURL").href = "https://www.epost.go.kr/usr/login/cafzc008k01.jsp?s_url=https://service.epost.go.kr/";
+		}else if($('.lnb > h2').text() =="우표·엽서·축하카드"){
+			document.getElementById("loginSURL").href = "https://www.epost.go.kr/usr/login/cafzc008k01.jsp?s_url=https://service.epost.go.kr/comm.RetrieveStampSrvcMain.postal";
+		}else{
+			document.getElementById("loginSURL").href = "https://www.epost.go.kr/usr/login/cafzc008k01.jsp?s_url=" + location.protocol+"\/\/"+location.host;
+		}
+	
+	
+	//각 페이지 네비게이션 링크 셋 함수 호출
+	//setTimeout(fn_location,1000);
+    setTimeout(function(){
+    	fn_location();
+    	if("" != headTitle){
+			document.title = headTitle;
+    	}
+      },100);
+	//통합검색 버튼
+	$('#btnTotalSearch').click(function(){
+		return goSearch();
+	});
+});
 
-	<!--//공통서비스메뉴 -->
-	</div>
-
-	<!--상단메뉴-->
-	<div style="display:none">
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 키보드 해킹 방지 프로그램 설치 -->
-<script type="text/javascript" src="https://www.epost.go.kr/comm/easykeytec/easykeytec.js"></script>
-<script type="text/JavaScript" src="/iwww/jscripts/comm/logininfoURL.js"></script>
-<script type="text/javascript">
-//<![CDATA[
-function tab(n){
-	if(n == 1)
-		location.href = "/iservice/usr/trace/usrtrc001k01.jsp";
-	if(n == 2)
-		location.href = "/iservice/usr/trace/usrtrc004k01.jsp";
-	if(n == 3)
-		location.href = "http://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=mall_bsearch&amp;s_url=https://mall.epost.go.kr/purchase.benefit.RetrieveDeliveryPage.mall";
+//각 페이지 상단 로케이션 링크 세팅
+var fn_location = function(){
+	if(location.protocol=="http:"){
+    	var Home_l = '<a href="https://www.epost.go.kr/">HOME</a>';
+    	var Service_l = '<a href="https://service.epost.go.kr/">HOME</a>';
+    	var Parcel_l = '<a href="https://parcel.epost.go.kr/">HOME</a>';
+    	var Ems_l = '<a href="https://ems.epost.go.kr/">HOME</a>';
+	}else{
+    	var Home_l = '<a href="https://www.epost.go.kr/">HOME</a>';
+    	var Service_l = '<a href="https://service.epost.go.kr/">HOME</a>';
+    	var Parcel_l = '<a href="https://parcel.epost.go.kr/">HOME</a>';
+    	var Ems_l = '<a href="https://ems.epost.go.kr/">HOME</a>';
+	}
+	
+	$('.page_title .location > li').each(function(idx){
+		if(idx==0){//HOME 위치 세팅
+			$(this).text('');
+			$(this).append(Home_l);
+		}else if(idx==1){// 서브메뉴 1
+			var label = $(this).text();
+			
+			headTitle=label;
+			
+			$(this).text('');
+			var SubMenu1 = '<a href="' + $('a[id="Submenu"]').attr('href') + '">' + label + '</a>';
+			$(this).append(SubMenu1);
+		}else if(idx==2){// 서브메뉴2 - 레프트 메뉴 셀렉터에서 링크 가져옴
+			var label = $(this).text();
+			headTitle=label + "-" + headTitle;
+				
+			if((''+$('li[class="current"] > a').attr('href')) != 'undefined'){
+				$(this).text('');
+				if((''+$('li[class="current"] > a').attr('href')) == '#'){
+					var SubMenu2 = '<a href="' + $('li[class="current"] > ul > .first > a').attr('href') + '">' + label + '</a>';
+					$(this).append(SubMenu2);
+				} else {
+					var SubMenu2 = '<a href="' + $('li[class="current"] > a').attr('href') + '">' + label + '</a>';
+					$(this).append(SubMenu2);
+				}
+			}
+		}else if(idx==3){// 서브메뉴3 - 레프트 메뉴 셀렉터에서 링크 가져옴
+				var label = $(this).text();
+				headTitle=label + "-" + headTitle;
+				
+			if((''+$('li[class="current"] > ul > .on > a').attr('href')) != 'undefined'){
+				$(this).text('');
+				var SubMenu3 = '<a href="' + $('li[class="current"] > ul > .on > a').attr('href') + '">' + label + '</a>';
+				$(this).append(SubMenu3);
+			}
+		};
+	});
 }
 
-//]]>
-</script>         
 
-	<div class="topmenu_area_shipping"><a name="menu" id="menu"></a>
-		<h1><img src="/iwww/images/comm/shipping/logo_title.gif" alt="원클릭 배송조회" /></h1>
-		<ul class="topmenulist">
-			<li><a href="/iservice/usr/trace/usrtrc001k01.jsp"><img src="/iwww/images/comm/shipping/topmenu01_on.gif" alt="국내우편(등기/택배)배송조회" /></a></li>
-			<li><a href="/iservice/usr/trace/usrtrc004k01.jsp"><img src="/iwww/images/comm/shipping/topmenu02_off.gif" alt="국제우편(EMS)배송조회" /></a></li>
-			<li><a href="http://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=mall_bsearch&amp;s_url=https://mall.epost.go.kr/purchase.benefit.RetrieveDeliveryPage.mall"><img src="/iwww/images/comm/shipping/topmenu03_off.gif" alt="우체국쇼핑 주문배송조회" /></a></li>
-		</ul>
-	</div>
+function goSearch(){
+	var frm = document.getElementById('searchform');
+		
+		if (frm.query.value == ''){
+			alert("검색어를 입력해주세요.");	
+    	return false;       
+	}else{
+		frm.action = "https://www.epost.go.kr/search/total/total.jsp?queryVal="+frm.query.value; 
+		frm.submit();
+	}
+}
 
-	</div>
-	<!--//상단메뉴-->
-	
-	<div class="accessibility-top"><a href="#top">위로가기</a></div>
-	
-	<!-- 컨텐츠영역 -->
-	<div class="contents_wrap" style="width:690px"><a name="contents" id="contents"></a>
-		<!-- left area -->
-		<div style="display:none">
+/**메인화면 링크 모음**/
+function goNewLink(no,url) {
+	    if(no=="1") {  //우편번호검색
+	       window.open(url,"postnum","scrollbar=no,resizable=no,toolbar=no,width=590,height=670,left=20,top=29,status=no");
+	    } else if(no=="2") { //우체국전화번호 검색
+	       window.open(url, "sysNoticePop", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=670,height=600,top=30,left=20");	    	
+	    } else if(no=="3") { //국내/국제우편요금안내
+	       window.open(url,"delivery_cost","toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,width=540,height=640,top=30,left=555");
+	    } else if(no=="4") { //영문 ems 행방조회
+	       window.open(url,"EMS","toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=770,height=685");
+	    } else if(no=="5") {  //새주소우편번호검색
+        window.open(url,"newaddrsch","scrollbar=no,resizable=no,toolbar=no,width=590,height=653,left=20,top=29,status=no");
+     } else if(no=="6") {  //보이스피싱 피해예방 안내
+        window.open(url,'pishing','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,top=50,left=50,width=530,height=570');
+     } else if(no=="7") {  //우표문화누리
+        window.open(url,'kstamppop1','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=1000,height=650');
+     } else if(no=="8") { //Window XP 서비스팩2 설치고객에 대한 안내
+        window.open(url,'xpsp2intro','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,top=50,left=50,width=635,height=650');
+     } else if(no=="9") { //비스타 사용자 안내
+        window.open(url,'vistaintro','toolbar=no, width=500, height=530, location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,top=50,left=200');
+     } else if(no=="10") { //경찰청 미아찾기
+        window.open(url,'lostchildpop','toolbar=no, width=680,height=625, location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,top=50,left=200');
+     } else if(no=="11") { //당일특급가능지역
+        window.open(url,"deliveryready","scrollbar=no,resizable=no,toolbar=no,width=590,height=660,left=555,top=29,status=no");
+	    } else if(no=="12") { //주소록관리
+        window.open(url, "addrBookPopup","toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=895,height=700,top=0,left=0");
+	    } else if(no=="13") { //올바른 우편물 주소 표기방법
+	    	window.open(url,"AddrGuide","scrollbar=no,resizable=no,toolbar=no,width=605,height=400,left=555,top=29,status=no");
+	    }else if(no =="14") { //우체국 이용안내
+	    	window.open(url,"usefulGuide","scrollbar=no,resizable=no,toolbar=no,width=1000,height=530,left=20,top=29,status=no");
+	    }else if(no =="15"){ //EMS/EMS프리미업 발송조건
+	    	window.open(url,'','status=no, width=800,height=670,scrollbars=yes,left=150,top=150');
+	    }else if(no =="16"){ //K-Packet 발송조건
+	    	window.open(url,'','status=no, width=800,height=670,scrollbars=yes,left=150,top=150');
+	    }else if(no =="17"){ //국제소포/통상 발송조건
+	    	window.open(url,'','status=no, width=800,height=670,scrollbars=yes,left=150,top=150');
+	    }
+	    
+	    return false;
+}
+
+function custPart(gourl){
+
+    if('false' == 'false'){
+        alert("로그인 후 이용가능 합니다.");
+    }else{
+        top.location.href = gourl;
+    }
+    return false;
+
+}
+
+//우체국 택배
+function parcelLink(surl,num,e){
+    if(isAccess(e)){
+        var frm = document.getElementById("goLinkForm");
+
+        if(num == '1' || num == '2'){
+            frm.s_url.value = surl;
+            frm.action = "auth.LinkLogin.parcel";
+            frm.submit();
+        }else if(num == '3' || num == '4'){
+           //if(confirm("로그인후 이용가능합니다. 로그인 하시겠습니까?")){
+            frm.s_url.value = 'https://www.epost.go.kr/main/mainLink.jsp?linkno='+num;
+            frm.action = "https://www.epost.go.kr/usr/login/cafzc008k01.jsp";
+            frm.submit();
+           //}
+        }
+
+        return false;
+    }
+}
+
+	function alertNewYearCardMsg(){
+	    var tmpMsgtemp = "연하카드 판매 기간이 아닙니다.";
+	    alert(tmpMsgtemp);
+	}
+
+</script>
+
+
+<div id="top_layout">
+<div class="top_wrap">
+		<div class="logo_wrap">
+			<div class="logo"><a href="https://www.epost.go.kr/" title="메인이동"><img src="/np2assets/images/e1/logo.gif" alt="epost 로고" /></a></div>
+			<div class="search">
+				<form name="searchform" id="searchform" method="post" action="https://www.epost.go.kr/search/total/total.jsp" onsubmit="return goSearch();" target="_top">
+				<input type="hidden" name="selectmenu" value="0" />
+				<input type="text" name="queryVal" title="검색어를 입력하세요"/>
+				<a id="btnTotalSearch" style="cursor: pointer;" title="검색"><label for="">검색</label></a>
+				</form>
+			</div>
+			<ul class="utile">
 			
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		<div class="leftmenu_wrap">
-			<dl class="leftmenu_list">
-				<dt><a href="/iservice/usr/trace/usrtrc001k01.jsp"><img src="/iwww/images/comm/shipping/leftmenu_title.gif" alt="원클릭 배송조회 "/></a></dt>
-				<dd>
-					<ul class="leftmenu_list_depth">
-						<li><a href="/iservice/usr/trace/usrtrc001k01.jsp"><img src="/iwww/images/comm/shipping/leftmenu01_on.gif" alt="국내우편(등기/택배)배송조회" /></a></li>
-						<li><a href="/iservice/usr/trace/usrtrc004k01.jsp"><img src="/iwww/images/comm/shipping/leftmenu02_off.gif" alt="국제우편(EMS)배송조회" /></a></li>
-						<li class="end"><a href="http://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=mall_bsearch&amp;s_url=https://mall.epost.go.kr/purchase.benefit.RetrieveDeliveryPage.mall"><img src="/iwww/images/comm/shipping/leftmenu03_off.gif" alt="우체국쇼핑 주문배송조회" /></a></li>
-					</ul>
-				</dd>
-			</dl>
+				<!-- 로그인전 -->
+				<li class="n1"><a id="loginSURL" href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp" target="_top" title="로그인">로그인</a></li>
+				<li class="n2"><a href="https://www.epost.go.kr/usr/member/cafzb000k01.jsp" target="_top" title="회원가입">회원가입</a></li>
+				<li class="n4"><a href="https://www.epost.go.kr/bbs.RetrieveBbsMain.comm" title="고객센터">고객센터</a></li>
+				<li class="n4"><a href="https://www.epost.go.kr/comm/etc/sitemap.jsp" title="사이트 안내">사이트 안내</a></li>
+				<li class="n5"><a href="https://www.epost.go.kr/main/eng/Enpost_Introduction1.html" title="ENGLISH">ENGLISH</a></li>
+							
+			</ul>
 		</div>
+		<!-- 네비 시작 -->
+		<div id="mnavi_layout2" class="navi">
+			<div class="group" id="gnb_navi">
+				<div class="menu m8">
+					<h2><a href="#" title="페이지 이동">전체메뉴</a></h2>
+					<div class="depth2">
+						<div class="wrap n1">
+							<dl class="n1">
+								<dt><a href="https://service.epost.go.kr/" title="우편 메인이동">우편</a></dt>
+								<dd class="n1">
+									 <ul>
+										<li><a href="https://service.epost.go.kr//hybridn.HybridIntro.postal?type=A" title="전자우편">전자우편</a>
+											 <ul>
+												<li><a href="https://service.epost.go.kr//hybridn.HybridIntro.postal?type=A" title="e-그린우편">e-그린우편</a></li>
+												<li><a href="https://service.epost.go.kr/front.myletter.MyletterIntro.postal" title="맞춤형편지">맞춤형편지</a></li>
+											</ul>
+										</li>
+									</ul>
+									
+									<ul>
+										<li><a href="https://service.epost.go.kr/front.leaflet.MonitoringLeaflet.postal" title="생활정보홍보우편">생활정보홍보우편</a>
+											 <ul>
+											 	
+												<li><a href="https://service.epost.go.kr/front.leaflet.MonitoringLeaflet.postal" title="모니터링">모니터링</a></li>
+											</ul>
+										</li>
+									</ul>
+									
+									 <ul>
+										<li><a href="https://service.epost.go.kr/econprf.RetrieveEConprfReqSend.postal?type=&grp=A" title="증명서비스">증명서비스</a>
+											 <ul>
+												<li><a href="https://service.epost.go.kr/econprf.RetrieveEConprfReqSend.postal?type=&grp=A" title="내용증명">내용증명</a></li>
+												<li><a href="https://service.epost.go.kr/econprf.RetrieveEConprfReqReissue.postal" title="발송 후 내용증명">발송 후 내용증명</a></li>
+												<li><a href="https://service.epost.go.kr/front.deliveryProof.mainPage.postal" title="발송 후 배달증명">발송 후 배달증명</a></li>
+											</ul>
+										</li>
+									</ul>
+									 <ul>
+										<li><a href="https://service.epost.go.kr/front.commonpost.RetrieveAcceptIntro.postal" title="부가서비스">부가서비스</a>
+											 <ul>
+												<li><a href="https://service.epost.go.kr/front.commonpost.RetrieveAcceptIntro.postal" title="간편사전접수">간편사전접수</a></li>
+											
+												<li><a href="https://service.epost.go.kr/comm.RetrievePostagSrvcStrt.postal?menu=CP&amp;file=1" title="통상우편방문접수예약" class="l_s_2">통상우편물 방문접수 예약</a></li>
+											
+												<li><a href="https://service.epost.go.kr/comm.RetrievePostagSrvcStrt.postal?menu=K&amp;file=1" title="현금배달">현금배달</a></li>
+												<li><a href="https://service.epost.go.kr/comm.RetrievePostagSrvcStrt.postal?menu=D&amp;file=1" title="민원우편">민원우편</a></li>
+												<li><a href="https://service.epost.go.kr/comm.RetrievePostagSrvcStrt.postal?menu=A&amp;file=1" title="주거이전서비스">주거이전서비스</a></li>
+												<li><a href="https://service.epost.go.kr/front.RetrieveEaddTransInfo.postal" title="전입신고철회계획">전입신고연계철회</a></li>
+												<li><a href="https://service.epost.go.kr/front.RetrieveMachineCounter.postal" title="무인우편창구연계접수">무인창구연계접수</a></li>
+												<li><a href="https://service.epost.go.kr/front.nomanpost.IntroPage.postal" title="무인우체국">무인우체국 가입</a></li>
+												<li><a href="http://ekpls.epost.go.kr/xpost_custPart.jsp" onclick="return custPart(this.href);" title="고객참여창구">고객참여창구</a></li>
+											</ul>
+										</li>
+									</ul>
+									 <ul>
+										<li>
+											
+											<a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=service_bsearch" title="나의이용정보">나의 이용정보</a>
+											
+											 <ul>
+												<li>
+													
+													<a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=service_bsearch" title="이용내역 조회">이용내역 조회</a>
+													
+												</li>
+												<li><a href="https://service.epost.go.kr/front.cardreceipt.RetrievePaymentinfo.postal" title="방문결제영수증 출력">방문결제영수증출력</a></li>
+											</ul>
+										</li>
+									</ul>
+								</dd>
+							</dl>
+							<dl class="n2">
+								<dt><a href="http://mall.epost.go.kr/" title="우체국쇼핑 새창열림">우체국쇼핑</a></dt>
+								<dd class="n1">
+									 <ul>
 
-		</div>
+										<li><a href="http://mall.epost.go.kr/fo/display/pavlnDivDspyType.do?pavlnDivCd=01"  title="특산물 새창열림">특산물</a></li>
+										<li><a href="http://mall.epost.go.kr/fo/main/moveFlowerSend.do"  title="꽃배달 새창열림">꽃배달</a></li>
+										<li><a href="http://mall.epost.go.kr/fo/main/moveSijang.do"  title="전통시장 새창열림">전통시장</a></li>
+										<li><a href="http://mall.epost.go.kr/fo/main/moveOverSend.do"  title="해외배송 새창열림">해외배송</a></li>
 
-		<!-- //left area -->
-		<!-- center area -->
-		<div class="incontents_wrap">
-			<h2 class="page01" style="display:none">국내우편 배송조회</h2>
-			<!-- 배송조회 선택 -->
-			<div class="shipping_area" style="display:none">
-				<div class="shipping_tabmenu" >
-					<ul>
-						<li class="on"><a href="javascript:tab(1);"><span>국내우편(등기/택배)배송조회</span></a></li>
-						<li><a href="javascript:tab(2);"><span>국제우편(EMS)배송조회</span></a></li>
-						<li><a href="javascript:tab(3);"><span>우체국쇼핑 주문배송조회</span></a></li>
+										<li><a href="http://b2b.epost.go.kr/btobmall.mmain.index.btb"  title="우체국B2B 새창열림">우체국B2B</a></li>
+										<!-- 2016.04.27 개발 중 메뉴
+										<li><a href="#" title="동대문B2B">동대문B2B</a></li> -->
+									</ul>
+								</dd>
+							</dl>
+							<dl class="n3">
+								<dt><a href="https://parcel.epost.go.kr/" title="우체국 택배">우체국택배</a></dt>
+								<dd class="n1">
+									 <ul>
+										 
+										 <li><a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=parcel1" title="일반예약">일반예약</a></li>
+										 
+										 <li> 
+											 <ul>
+											 
+												<li><a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=parcel1" title="소량접수예약">소량접수예약</a></li>
+												<li><a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=parcel3" title="다량접수예약(파일접수)">다량접수예약(파일접수)</a></li>
+											  
+											</ul>
+										</li>
+										
+										<li><a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=parcel2" title="반품예약">반품예약</a></li>
+										
+									</ul>
+								</dd>
+								<dd class="n2">
+									 <ul>
+										<li>
+											
+												<a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=parcel4" title="선납소포상자">선납소포상자</a>
+											
+											 <ul>
+												<li>
+												
+													<a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=parcel4" title="방문수거예약">방문수거예약</a>
+												
+												</li>
+												<li><a href="https://parcel.epost.go.kr/general.DisplayPrepayBoxPurchaseGuide.parcel" title="선납소포상자 구매">선납소포상자 구매</a></li>
+											</ul>
+										</li>
+									</ul>
+								</dd>
+								<dd class="n3">
+									 <ul>
+										<!-- <li><a href="https://www.epost.go.kr/general.RetrieveResrevationNew.parcel?cmd=reservation&onLoadState=init" title="예약조회/취소">예약조회/취소</a></li> -->
+										<li>
+										
+											<a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=parcel_bsearch" title="예약조회/취소">예약조회/취소</a>
+											
+										</li>
+										<li><a href="https://parcel.epost.go.kr/front.delivpay.RetrieveDelivpayPage.parcel" title="착불배달우편물 요금 결제/조회">착불배달우편물 요금<br/>결제/조회</a></li>
+										
+										<li><a href="https://service.epost.go.kr/iservice/usr/trace/usrtrc001k01.jsp" target="_blank" title="배달조회 - 새창으로 열림">배달조회</a></li>
+										
+										<li><a href="https://parcel.epost.go.kr/share.RetrieveNewsListMore.parcel" title="공지사항">공지사항</a></li>
+									</ul>
+								</dd>
+							</dl>
+							<dl class="n4">
+								<dt><a href="https://ems.epost.go.kr/" title="우체국EMS">우체국EMS</a></dt>
+								<dd class="n1">
+									 <ul>
+										<li><a href="#" title="EMS 예약">EMS 예약</a>
+											 <ul>
+											 
+												<li><a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=ems&amp;s_url=https://ems.epost.go.kr/front.EmsApply1100c.postal" title="EMS방문접수(픽업)">EMS방문접수(픽업)</a></li>
+												<li><a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=ems&amp;s_url=https://ems.epost.go.kr/front.EmsApply1100s.postal" title="EMS e-쉬핑창구접수">EMS e-쉬핑창구접수</a></li>
+												<li><a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=ems_bsearch&amp;s_url=https://ems.epost.go.kr/front.EmsApply2000c.postal" title="예약조회/취소">예약조회/취소</a></li>
+											 
+											</ul>
+										</li>
+									</ul>
+								</dd>
+								<dd class="n2">
+									 <ul>
+										<li><a href="https://ems.epost.go.kr/front.Tracking01.postal" title="행방조회/조사청구">행방조회/조사청구</a>
+											 <ul>
+												<li><a href="https://ems.epost.go.kr/front.Tracking01.postal" title="인터넷 행방조회">인터넷 행방조회</a></li>
+												<li><a href="https://ems.epost.go.kr/iservice.EmsSendMailFormFree.postal" title="이메일행방조사 청구">이메일행방조사 청구</a></li>
+												<li><a href="https://ems.epost.go.kr/front.Tracking04.postal" title="서면 행방조사">서면 행방조사</a></li>
+												<li><a href="https://ems.epost.go.kr/front.EmsInfoInfo01.postal" title="주요 우정청연락처">주요 우정청연락처</a></li>
+												<li><a href="https://ems.epost.go.kr/front.Tracking05.postal" title="손해배상규정">손해배상규정</a></li>
+											</ul>
+										</li>
+									</ul>
+								</dd>
+								<dd class="n3">
+									 <ul>
+										<li><a href="https://ems.epost.go.kr/front.EmsCustomsPrcInfo.postal" title="통관절차대행수수료납부/조회">통관절차대행수수료<br/>납부/조회</a></li>
+										<li><a href="https://ems.epost.go.kr/front.Introduction01.postal" title="EMS서비스안내">EMS서비스안내</a>
+											 <ul>
+												<li><a href="https://ems.epost.go.kr/front.Introduction01.postal" title="서비스개요">서비스개요</a></li>
+												<li><a href="https://ems.epost.go.kr/front.Introduction07.postal" title="서비스절차">서비스절차</a></li>
+												<li><a href="https://ems.epost.go.kr/front.EmsApplyGetDeliveryNation.postal" title="EMS접수가능국가">EMS접수가능국가</a></li>
+												<li><a href="https://ems.epost.go.kr/front.Introduction04.postal" title="보낼수있는물품/보낼수없는물품">보낼수있는물품/<br/>보낼수없는물품</a></li>
+											</ul>
+										</li>
+									</ul>
+								</dd>
+							</dl>
+							<dl class="n5">
+								<dt><a href="https://service.epost.go.kr/comm.RetrieveStampSrvcMain.postal" title="우표,엽서,축하카드">우표·엽서·축하카드</a></dt>
+								<dd class="n1">
+									 <ul>
+										<li><a href="https://service.epost.go.kr/stamp.RetrievePostagGoodsList.postal?svctype=1&timediv=2000&targetRow=1" title="우표류 ">우표류</a>
+											<ul>
+								                <li><a href="https://service.epost.go.kr/stamp.RetrievePostagGoodsList.postal?svctype=1&amp;timediv=2000&amp;targetRow=1" title="우표">우표</a></li>
+								                <li><a href="https://service.epost.go.kr/stamp.RetrievePostagGoodsList.postal?svctype=7&amp;timediv=2000&amp;targetRow=1" title="우표책ㆍ첩">우표책ㆍ첩</a></li>
+								                <li><a href="https://service.epost.go.kr/stamp.RetrievePostagGoodsList.postal?svctype=9&amp;timediv=2000&amp;targetRow=1" title="초일봉투">초일봉투</a></li>
+								                <li><a href="https://service.epost.go.kr/mystampn.RetrieveMyPostagKindA.postal" title="나만의우표">나만의우표</a></li>
+								                <li><a href="https://service.epost.go.kr/front.estamp.onlineStampApplication.postal" title="인터넷우표">인터넷우표</a></li>
+								                <li><a href="https://service.epost.go.kr/front.RetrievePostagCommSellInfo.postal" title="취미우표통신판매">취미우표통신판매</a></li>
+								            </ul>
+										</li>
+									</ul>
+								</dd>
+								<dd class="n2">
+									 <ul>
+										<li><a href="https://service.epost.go.kr/stamp.RetrievePostagGoodsList.postal?svctype=pic&timediv=2000&targetRow=1" title="엽서류">엽서류</a>
+											<ul>
+												<li><a href="https://service.epost.go.kr/stamp.RetrievePostagGoodsList.postal?svctype=A&timediv=2000&targetRow=1" title="그림엽서">그림엽서</a></li>
+												<li><a href="https://service.epost.go.kr/stamp.RetrievePostagGoodsList.postal?svctype=B&timediv=2000&targetRow=1" title="기념엽서">기념엽서</a></li>
+												<li><a href="https://service.epost.go.kr/front.imagecardn.RetrieveImageCard.postal" title="e-그린엽서">e-그린엽서</a></li>
+												<li><a href="https://service.epost.go.kr/postcard.RetrieveMyPostCdHelp.postal?ServiceGubun=O" title="고객맞춤형엽서">고객맞춤형엽서</a></li>
+								            </ul>
+										</li>
+									</ul>
+								</dd>
+								<dd class="n3">
+									 <ul>
+										<li><a href="https://service.epost.go.kr/front.cardmail.RetrieveCardmailNew.postal?ServiceGubun=C" title="축하카드류">축하카드류</a>
+											<ul>
+												<li><a href="https://service.epost.go.kr/front.cardmail.RetrieveCardmailNew.postal?ServiceGubun=C" title="축하카드">축하카드</a></li>
+								                <li><a href="https://service.epost.go.kr/front.cardmail.RetrieveHighCardmailNew.postal" title="축하선물카드">축하선물카드</a></li>
+								                
+								                <li><a href="https://service.epost.go.kr/front.cardmail.RetrieveBarunsonCardListNew.postal" title="민간제휴카드">민간제휴카드</a></li>
+								                
+					                		 
+								                <li><a href="https://service.epost.go.kr/front.newyearcard.RetrieveNewyearcardList1.postal" title="연하카드">연하카드</a></li>
+								            								                
+								            </ul>
+										</li>
+									</ul>
+								</dd>
+								<dd class="n4">
+									 <ul>
+										
+							        	<li><a href="" target="_blank" title="한국우표포털-새창으로 열림">한국우표포털</a></li>
+							        	<li><a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=stamp_bsearch" title="나의 이용정보">나의 이용정보</a></li>
+							        	
+									</ul>
+								</dd>
+							</dl>
+							<dl class="n6">
+								<dt><a href="https://www.epost.go.kr/comm.alddl.noticeList.comm" title="제휴서비스">제휴서비스</a></dt>
+								<dd class="n1">
+									 <ul>
+										<li><a href="https://www.epost.go.kr/comm.alddl.noticeList.comm" title="우체국알뜰폰">우체국알뜰폰</a>
+											<ul>
+								                <li><a href="https://www.epost.go.kr/comm.alddl.noticeList.comm" title="알뜰폰 020신청">알뜰폰 020신청</a></li>
+												<li><a href="https://www.epost.go.kr/comm/alddl/alddl02k001.jsp" title="요금제">요금제</a></li>
+								                <li><a href="https://www.epost.go.kr/comm.alddl.RetrieveAlddlPhoneImgList.comm" title="단말기">단말기</a></li>
+								                <li><a href="https://www.epost.go.kr/comm/alddl/alddl06k001.jsp" title="판매우체국찾기">판매우체국찾기</a></li>
+								                <li><a href="https://www.epost.go.kr/postphonecs.comm" title="문의게시판">문의게시판</a></li>
+								            </ul>
+										</li>
+										<li><a href="https://www.epost.go.kr/comm/junggo/junggo11k001.jsp" title="모바일 중고포털 안내">모바일 중고포털</a></li>
+										<li><a href="https://www.epost.go.kr/comm/alddl/alddl08k001.jsp" title="군 장병 휴대폰 대여서비스">군인 폰 대여서비스</a>
+											<ul>
+												<li><a href="https://www.epost.go.kr/comm/alddl/alddl08k001.jsp" title="서비스 소개">서비스 소개</a></li>
+												<li><a href="https://www.epost.go.kr/comm/alddl/alddl08k004.jsp" title="가입절차">가입절차</a></li>
+												<li><a href="https://www.epost.go.kr/comm/alddl/alddl08k005.jsp" title="가입우체국 찾기">가입우체국 찾기</a></li>
+								            </ul>
+										</li>
+									</ul>
+								</dd>
+							</dl>
+							<dl class="n7">
+								<dt><a href="https://www.epost.go.kr/search/zipcode/cmzcd001k01.jsp" title="조회·메일 서비스">조회·메일 서비스</a></dt>
+								<dd class="n1">
+									 <ul>
+									 	<li><a href="https://www.epost.go.kr/search/zipcode/cmzcd001k01.jsp" title="우편번호 검색">우편번호 검색</a></li>
+										<li><a href="https://service.epost.go.kr/iservice/usr/trace/usrtrc001k01.jsp" title="국내우편(등기/택배)배송조회">국내우편 배송조회</a></li>
+										
+										
+									</ul>
+								</dd>
+							</dl>
+							<dl class="n8">
+								<dt><a href="https://www.epost.go.kr/bbs.RetrieveBbsMain.comm" title="고객센터">고객센터</a></dt>
+								<dd class="n1">
+									 <ul>
+										<li><a href="https://www.epost.go.kr/main.retrieveNoticePage.comm" title="공지사항">공지사항</a></li>
+										<li><a href="https://www.epost.go.kr/main.retrieveEventPage.comm" title="이벤트">이벤트</a></li>
+										<li><a href="https://www.epost.go.kr/bbs.RetrieveBbsMain.comm" title="자주하는 질문">자주하는 질문</a></li>
+										<li><a href="https://www.epost.go.kr/bbs.RetrieveGuideNoticeList.comm" title="이용안내">이용안내</a></li>
+										<li>
+										
+											<a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=bbs&amp;route=person&amp;check_type=Y&amp;newbbstype=Q&amp;s_url=https://www.epost.go.kr/bbs.RegisterMemNewQnabbsForm.comm?check_type=Y" title="고객불편신고">고객불편신고</a>
+										
+										</li>
+										<li><a href="https://www.epost.go.kr/bbs.RetrievePraisePage.comm" title="칭찬합니다">칭찬합니다</a></li>
+										<li><a href="https://www.epost.go.kr/affair/bbs/cbfya302k01.jsp" title="국민신문고">국민신문고</a></li>
+										<li><a href="https://www.epost.go.kr/comm/etc/usefulGuide.jsp" onclick="return goNewLink('14',this.href);" target="_blank" title="전국 우체국 이용안내 - 새창열림">전국 우체국 이용안내</a></li>
+									</ul>
+								</dd>
+							</dl>
+						</div>
+					</div>
+				</div>
+				<div class="menu m1" id = 'top_layout_focus001'>
+					<h2><a href="https://service.epost.go.kr/" title="우편">우편</a></h2>
+					<ul class="depth2">
+						<li class="dep"><a href="https://service.epost.go.kr/hybridn.HybridIntro.postal?type=A" title="전자우편">전자우편</a>
+							<ul class="depth3">
+								<li class="first"><a href="https://service.epost.go.kr//hybridn.HybridIntro.postal?type=A" title="e-그린우편">e-그린우편</a></li>
+								<li><a href="https://service.epost.go.kr/front.myletter.MyletterIntro.postal" title="맞춤형편지">맞춤형편지</a></li>
+							</ul>
+						</li>
+						
+								<li><a class="dep" href="https://service.epost.go.kr/front.leaflet.MonitoringLeaflet.postal" title="생활정보홍보우편">생활정보홍보우편</a>
+									<ul class="depth3">
+									
+										<li class="first"><a href="https://service.epost.go.kr/front.leaflet.MonitoringLeaflet.postal" title="모니터링">모니터링</a></li>
+									</ul>
+								</li>
+						
+						<li class="dep"><a href="https://service.epost.go.kr/econprf.RetrieveEConprfReqSend.postal?type=&grp=A" title="증명서비스">증명서비스</a>
+							<ul class="depth3">
+								<li class="first"><a href="https://service.epost.go.kr/econprf.RetrieveEConprfReqSend.postal?type=&grp=A" title="내용증명">내용증명</a></li>
+								<li><a href="https://service.epost.go.kr/econprf.RetrieveEConprfReqReissue.postal" title="발송 후 내용증명">발송 후 내용증명</a></li>
+								<li><a href="https://service.epost.go.kr/front.deliveryProof.mainPage.postal" title="발송 후 배달증명">발송 후 배달증명</a></li>
+							</ul>
+						</li>
+						<li class="dep"><a href="https://service.epost.go.kr/front.commonpost.RetrieveAcceptIntro.postal" title="부가서비스" >부가서비스</a>
+							<ul class="depth3">
+								<li class="first"><a href="https://service.epost.go.kr/front.commonpost.RetrieveAcceptIntro.postal" title="간편사전접수" >간편사전접수</a></li>
+								
+								<li><a href="https://service.epost.go.kr/comm.RetrievePostagSrvcStrt.postal?menu=CP&amp;file=1" title="통상우편방문접수예약" >통상우편물 방문접수 예약</a></li>
+								
+								<li><a href="https://service.epost.go.kr/comm.RetrievePostagSrvcStrt.postal?menu=K&amp;file=1" title="현금배달">현금배달</a></li>
+								<li><a href="https://service.epost.go.kr/comm.RetrievePostagSrvcStrt.postal?menu=D&amp;file=1" title="민원우편">민원우편</a></li>
+								<li><a href="https://service.epost.go.kr/comm.RetrievePostagSrvcStrt.postal?menu=A&amp;file=1" title="주거이전서비스">주거이전서비스</a></li>
+								<li><a href="https://service.epost.go.kr/front.RetrieveEaddTransInfo.postal" title="전입신고철회계획">전입신고연계철회</a></li>
+								<li><a href="https://service.epost.go.kr/front.RetrieveMachineCounter.postal" title="무인우편창구연계접수">무인창구연계접수</a></li>
+								<li><a href="https://service.epost.go.kr/front.nomanpost.IntroPage.postal" title="무인우체국">무인우체국 가입</a></li>
+								<li><a href="http://ekpls.epost.go.kr/xpost_custPart.jsp" onclick="return custPart(this.href);" title="고객참여창구">고객참여창구</a></li>
+							</ul>
+						</li>
+						<li class="dep">
+							
+								<a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=service_bsearch" title="나의 이용정보">나의 이용정보</a>
+							
+							<ul class="depth3">
+								<li class="first">
+									
+									<a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=service_bsearch" title="나의 이용정보">나의 이용정보</a>
+									
+								</li>
+								<li><a href="https://service.epost.go.kr/front.cardreceipt.RetrievePaymentinfo.postal" title="방문결제영수증 출력">방문결제영수증출력</a></li>
+							</ul>
+						</li>
 					</ul>
 				</div>
+				<div class="menu m2">
+					<h2><a href="http://mall.epost.go.kr/"  title="우체국쇼핑 새창열림">우체국쇼핑</a></h2>
+					<ul class="depth2">
+
+						<li><a href="http://mall.epost.go.kr/fo/display/pavlnDivDspyType.do?pavlnDivCd=01"  title="특산물 새창열림">특산물</a></li>
+						<li><a href="http://mall.epost.go.kr/fo/main/moveFlowerSend.do"  title="꽃배달 새창열림">꽃배달</a></li>
+						<li><a href="http://mall.epost.go.kr/fo/main/moveSijang.do"  title="전통시장 새창열림">전통시장</a></li>
+						<li><a href="http://mall.epost.go.kr/fo/main/moveOverSend.do"  title="해외배송 새창열림">해외배송</a></li>
+
+						<li><a href="http://b2b.epost.go.kr/btobmall.mmain.index.btb" title="우체국B2B 새창열림">우체국B2B</a></li>
+						<!-- 2016.04.27 개발 중 메뉴
+						<li><a href="#" title="동대문B2B">동대문B2B</a></li> -->
+					</ul>
+				</div>
+				<div class="menu m3">
+					<h2><a href="https://parcel.epost.go.kr/" title="우체국택배">우체국택배</a></h2>
+					<ul class="depth2">
+						<li class="dep">
+						
+							<a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=parcel1" title="일반예약">일반예약</a>
+						 
+							<ul class="depth3">
+								
+								<li class="first"><a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=parcel1" title="소량접수예약">소량접수예약</a></li>
+								<li><a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=parcel3" title="다량접수예약(파일접수)">다량접수예약(파일접수)</a></li>
+							 	 
+							</ul>
+						</li>
+						<li>
+						
+							<a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=parcel2" title="반품예약">반품예약</a>
+						
+						</li>
+						<li class="dep">
+						
+							<a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=parcel4" title="선납소포상자">선납소포상자</a>
+						
+							<ul class="depth3">
+								<li class="first">
+									
+									<a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=parcel4" title="방문수거예약">방문수거예약</a>
+								
+								</li>
+								<li><a href="https://parcel.epost.go.kr/general.DisplayPrepayBoxPurchaseGuide.parcel" title="선납소포상자 구매">선납소포상자 구매</a></li>
+							</ul>
+						</li>
+						<li>
+						
+							<a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=parcel_bsearch" title="예약조회/취소">예약조회/취소</a>
+							
+						</li>
+						<li><a href="https://parcel.epost.go.kr/front.delivpay.RetrieveDelivpayPage.parcel" title="착불배달우편물 요금 결제/조회">착불배달우편물 요금<br/>결제/조회</a></li>
+                        
+						<li><a href="https://service.epost.go.kr/iservice/usr/trace/usrtrc001k01.jsp" target="_blank" title="배달조회 - 새창으로 열림">배달조회</a></li>
+						
+                        <li><a href="https://parcel.epost.go.kr/share.RetrieveNewsListMore.parcel" title="공지사항">공지사항</a></li>
+                        <li class="dep"><a href="https://parcel.epost.go.kr/parcel/use_guide/charge_1.jsp" title="이용안내">이용안내</a>
+                        	<ul class="depth3">
+								<li class="first"><a href="https://parcel.epost.go.kr/parcel/use_guide/charge_1.jsp" title="요금안내">요금안내</a></li>
+								<li><a href="https://www.epost.go.kr/bbs.RetrieveFaqFrontView.comm?codetype=L&code=L01" target="_blank" title="자주하는 질문">자주하는 질문</a></li>
+								<li><a href="https://parcel.epost.go.kr/parcel/use_guide/limititem_1.jsp" title="취급제한품목">취급제한품목</a></li>
+								<li><a href="https://parcel.epost.go.kr/parcel/use_guide/insuranceView_1.jsp" title="보험취급 및 손해배상 안내-새창열림">보험취급 및 손해배상</a></li>
+								<li><a href="https://parcel.epost.go.kr/parcel/use_guide/parcel_file.ppt" title="매뉴얼 다운로드">메뉴얼 다운로드</a></li>
+							</ul>
+                        </li>
+                        
+                        <!-- 2016.04.05 기존 메뉴 백업 
+						<li>
+						
+							<a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=parcel1" title="소량접수예약">소량접수예약</a>
+						 
+						</li>
+
+						<li>
+						
+							<a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=parcel2" title="페이지이동">반품예약</a>
+						 
+						</li>
+						<li><a href="https://parcel.epost.go.kr/general.DisplayPrepayBoxPurchaseGuide.parcel" title="페이지이동">선납소포상자</a></li>
+						<li><a href="https://www.epost.go.kr/general.RetrieveResrevationNew.parcel?cmd=reservation&onLoadState=init" title="페이지이동">예약조회/취소</a></li>
+						<li><a href="https://parcel.epost.go.kr/front.delivpay.RetrieveDelivpayPage.parcel" title="페이지이동">착불배달우편물 결제</a></li>
+						 -->
+					</ul>
+				</div>
+				<div class="menu m4">
+					<h2><a href="https://ems.epost.go.kr/" title="우체국EMS">우체국EMS</a></h2>
+					<ul class="depth2">
+						<li class="dep">
+						 
+							<a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=ems&amp;s_url=https://ems.epost.go.kr/front.EmsApply1100c.postal" title="EMS 예약">EMS 예약</a>
+							
+							<ul class="depth3">
+								 
+									<li class="first"><a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=ems&amp;s_url=https://ems.epost.go.kr/front.EmsApply1100c.postal" title="EMS방문접수(픽업)">EMS방문접수(픽업)</a></li>
+									<li><a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=ems&amp;s_url=https://ems.epost.go.kr/front.EmsApply1100s.postal" title="EMS e-쉬핑창구접수">EMS e-쉬핑창구접수</a></li>
+									<li><a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=ems_bsearch&amp;s_url=https://ems.epost.go.kr/front.EmsApply2000c.postal" title="예약조회/취소">예약조회/취소</a></li>
+								 
+							</ul>
+						</li>
+						<li class="dep"><a href="https://ems.epost.go.kr/front.EmsDeliveryDelivery01.postal" title="국가별 요금안내">국가별 요금안내</a>
+							<ul class="depth3">
+								<li class="first"><a href="https://ems.epost.go.kr/front.EmsDeliveryDelivery01.postal" title="배달소요일/요금조회">배달소요일/요금조회</a></li>
+								<li><a href="https://ems.epost.go.kr/front.EmsDeliveryDelivery02.postal" title="EMS/프리미엄 요금표">EMS/프리미엄 요금표</a></li>
+								<li><a href="https://ems.epost.go.kr/front.EmsDeliveryDelivery04.postal" title="국가별 요금적용 지역">국가별 요금적용 지역</a></li>
+								<li><a href="https://ems.epost.go.kr/front.EmsSurveySurvey03.postal" title="주요국가 휴일정보">주요국가 휴일정보</a></li>
+								<li><a href="https://ems.epost.go.kr/front.Delivery03.postal" title="부가취급 수수료">부가취급 수수료</a></li>
+							</ul>
+						</li>
+						<li class="dep"><a href="https://ems.epost.go.kr/front.Tracking01.postal" title="행방조회/조사청구">행방조회/조사청구</a>
+							<ul class="depth3">
+								<li class="first"><a href="https://ems.epost.go.kr/front.Tracking01.postal" title="인터넷 행방조회">인터넷 행방조회</a></li>
+								<li><a href="https://ems.epost.go.kr/iservice.EmsSendMailFormFree.postal" title="이메일행방조사 청구">이메일행방조사 청구</a></li>
+								<li><a href="https://ems.epost.go.kr/front.Tracking04.postal" title="서면 행방조사">서면 행방조사</a></li>
+								<li><a href="https://ems.epost.go.kr/front.EmsInfoInfo01.postal" title="주요 우정청연락처">주요 우정청연락처</a></li>
+								<li><a href="https://ems.epost.go.kr/front.Tracking05.postal" title="손해배상규정">손해배상규정</a></li>
+							</ul>
+						</li>
+						<li><a href="https://ems.epost.go.kr/front.EmsCustomsPrcInfo.postal" title="통관절차대행수수료 납부/조회">통관절차대행수수료<br/>납부/조회</a></li>
+                        <li class="dep"><a href="https://ems.epost.go.kr/front.Introduction01.postal" title="EMS서비스안내">EMS서비스안내</a>
+                        	<ul class="depth3">
+                        		<li class="first"><a href="https://ems.epost.go.kr/front.Introduction01.postal" title="서비스개요">서비스개요</a></li>
+								<li><a href="https://ems.epost.go.kr/front.Introduction07.postal" title="서비스절차">서비스절차</a></li>
+								<li><a href="https://ems.epost.go.kr/front.EmsApplyGetDeliveryNation.postal" title="EMS접수가능국가">EMS접수가능국가</a></li>
+								<li><a href="https://ems.epost.go.kr/front.Introduction04.postal" title="보낼수있는물품/보낼수없는물품">보낼수있는물품/보낼수없는물품</a></li>
+							</ul>
+                        </li>
+                        <li class="dep"><a href="https://ems.epost.go.kr/front.EmsSurveySurvey01.postal" title="국가별 발송조건 안내">국가별 발송조건 안내</a>
+                        	<ul class="depth3">
+                        		<li class="first"><a href="https://ems.epost.go.kr/front.EmsApplyGoCondition.postal" onclick="return goNewLink('15', this.href);" title="EMS/EMS프리미엄">EMS/EMS프리미엄</a></li>
+								<li><a href="https://ems.epost.go.kr/front.EmsKPacketSendCondition.postal" onclick="return goNewLink('16', this.href);" title="K-Packet">K-Packet</a></li>
+								<li><a href="https://ems.epost.go.kr/front.EmsParcelAirShipSendCondition.postal?frnMailDivcdTab=2&frnTranspPartyDivcd=1" onclick="return goNewLink('17', this.href);" title="국제 소포/통상">국제 소포/통상</a></li>
+								<li><a href="https://ems.epost.go.kr/front.EmsSurveySurvey01.postal" title="국가별 통관정보">국가별 통관정보</a></li>
+							</ul>
+                        </li>
+                        <li class="dep"><a href="https://ems.epost.go.kr/front.Join01.postal" title="EMS/K-Packet계약제도">EMS/K-Packet계약제도</a>
+                        	<ul class="depth3">
+                        		<li class="first"><a href="https://ems.epost.go.kr/front.Join01.postal" title="EMS이용계약안내">EMS이용계약안내</a></li>
+								<li><a href="https://ems.epost.go.kr/front.Join02.postal" title="K-Packet이용계약안내">K-Packet이용계약안내</a></li>
+							</ul>
+                        </li>
+                        <li class="dep"><a href="https://ems.epost.go.kr/front.Info_01.postal" title="유용한 국제특송정보">유용한 국제특송정보</a>
+                        	<ul class="depth3">
+								<li class="first"><a href="https://ems.epost.go.kr/front.Info_01.postal" title="상업송장쓰는법">상업송장쓰는법</a></li>
+								<li><a href="https://ems.epost.go.kr/front.Info_05.postal" title="수출우편물 발송확인">수출우편물 발송확인</a></li>
+								<li><a href="https://ems.epost.go.kr/front.Info_06.postal" title="미국행식품사전신고">미국행식품사전신고</a></li>
+								<li><a href="https://ems.epost.go.kr/front.InfoGuidebook13G.postal" title="주요물품 영문표기">주요물품 영문표기</a></li>
+								<li><a href="https://ems.epost.go.kr/front.Delivery07.postal" title="세계주요국가시간">세계주요국가시간</a></li>
+							</ul>
+                        </li>
+					<!-- 2016.04.05 기존 메뉴 백업 
+					
+						<li><a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=ems&amp;s_url=https://ems.epost.go.kr/front.EmsApply1100c.postal" title="페이지이동">EMS 방문접수 예약</a></li>
+						<li><a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=ems&amp;s_url=https://ems.epost.go.kr/front.EmsApply1100s.postal" title="페이지이동">EMS e-쉬핑 창구접수</a></li>
+						<li><a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=ems_bsearch&amp;s_url=https://ems.epost.go.kr/front.EmsApply2000c.postal" title="페이지이동">예약조회/취소</a></li>
+					
+						<li><a href="https://ems.epost.go.kr/front.EmsCustomsPrcInfo.postal" title="페이지이동">통관절차대행수수료납부</a></li>
+					 -->
+					</ul>
+				</div>
+				<div class="menu m5">
+					<h2><a href="https://service.epost.go.kr/comm.RetrieveStampSrvcMain.postal" title="우표ㆍ엽서ㆍ축하카드">우표ㆍ엽서ㆍ축하카드</a></h2>
+					<ul class="depth2">
+						<li class="dep"><a href="https://service.epost.go.kr/stamp.RetrievePostagGoodsList.postal?svctype=1&amp;timediv=2000&amp;targetRow=1" title="우표류">우표류</a>
+							<ul class="depth3">
+								<li class="first"><a href="https://service.epost.go.kr/stamp.RetrievePostagGoodsList.postal?svctype=1&amp;timediv=2000&amp;targetRow=1" title="우표">우표</a></li>
+								<li><a href="https://service.epost.go.kr/stamp.RetrievePostagGoodsList.postal?svctype=7&amp;timediv=2000&amp;targetRow=1" title="우표책ㆍ첩">우표책ㆍ첩</a></li>
+								<li><a href="https://service.epost.go.kr/stamp.RetrievePostagGoodsList.postal?svctype=9&amp;timediv=2000&amp;targetRow=1" title="초일봉투">초일봉투</a></li>
+								<li><a href="https://service.epost.go.kr/mystampn.RetrieveMyPostagKindA.postal" title="나만의우표">나만의우표</a></li>
+								<li><a href="https://service.epost.go.kr/front.estamp.onlineStampApplication.postal" title="인터넷우표">인터넷우표</a></li>
+								<li><a href="https://service.epost.go.kr/front.RetrievePostagCommSellInfo.postal" title="취미우표통신판매">취미우표통신판매</a></li>
+							</ul>
+						</li>
+						<li class="dep"><a href="https://service.epost.go.kr/front.imagecardn.RetrieveImageCard.postal" title="엽서류">엽서류</a>
+							<ul class="depth3">
+								<li class="first"><a href="https://service.epost.go.kr/stamp.RetrievePostagGoodsList.postal?svctype=A&timediv=2000&targetRow=1" title="그림엽서">그림엽서</a></li>
+								<li><a href="https://service.epost.go.kr/stamp.RetrievePostagGoodsList.postal?svctype=B&timediv=2000&targetRow=1" title="기념엽서">기념엽서</a></li>
+								<li><a href="https://service.epost.go.kr/front.imagecardn.RetrieveImageCard.postal" title="e-그린엽서">e-그린엽서</a></li>
+								<li><a href="https://service.epost.go.kr/postcard.RetrieveMyPostCdHelp.postal?ServiceGubun=O" title="고객맞춤형엽서">고객맞춤형엽서</a></li>
+							</ul>
+						</li>
+						<li class="dep"><a href="https://service.epost.go.kr/front.cardmail.RetrieveCardmailNew.postal?ServiceGubun=C" title="축하카드류">축하카드류</a>
+							<ul class="depth3">
+								<li class="first"><a href="https://service.epost.go.kr/front.cardmail.RetrieveCardmailNew.postal?ServiceGubun=C" title="축하카드">축하카드</a></li>
+								<li><a href="https://service.epost.go.kr/front.cardmail.RetrieveHighCardmailNew.postal" title="축하선물카드">축하선물카드</a></li>
+								
+								<li><a href="https://service.epost.go.kr/front.cardmail.RetrieveBarunsonCardListNew.postal" title="민간제휴카드">민간제휴카드</a></li>
+	                		
+	                		 
+				                <li><a href="https://service.epost.go.kr/front.newyearcard.RetrieveNewyearcardList1.postal" title="연하카드">연하카드</a></li>
+				            								
+							</ul>
+						</li>
+					
+						<li><a href="" target="_blank" title="한국우표포털 새창열림">한국우표포털</a></li>
+						<li><a href="https://www.epost.go.kr/usr/login/cafzc008k01.jsp?login=stamp_bsearch" title="나의 이용정보">나의 이용정보</a></li>
+					
+					</ul>
+				</div>
+				<div class="menu m6">
+					<h2><a href="https://www.epost.go.kr/comm.alddl.noticeList.comm" title="제휴서비스">제휴서비스</a></h2>
+					<ul class="depth2">
+						<li class="dep"><a href="https://www.epost.go.kr/comm.alddl.noticeList.comm" title="우체국알뜰폰">우체국알뜰폰</a>
+							<ul class="depth3">
+								<li class="first"><a href="https://www.epost.go.kr/comm.alddl.noticeList.comm" title="알뜰폰 020신청">알뜰폰 020신청</a></li>
+								<li><a href="https://www.epost.go.kr/comm/alddl/alddl02k001.jsp" title="요금제">요금제</a></li>
+								<li><a href="https://www.epost.go.kr/comm.alddl.RetrieveAlddlPhoneImgList.comm" title="단말기">단말기</a></li>
+								<li><a href="https://www.epost.go.kr/comm/alddl/alddl01k001.jsp" title="알뜰폰 소개">알뜰폰 소개</a></li>
+								<li><a href="https://www.epost.go.kr/comm/alddl/alddl04k001.jsp" title="가입절차">가입절차</a></li>
+								<li><a href="https://www.epost.go.kr/bbs.RetrieveFaqFrontView.comm?codetype=U&code=U01" title="자주하는 질문">자주하는 질문</a></li>
+								<li><a href="https://www.epost.go.kr/comm/alddl/alddl06k001.jsp" title="판매우체국찾기">판매우체국찾기</a></li>
+								<li><a href="https://www.epost.go.kr/postphonecs.comm" title="문의게시판">문의게시판</a></li>
+							</ul>
+						</li>
+						<li><a href="https://www.epost.go.kr/comm/junggo/junggo11k001.jsp" title="모바일 중고포털">모바일 중고포털</a></li>
+						<li class="dep"><a href="https://www.epost.go.kr/comm/alddl/alddl08k001.jsp" title="군인 폰 대여서비스">군인 폰 대여서비스</a>
+							<ul class="depth3">
+								<li class="first"><a href="https://www.epost.go.kr/comm/alddl/alddl08k001.jsp" title="서비스 소개">서비스 소개</a></li>
+								<li><a href="https://www.epost.go.kr/comm/alddl/alddl08k004.jsp" title="가입절차">가입절차</a></li>
+								<li><a href="https://www.epost.go.kr/comm/alddl/alddl08k005.jsp" title="가입우체국 찾기">가입우체국 찾기</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<div class="menu m7">
+					<h2><a href="eportal/loginProcessFrmEps.jsp" target="_blank" title="계약고객전용 새창열림">계약고객전용</a></h2>
+				</div>
 			</div>
-			<!-- 조회 번호 -->
+		</div>
+		<!-- 네비 끝 -->
+	</div>
+</div>
+
+</div>
+<!-- 탑레이아웃 끝-->
+<!-- 서브바디레이아웃 시작 -->
+<div id="sbody_layout" style="width:680px">
+	<!-- 왼쪽메뉴 시작 -->
+	<div class="lnb" style="display:none">
+		<h2 class="f_s_24 l_s_1"><a id="Submenu" href="/iservice/usr/trace/usrtrc001k01.jsp">원클릭 배송조회</a></h2>
+		<ul class="lnbList">
+			<li class="current"><a href="/iservice/usr/trace/usrtrc001k01.jsp">국내우편(등기/택배)배송조회</a></li>
+			<li><a href="/iservice/usr/trace/usrtrc004k01.jsp">국제우편(EMS)배송조회</a></li>
+			<li><a target="_blank" title="우체국쇼핑 주문조회 - 새창열림" href="https://mall.epost.go.kr/fo/center/moveCenterNonMemLogin.do">우체국쇼핑 주문조회</a></li>
+		</ul>
+
+		<ul class="benefit">
+			<li><a href="#" onclick="return popupSetting();" title="환경설정 안내">환경설정 안내</a></li>
+		</ul>
+
+		<dl class="customer">
+			<dt>상담문의</dt>
+			<dd>
+				<strong>1588-1300</strong>
+				평일:09:00~18:00 <br />
+				토요일:09:00~13:00
+			</dd>
+		</dl>
+	</div> 
+	<!-- 왼쪽메뉴 끝 -->
+	<!-- 컨텐츠 시작 -->
+    <div id="contents_layout" class="contents_wrap" style="width:680px"><a name="contents" id="contents"></a>
+    	<div class="page_title" style="display:none">
+        	<h3>국내우편(등기/택배)배송조회</h3>
+            <ul class="location">
+            	<li class="icon">HOME</li>
+            	<li>원클릭 배송조회</li>
+                <li class="last">국내우편(등기/택배) 배송조회</li>
+            </ul>
+        </div>
+        <div class="contents">
+			<p class="m_b_40" style="display:none">등기 및 택배 우편물의 배송정보를 조회할 수 있습니다.</p>
+			<div class="h4_wrap">
 			<div id="print">
-			<div class="shipping_area marg_0">
-				<h3 class="marg_0">기본정보</h3>
+				<div class="title_wrap">
+					<h4>기본정보</h4>
 
-				<div class="masking">
-					<a href="javascript:fnPopupMaskingSolv();"><img src="/iwww/images/comm/shipping/btn_masking.gif" alt="마스킹해제조회" /></a>
-					<a class="btn_masking" style="cursor:pointer"><img src="/iwww/images/comm/shipping/btn_masking_info.gif" alt="제한표시에 대한 근거" /></a>
-					<div><img src="/iwww/images/comm/shipping/txt_masking_info.png" alt="방송통신위원회 고시 제2012-50호(개인정보의 기술적, 관리적 보호조치)에 따라 개인정보가 일부 제한표시됩니다." /></div>
+					<p>
+						<span class="masking">
+							<a class="btn_s" href="javascript:fnPopupMaskingSolv();" title="마스킹(*)해제조회 - 새창으로 열림">마스킹(*)해제조회</a>
+							<a class="btn_s" href="#" id="btn_masking" style="cursor:pointer" title="제한표시에 대한 근거 - 새창으로 열림">ⓘ 제한표시에대한 근거</a>
+						</span>
+					</p>
+
 				</div>
 
-
-			</div>
-
-
-
-			<div class="shipping_area">
-				<table summary="우편물 검색결과. 등기번호,우편물종류,취급구분,보내는 분,받는 분으로 구분 된 표" class="tdC marg_t5">
+				<table class="table_col" width="100%" border="0" cellspacing="0" cellpadding="0" summary="기본정보 표의 등기번호, 보내는분/발송날짜, 받는분/수신날짜, 취급구분, 배달결과 등의 정보 리스트">
 					<caption>배송조회 기본정보 테이블</caption>
 					<colgroup>
 						<col style="width:20%;" />
-						<col style="width:;" />
 						<col style="width:20%;" />
-						<col style="width:15%;" />
-						<col style="width:15%;" />
+						<col style="width:20%;" />
+						<col style="width:20%;" />
+						<col style="width:20%;" />
 					</colgroup>
-					<tr>
-						<th>등기번호</th>
-						<th>보내는분/발송날짜</th>
-						<th>받는분/수신날짜</th>
-						<th>취급구분</th>
-						<th>배달결과</th>
-					</tr>
-					<tr>
-						<td>1234</td>
-						<td>홈*럼<br />2015.10.22</td>
-						<td>테*트<br />2015.10.23</td>
-						<td>&nbsp;</td>
-						<td>배달완료</td>
-					</tr>
+					<thead>
+						<tr>
+							<th scope="col">등기번호</th>
+							<th scope="col">보내는분/발송날짜</th>
+							<th scope="col">받는분/수신날짜</th>
+							<th scope="col">취급구분</th>
+							<th scope="col" class="bg_image_no">배달결과</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="row">6899164488210</td>
+							<td>홈*럼<br />2016.12.13</td>
+							<td>테*트<br />2016.12.14</td>
+							<td>&nbsp;</td>
+							<td>배달완료</td>
+						</tr>
 
+					</tbody>
 				</table>
+			<div class="h4_wrap ma_t_10">
+				<div class="title_wrap">
+					<h4>배송 진행상황</h4>
+				</div>
+				<div class="box_wrap1 m_b_5 shipping_process">
+					<ul class="step_box2 v3">
+						<li class="v5 m1">STEP1 접수</li>
+						<li class="v5 m2">STEP2 상품이동중</li>
+						<li class="v5 m3">STEP3 배달지도착</li>
+						<li class="v5 m4">STEP4 배달준비</li>
+						<li class="v5 m5">STEP5 배달완료</li>
+					</ul>
+				</div>
 			</div>
-
-			<div class="shipping_area">
-				<h3>배송 진행상황</h3>
-				<ol class="shipping_process" id="shipping_area_prgs">
-					<li class="pcs01">접수</li>
-					<li class="pcs02">상품이동중</li>
-					<li class="pcs03">배달지도착</li>
-					<li class="pcs04">배달준비</li>
-					<li class="pcs05">배달완료</li>
-				</ol>
-				<p class="btn_detailView">(+)자세히보기<span>▶</span></p>
-				<table summary="배송 진행 현황표, 날짜, 시간 ,현재위치, 처리 현황 표기" class="tdC marg_t5 detail_on">
+			<div class="h4_wrap ma_t_5">
+				<div class="title_wrap">
+					<p class="t_a_r dpno">
+						<a class="btn_s gray" id="btn_detailView" href="#" title="자세히 보기">(+)자세히보기<span>▶</span></a>
+					</p>
+				</div>	
+				<table class="table_col detail_on ma_b_0" width="100%" border="0" cellspacing="0" cellpadding="0" summary="기본정보 표의 배송 날짜/시간, 현재위치, 처리현황  등의 정보 리스트">
 					<caption>배송진행현황 표</caption>
 					<colgroup>
-						<col style="width:13%;" />
-						<col style="width:8%;" />
-						<col style="width:;" />
+						<col style="width:25%;" />
+						<col style="width:15%;" />
+						<col style="width:auto;" />
 						<col style="width:20%;" />
 					</colgroup>
-					<tr>
-						<th>날짜</th>
-						<th>시간</th>
-						<th>현재위치</th>
-						<th>처리현황</th>
-					</tr>
+					<thead>
+						<tr>
+							<th scope="col">날짜</th>
+							<th scope="col">시간</th>
+							<th scope="col">현재위치</th>
+							<th scope="col" class="bg_image_no">처리현황</th>
+						</tr>
+					</thead>
+					<tbody>
 
+						<tr>
+							<td>2016.12.13</td>
+							<td>15:44</td>
+							<td>보내시는 고객님으로부터 상품을 인수 받았습니다.</td>
+							<td>접수</td>
+						</tr>
 
-					<tr>
-						<td>2015.10.22</td>
-						<td>17:58</td>
-						<td>보내시는 고객님으로부터 상품을 인수 받았습니다.</td>
-						<td>접수</td>
-					</tr>
+						<tr>
+							<td>2016.12.13</td>
+							<td>15:34</td>
+							<td>배달지역으로 상품이 이동중입니다.</td>
+							<td>상품이동중</td>
+						</tr>
 
-					<tr>
-						<td>2015.10.22</td>
-						<td>19:39</td>
-						<td>배달지역으로 상품이 이동중입니다.</td>
-						<td>상품이동중</td>
-					</tr>
+						<tr>
+							<td>2016.12.14</td>
+							<td>06:25</td>
+							<td>고객님의 상품이 배달지에 도착하였습니다.</td>
+							<td>배달지도착</td>
+						</tr>
 
-					<tr>
-						<td>2015.10.23</td>
-						<td>08:09</td>
-						<td>고객님의 상품이 배달지에 도착하였습니다.</td>
-						<td>배달지도착</td>
-					</tr>
+						<tr>
+							<td>2016.12.14</td>
+							<td>08:52</td>
+							<td>고객님의 상품을 배달할 예정입니다.</td>
+							<td>배달준비</td>
+						</tr>
 
-					<tr>
-						<td>2015.10.23</td>
-						<td>07:04</td>
-						<td>고객님의 상품을 배달할 예정입니다.</td>
-						<td>배달준비</td>
-					</tr>
-
-					<tr>
-						<td>2015.10.23</td>
-						<td>13:06</td>
-						<td>고객님의 상품이 배달완료 되었습니다.</td>
-						<td>배달완료</td>
-					</tr>
-
-
-				
+						<tr>
+							<td>2016.12.14</td>
+							<td>14:00</td>
+							<td>고객님의 상품이 배달완료 되었습니다.</td>
+							<td>배달완료</td>
+						</tr>
+												
+					</tbody>
 				</table>
-				<table summary="배송 진행 현황표, 날짜, 시간 ,현재위치, 처리 현황 상세 표기" class="tdC marg_t5 detail_off">
+				<table class="table_col detail_off" width="100%" border="0" cellspacing="0" cellpadding="0" summary="배송 진행 현황표, 날짜, 시간 ,현재위치, 처리 현황 상세 표기" >
 					<caption>배송진행현황 상세 표</caption>
 					<colgroup>
-						<col style="width:13%;" />
-						<col style="width:8%;" />
-						<col style="width:;" />
-						<col style="width:35%;" />
+						<col style="width:25%;" />
+						<col style="width:15%;" />
+						<col style="width:auto;" />
+						<col style="width:20%;" />
 					</colgroup>
-					<tr>
-						<th>날짜</th>
-						<th>시간</th>
-						<th>현재위치</th>
-						<th>처리현황</th>
-					</tr>
+					<thead>
+						<tr>
+							<th scope="col">날짜</th>
+							<th scope="col">시간</th>
+							<th scope="col">현재위치</th>
+							<th scope="col" class="bg_image_no">처리현황</th>
+						</tr>
+					</thead>
+					<tbody>
 
 
 
 
         <tr>
-            <td>2015.10.22</td>
-            <td>17:58</td>
-            <td><a href="#" onclick="return goPostDetail(40102, '접수', event)" onkeypress="return goPostDetail(40102, '접수', event)">안양</a></td>
+            <td>2016.12.13</td>
+            <td>15:28</td>
+            <td><a href="#" onclick="return goPostDetail(10140, '집하완료', event)" onkeypress="return goPostDetail(10140, '집하완료', event)">서울용산</a></td>
+            <td>
+				집하완료
+
+
+                                        
+                        
+                        
+                            
+                            <span class="tracered">&nbsp;</span>
+                        
+                        
+            
+                
+            
+					</td>
+        </tr>
+
+
+		
+        <tr>
+            <td>2016.12.13</td>
+            <td>15:34</td>
+            <td><a href="#" onclick="return goPostDetail(10140, '발송', event)" onkeypress="return goPostDetail(10140, '발송', event)">서울용산</a></td>
+            <td>
+				발송
+				&nbsp;<span class="tracered">&nbsp;</span>
+			</td>        
+        </tr>
+		
+        
+        <tr>
+            <td>2016.12.13</td>
+            <td>15:44</td>
+            <td><a href="#" onclick="return goPostDetail(10140, '접수', event)" onkeypress="return goPostDetail(10140, '접수', event)">서울용산</a></td>
             <td>
 				접수
 
@@ -660,31 +1391,9 @@ function tab(n){
 
 		
         <tr>
-            <td>2015.10.22</td>
-            <td>19:39</td>
-            <td><a href="#" onclick="return goPostDetail(49043, '발송', event)" onkeypress="return goPostDetail(49043, '발송', event)">안양우편물류센터</a></td>
-            <td>
-				발송
-				&nbsp;<span class="tracered">&nbsp;</span>
-			</td>        
-        </tr>
-		
-        
-        <tr>
-            <td>2015.10.22</td>
-            <td>19:55</td>
-            <td><a href="#" onclick="return goPostDetail(40102, '발송', event)" onkeypress="return goPostDetail(40102, '발송', event)">안양</a></td>
-            <td>
-				발송
-				&nbsp;<span class="tracered">&nbsp;</span>
-			</td>        
-        </tr>
-		
-        
-        <tr>
-            <td>2015.10.22</td>
-            <td>20:15</td>
-            <td><a href="#" onclick="return goPostDetail(49043, '도착', event)" onkeypress="return goPostDetail(49043, '도착', event)">안양우편물류센터</a></td>
+            <td>2016.12.13</td>
+            <td>16:21</td>
+            <td><a href="#" onclick="return goPostDetail(10177, '도착', event)" onkeypress="return goPostDetail(10177, '도착', event)">동서울우편집중국</a></td>
             <td>
 				도착
 				&nbsp;<span class="tracered">&nbsp;</span>
@@ -693,9 +1402,20 @@ function tab(n){
 		
         
         <tr>
-            <td>2015.10.22</td>
-            <td>20:47</td>
-            <td><a href="#" onclick="return goPostDetail(49132, '도착', event)" onkeypress="return goPostDetail(49132, '도착', event)">부평물류센터</a></td>
+            <td>2016.12.13</td>
+            <td>18:55</td>
+            <td><a href="#" onclick="return goPostDetail(10177, '발송', event)" onkeypress="return goPostDetail(10177, '발송', event)">동서울우편집중국</a></td>
+            <td>
+				발송
+				&nbsp;<span class="tracered">&nbsp;</span>
+			</td>        
+        </tr>
+		
+        
+        <tr>
+            <td>2016.12.13</td>
+            <td>19:46</td>
+            <td><a href="#" onclick="return goPostDetail(45821, '도착', event)" onkeypress="return goPostDetail(45821, '도착', event)">성남우편집중국</a></td>
             <td>
 				도착
 				&nbsp;<span class="tracered">&nbsp;</span>
@@ -704,44 +1424,43 @@ function tab(n){
 		
         
         <tr>
-            <td>2015.10.23</td>
-            <td>07:04</td>
-            <td><a href="#" onclick="return goPostDetail(40068, '배달준비', event)" onkeypress="return goPostDetail(40068, '배달준비', event)">부천</a></td>
+            <td>2016.12.14</td>
+            <td>06:12</td>
+            <td><a href="#" onclick="return goPostDetail(45821, '발송', event)" onkeypress="return goPostDetail(45821, '발송', event)">성남우편집중국</a></td>
             <td>
-				배달준비
-            집배원:탁구영&nbsp;                     
+				발송
+				&nbsp;<span class="tracered">&nbsp;</span>
+			</td>        
+        </tr>
+		
+        
+        <tr>
+            <td>2016.12.14</td>
+            <td>06:25</td>
+            <td><a href="#" onclick="return goPostDetail(40166, '도착', event)" onkeypress="return goPostDetail(40166, '도착', event)">운남</a></td>
+            <td>
+				도착
+				&nbsp;<span class="tracered">&nbsp;</span>
+			</td>        
+        </tr>
+		
+        
+        <tr>
+            <td>2016.12.14</td>
+            <td>08:52</td>
+            <td><a href="#" onclick="return goPostDetail(40166, '배달준비', event)" onkeypress="return goPostDetail(40166, '배달준비', event)">운남</a></td>
+            <td>
+				<a href="javascript:fncDetailInfo('6899164488210','20161214',3,'40166','1','0','0')">배달준비</a>
+            집배원:홍길동&nbsp;                     
             
 			</td>
         </tr>
        
-		
         <tr>
-            <td>2015.10.23</td>
-            <td>08:08</td>
-            <td><a href="#" onclick="return goPostDetail(49132, '발송', event)" onkeypress="return goPostDetail(49132, '발송', event)">부평물류센터</a></td>
-            <td>
-				발송
-				&nbsp;<span class="tracered">&nbsp;</span>
-			</td>        
-        </tr>
-		
-        
-        <tr>
-            <td>2015.10.23</td>
-            <td>08:09</td>
-            <td><a href="#" onclick="return goPostDetail(40068, '도착', event)" onkeypress="return goPostDetail(40068, '도착', event)">부천</a></td>
-            <td>
-				도착
-				&nbsp;<span class="tracered">&nbsp;</span>
-			</td>        
-        </tr>
-		
-        
-        <tr>
-            <td>2015.10.23</td>
-            <td>13:06</td>
+            <td>2016.12.14</td>
+            <td>14:00</td>
  
-            <td><a href="#" onclick="return goPostDetail(40068, '배달완료', event)" onkeypress="return goPostDetail(40068, '배달완료', event)">부천</a></td>
+            <td><a href="#" onclick="return goPostDetail(40166, '배달완료', event)" onkeypress="return goPostDetail(40166, '배달완료', event)">성남분당</a></td>
             <td>
 				배달완료
 				&nbsp;(<span class="tracered">&nbsp;배달&nbsp;</span>)
@@ -749,32 +1468,43 @@ function tab(n){
 			</td>
         </tr>
         
+				</tbody>
 				</table>
-				<p class="processOld" style="display:none">
-					<a href="javascript:chkTrace();"><img src="/iwww/images/comm/shipping/btn_processOld.gif" alt="변경전 화면으로 보기" /></a>* 변경전 화면보기의 경우  2015년 6월말까지만 제공됩니다.
+				<div class="dpno">
+				<p class="t_a_c processOld" style="display:none">
+					<a class="btn_b w_180 bg_red4" href="javascript:chkTrace();"  title="변경전 화면으로 보기">변경전 화면으로 보기</a>* 변경전 화면보기의 경우  2015년 6월말까지만 제공됩니다.
 				</p>
-				<p class="btnSetC" style="display:none">
-					<img src="/iwww/images/comm/shipping/btn_print.gif" alt="프린트하기" class="print" id="btnPrint" style="cursor:pointer" />
+				<p class="t_a_c btnSetC" style="display:none">
+					<a class="btn_b w_180 bg_red4" href="#" id="btnPrint" title="프린트하기">인쇄</a>
 				</p>
+				</div>				
 			</div>
-			<div class="shipping_area">
-				<h4>배송문의</h4>
-				<ul class="csInfo">
+			
+			<div class="h4_wrap m_b_0">
+				<div class="title_wrap">
+					<h4>배송문의</h4>
+				</div>
+				<ul class="ul_list">
 					<li>배송완료시간은 고객님이 실제 받으신 시각과 차이가 있을수 있습니다.</li>
 					<li>인터넷 배송 정보제공은 우편물배달 여부를 고객에게 신속히 알려주는 것이 목적이며 각종 이해관계의 증거자료로 사용하기 위해서는 배달증명 서비스를 이용하시기 바랍니다.</li>
 					<li>조회서비스는 1년미만의 우편물만 가능합니다.</li>
-					<li>자세한 사항은 우편고객만족센터(<strong>1588-1300</strong>)로 문의하시기 바랍니다.</li>
+					<li>자세한 사항은 우편고객만족센터(1588-1300)로 문의하시기 바랍니다.</li>
 				</ul>
-				<p class="footBanner" style="display:none"><a href="http://www.epost.go.kr/mobile/intro/moin001k01.jsp"><img src="/iwww/images/comm/shipping/img_footBanner.gif" alt="우체국업무를 손안에서! 현대인의 필수아이템 우체국 앱을 소개합니다. 우편물 배달조회, 우편번호 검색, 택배,EMS 등 다양한 서비스 제공" /></a></p>
 			</div>
 			</div>
 		</div>
-	</div>
-	<!-- //컨텐츠영역 -->
-	<div class="accessibility-top"><a href="#top">위로가기</a></div>
-	<!-- footer 영역 -->
-	<div style="display:none">
-		
+		</div>
+    </div>
+	<!-- 컨텐츠 끝 -->
+</div>
+<!-- 서브바디레이아웃 끝 -->
+<!-- 바텀레이아웃 시작 -->
+<div style="display:none">
+
+
+
+
+
 
 
 
@@ -787,41 +1517,53 @@ function tab(n){
 
 <script language="JavaScript" type="text/JavaScript">
 //<![CDATA[
-
-function goNewLink(no,e) {
-	if(isAccess(e)) {
+$(document).ready(function(){
 	
-	if(no=="1") { //Window XP 서비스팩2 설치고객에 대한 안내
-  	window.open('http://www.epost.go.kr/popup/guide_xp202.html','_blank','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,top=50,left=50,width=635,height=650');
-  } else if(no=="2") {	//비스타 사용자 안내
-  	window.open('http://www.epost.go.kr/popup/win_vista_pop0131.html','vistaPop','toolbar=no, width=496, height=530, location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,top=50,left=200'); 
-  }
-  
-  return false;
-  }
-}
+	//관련사이트 이동
+	$('#btnMove').click(function(){
+		return goLinkRef();  
+	});
+	//개인정보 보호 인증서 보기
+	$('#btnPipl').click(function(){
+		return openPipl();
+	});
+	//개인정보보호 마크
+	$('#btnPrivacy').click(function(){
+		window.open('https://www.epost.go.kr/popup/privacymark.html', 'privacymark', 'height=790,width=570, menubar=no,directories=no,resizable=no,status=no,scrollbars=yes');
+		return ;
+	});
+	//한국정보인증보안 마크
+	$('#btnSsl').click(function(){
+		return openSsl();
+	});
+});
+           
 function openPipl(){
 	    var topSize = screen.height/2 - 360;
 	    var leftSize = screen.width/2 - 260;
-	    window.open("http://www.epost.go.kr/popup/piplmark.html", "piplmark", "height=720,width=520,top="+topSize+",letf="+leftSize+", menubar=no,directories=no,resizable=no,status=no,scrollbars=yes");
+	    window.open("https://www.epost.go.kr/popup/piplmark.html", "piplmark", "height=720,width=520,top="+topSize+",letf="+leftSize+", menubar=no,directories=no,resizable=no,status=no,scrollbars=yes");
+}
+
+function openSsl(){
+    var topSize = screen.height/2 - 400;
+    var leftSize = screen.width/2 - 272;
+    window.open("https://legend.ucert.co.kr/trustlogo/sseal_cert.html?sealnum=c98ce48c45a36cdb&sealid=96578238ca77a00ed2d4a7ec6083594c", "sslmark", "height=800,width=545,"+topSize+",letf="+leftSize+" menubar=no,directories=no,resizable=no,status=no,scrollbars=yes");
 }
 
 /**인증서 링크 모음**/
-function cert_status(code, url, e) {
-    if(isAccess(e)) {
+function cert_status(code, url) {
         if (code==1) {
             window.open(url, "cert_status1","height=600,width=570, menubar=no,directories=no,resizable=no,status=no,scrollbars=yes");
         } else if (code==2) {
-            window.open(url, "cert_status2","height=600,width=570, menubar=no,directories=no,resizable=no,status=no,scrollbars=yes");
+            window.open(url, "cert_status2","height=800,width=570, menubar=no,directories=no,resizable=no,status=no,scrollbars=yes");
         } else if (code==3) {
             window.open(url,"iafewin","topmargin=0 marginleft=0 marginwidth=0 marginheight=0 width=365 height=610");
         } else if (code==4) {
-            var v_top = (screen.height - 830)/2;
-            var v_left = (screen.width - 520)/2;
-        	window.open(url,"privacywin","width=520,height=830,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,top=" + v_top + ",left=" + v_left);
+            var v_top = (screen.height - 790)/2;
+            var v_left = (screen.width - 570)/2;
+        	window.open(url,"privacywin","width=570,height=790,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,top=" + v_top + ",left=" + v_left);
         }
         return false;
-  }
 }
 
 function goLinkRef(){
@@ -867,23 +1609,27 @@ function goLinkRef(){
          frm.action = "";
          return false;
         }
+       
+       frm.submit();
 
-       return true;
+       //return true;
 }
 //]]>
 </script>
-  <div id="newLaynfootersubp" style="height:auto !important;"><a name="footer" id="footer"></a>
-    <div class="newfooteraddAreasubp">
-    	<span style="display:none;"><img src="/iwww/images/main/2011/footerGraylogo.gif" alt="인터넷우체국 ePOST.kr" /></span>
-        <div class="newaddcontentsubp">         
-            <ul class="newssmenu">
-                <li><a href="http://www.epost.go.kr/affair/notice/cbfyb004k01.jsp" target="_top"><img src="/iwww/images/main/2011/footerSsmenu01.gif" alt="이용약관" /></a></li>
-                <li><a href="http://www.epost.go.kr/affair/notice/cbfyb005k01.jsp" target="_top"><img src="/iwww/images/main/2011/footerSsmenu02.gif" alt="개인정보취급방침" /></a></li>
-                <li><a href="http://www.epost.go.kr/affair/notice/cbfyb008k01.jsp" target="_top"><img src="/iwww/images/main/2011/footerSsmenu03.gif" alt="웹접근성정책" /></a></li>
-                <li class="newselarea">
-                    <form name="linkselectFrm" id="linkselectFrm" method="post" action="http://www.epost.go.kr/main/linkRedirect.jsp" onsubmit="return goLinkRef()" target="_blank" class="newfootlink">
-                        <select name="linkselect" id="linkselect" title="관련사이트"  style="width:115px;">
-                        <option value="0" selected="selected">관련사이트</option>
+  <div id="bottom_layout">
+	<div class="bottom_wrap">
+		<div class="btn_wrap">
+			<ul class="btn">
+				<li class="n1"><a href="https://www.epost.go.kr/comm/intro/introepost.jsp" title="인터넷우체국소개">인터넷우체국소개</a></li>
+				<li class="n2"><a href="https://www.epost.go.kr/comm/etc/usefulGuide.jsp" onclick="return goNewLink('14',this.href);" target="_blank" title="전국 우체국 이용안내 - 새창열림">전국 우체국 이용안내</a></li>
+				<li class="n3"><a href="https://www.epost.go.kr/affair/notice/cbfyb004k01.jsp" target="_top" title="이용약관">이용약관</a></li>
+				<li class="n4"><a href="https://www.epost.go.kr/affair/notice/cbfyb005k01.jsp" target="_top" title="개인정보처리방침">개인정보처리방침</a></li>
+				<li class="n5"><a href="https://www.epost.go.kr/affair/notice/cbfyb008k01.jsp" target="_top" title="웹접근성정책">웹접근성정책</a></li>
+			</ul>
+			<div class="etc_site">
+			<form name="linkselectFrm" id="linkselectFrm" method="post" action="main/linkRedirect.jsp" onsubmit="return goLinkRef()" target="_blank" class="newfootlink">
+				<select name="linkselect" id="linkselect" title="관련사이트">
+					 <option value="0" selected="selected">관련사이트</option>
                         <option value="1">우정사업본부</option>
                         <option value="2">서울지방우정청</option>
                         <option value="16">경인지방우정청 </option>
@@ -900,60 +1646,31 @@ function goLinkRef(){
                         <option value="13">우정공무원교육원</option>
                         <option value="14">우정사업조달사무소</option>
                         <option value="15">미래창조과학부</option>
-                        </select>
-	                    <input type="image" src="/iwww/images/main/2010/nMfootBtn.gif" alt="이동 - 새창열림" />
-                    </form>
-                </li>
-            </ul>
-				<ul style="clear:both;overflow:hidden;margin:0;padding:0;">
-					<li style="float:left;margin:0;padding:0 10px 5px 10px;clear:none !important;background:url(https://www.epost.go.kr//images/main/2013/newaddr_line.gif) no-repeat right 1px;white-space:nowrap">인터넷우체국 대표 : 김재수</li>
-					<li style="float:left;margin:0;padding:0 10px 5px 10px;white-space:nowrap">사업자등록번호 : 206-83-02050</li>
-					<li style="float:left;background:none;padding:0 0 5px 10px;margin:0;width:650px;">58217 전라남도 나주시 정보화길 1, 인터넷우체국 (빛가람동) </li>
-					
-					<li style="line-height:13px;float:left;margin:0;padding:0 10px 5px 10px;clear:both !important;background:url(https://www.epost.go.kr//images/main/2013/newaddr_line.gif) no-repeat right 1px;white-space:nowrap">우편고객만족센터 :<strong style="color:#ff0000">1588-1300</strong></li>
-					<li style="line-height:13px;float:left;margin:0;padding:0 10px 5px 10px;background:url(https://www.epost.go.kr//images/main/2013/newaddr_line.gif) no-repeat right 1px;white-space:nowrap;">팩스 : 0505-005-1037</li>
-					<li style="float:left;line-height:13px;background:none;padding:0 0 5px 10px;margin:0;white-space:nowrap;">이메일 : privacy@epost.kr</li>
-				</ul>       
-        </div>
-        <div class="newfootmarksubp" style="float:right !important;margin-top:14px;">
-            <ul>
-            	<li><a href="#" onclick="openPipl();"><img src="https://www.epost.go.kr//images/main/2011/footerMark03.gif" alt="PIPL인증마크획득 - 새창 열림" /></a></li>
-                <li style="padding-left:25px;"><a href="http://www.epost.go.kr/popup/privacymark.html" onclick="return cert_status(4,this.href,event);" onkeypress="return cert_status(4,this.href,event);" target="_blank"><img src="https://www.epost.go.kr//images/main/2011/footerMark02.gif" alt="개인정보보호마크 - 새창 열림" /></a></li>
-                <li style="padding-left:25px;"><a href="http://www.epost.go.kr/popup/sign1.html" onclick="return cert_status(2,this.href,event);" onkeypress="return cert_status(2,this.href,event);" target="_blank"><img src="https://www.epost.go.kr//images/main/2011/footerMark01.gif" alt="보안마크획득 - 새창 열림" /></a></li>
-            </ul>
-        </div>        
-    </div>
-  </div>
-<div id="flashbody" style="display:none;"></div>
-
-<script type="text/javascript" src="https://www.epost.go.kr/jscripts/comm/flash_conf.js"></script>
-<script type="text/javascript" src="https://www.epost.go.kr/jscripts/comm/flash_load.js"></script>
-
- 
-<script type="text/javascript">
-//<![CDATA[
-var _NGUL = "wcs.naver.net/wcslog.js";
-if(location.protocol=="https:"){var nUrl="https://"+_NGUL;}else{var nUrl="http://"+_NGUL;}
-document.write("<scr"+"ipt type='text/javascript' src='"+nUrl+"'><\/scr"+"ipt>");
-//]]>
-</script>
-<script type="text/javascript"> 
-if (!wcs_add) var wcs_add={};
-wcs_add["wa"] = "s_f96b42ead65";
-if (!_nasa) var _nasa={};
-wcs.inflow("epost.go.kr");
-wcs_do(_nasa);
-</script> 
-
-
-
-
+				</select>
+				<label class="skip" for="">관련사이트</label>
+				<a href="#" id="btnMove" title="새창열림">이동</a>
+				</form>
+			</div>
+		</div>
 	</div>
-	<!-- //footer 영역 -->
-
-	<div class="accessibility-top"><a href="#top">위로가기</a></div>
+	<div class="add_wrap">
+		<address>
+			인터넷우체국 대표 : 김재수 &#160; | &#160; 사업자등록번호 : 206-83-02050 <br/>
+			58323 전라남도 나주시 정보화길 1, 인터넷우체국 (빛가람동) &#160; | &#160; 우편고객만족센터 :1588-1300 &#160; | &#160; 팩스 : 0505-005-1037 &#160; | &#160; 이메일 : privacy@epost.kr<br/>
+			Copyright(c) 2016. ePOST all rights reserved.<br />
+		</address>
+		<ul class="mark">
+			<li class="n1"><a style="cursor: pointer;" id="btnPipl" title="새창열림"><img src="/np2assets/images/s1/bottom_mark_img_2.gif" alt="PIPL인증마크 획득" /></a></li>
+			<li class="n2"><a style="cursor: pointer;" id="btnPrivacy" title="새창열림"><img src="/np2assets/images/s1/bottom_mark_img_1.gif" alt="개인정보보호 마크" /></a></li>
+			<li class="n3"><a style="cursor: pointer;" id="btnSsl" title="새창열림"><img src="/np2assets/images/s1/bottom_mark_img_3.gif" alt="한국정보인증보안 마크" /></a></li>
+		</ul>
+	</div>
 </div>
 
+
+	
+</div>
+<!-- 바텀레이아웃 끝 -->
 
 <!-- 우체국 정보를 불러오기 위한 폼 추가 -->
 <form method="post" name="poInfoForm" id="poInfoForm" action="http://trace.epost.go.kr/xtts/servlet/kpl.tts.common.svl.SttSVL" >
@@ -968,15 +1685,15 @@ wcs_do(_nasa);
 
 <!-- 마스킹 해제 조회 팝업 -->
 <form method="post" name="frmReqMasking" id="detailForm" action="/trace.RetrieveDomRigiTraceMaskingList.comm" >
-<input type="hidden" name="sid1" value="1234"/>
-<input type="hidden" name="enc_senderNm" value="p78HFTrzAfOlRd8NZyDKrqBhyingbtbSPbFkKdRYicU=" />
-<input type="hidden" name="enc_receverNm" value="ESXCYAlIYZKSnzgkKV7UmA==" />
+<input type="hidden" name="sid1" value="6899164488210"/>
+<input type="hidden" name="enc_senderNm" value="JJkN0LWWaUu3a/wft/GdTA==" />
+<input type="hidden" name="enc_receverNm" value="mZFeEttVyyjmm4PwJBrAOA==" />
 <input type="hidden" name="trgtCmd" value="/trace.RetrieveDomRigiTraceMaskingList.comm" />
 </form>
 
 <!-- 마스킹 해제된 결과  -->
 <form method="post" name="frmSolvResult" id="frmSolvResult" action="/trace.RetrieveDomRigiTraceSolvList.comm" >
-<input type="hidden" name="sid1" value="1234"/>
+<input type="hidden" name="sid1" value="6899164488210"/>
 <input type="hidden" name="prm_sender_nm" value="" />
 <input type="hidden" name="prm_receiver_nm" value="" />
 <input type="hidden" id="displayHeader" name="displayHeader" value="N" />
@@ -985,13 +1702,13 @@ wcs_do(_nasa);
 <!-- 변경전 화면으로 보기 팝업 -->
 <form name="tracefrm" id="tracefrm" action="/main.validateMainNoScript.comm" target="_blank">
 <input type="hidden" name="ems_gubun" value="E" />
-<input type="hidden" name="sid1" value="1234" />
+<input type="hidden" name="sid1" value="6899164488210" />
 <input type="hidden" name="POST_CODE" value="" />
 <input type="hidden" name="mgbn" value="trace" />
 <input type="hidden" name="traceselect" id="traceselect"  value=""/>
 <input type="hidden" name="target_command" value="" />
 <input type="hidden" name="JspURI" value="" />				
-<input type="hidden" name="postNum" id="postNum" value="1234" />
+<input type="hidden" name="postNum" id="postNum" value="6899164488210" />
 </form>
 		
 <form name="tempFrm" id="tempFrm" action="/main.validateMainNoScript.comm">
@@ -999,8 +1716,8 @@ wcs_do(_nasa);
 		<input type="hidden" id="prgsHere" value="5" />
 
 		<input type="hidden" id="detatilview0" value="0" />
-        <input type="hidden" id="detatilview1" value="4" />
-        <input type="hidden" id="detatilview2" value="2" />
+        <input type="hidden" id="detatilview1" value="1" />
+        <input type="hidden" id="detatilview2" value="5" />
         <input type="hidden" id="detatilview3" value="0" />
         <input type="hidden" id="detatilview4" value="0" />
         <input type="hidden" id="detatilview5" value="0" />
@@ -1028,3 +1745,4 @@ wcs_do(_nasa);
 
 </body>
 </html>
+
