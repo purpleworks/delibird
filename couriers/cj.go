@@ -3,6 +3,7 @@ package couriers
 import (
 	"bytes"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -11,8 +12,9 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/djimenez/iconv-go"
 	"github.com/purpleworks/delibird"
+	"golang.org/x/text/encoding/korean"
+	"golang.org/x/text/transform"
 )
 
 type Cj struct{}
@@ -101,7 +103,7 @@ func (t Cj) Parse(trackingNumber string) (delibird.Track, *delibird.ApiError) {
 	return track, nil
 }
 
-func (t Cj) getHtml(trackingNumber string) (*iconv.Reader, error) {
+func (t Cj) getHtml(trackingNumber string) (io.Reader, error) {
 	url := fmt.Sprintf(t.TrackingUrl(), trackingNumber)
 	res, err := http.Get(url)
 	if err != nil {
@@ -114,10 +116,7 @@ func (t Cj) getHtml(trackingNumber string) (*iconv.Reader, error) {
 		return nil, err
 	}
 
-	convertedBody, err := iconv.NewReader(bytes.NewReader(body), "euc-kr", "utf-8")
-	if err != nil {
-		return nil, err
-	}
+	convertedBody := transform.NewReader(bytes.NewReader(body), korean.EUCKR.NewDecoder())
 
 	return convertedBody, nil
 }
