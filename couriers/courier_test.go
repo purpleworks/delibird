@@ -2,7 +2,12 @@ package couriers
 
 import (
 	"io/ioutil"
+	"runtime"
 	"testing"
+
+	"fmt"
+
+	"path/filepath"
 
 	"github.com/purpleworks/delibird"
 	. "github.com/smartystreets/goconvey/convey"
@@ -22,7 +27,13 @@ func (t SampleCourier) Parse(invoice string) (delibird.Track, *delibird.ApiError
 
 // test html mock file
 func readTestResponseFile(filename string) string {
-	b, _ := ioutil.ReadFile("./testhtml/" + filename)
+	prefix := "."
+
+	if _, currentPath, _, ok := runtime.Caller(0); ok {
+		prefix = filepath.Dir(currentPath)
+	}
+
+	b, _ := ioutil.ReadFile(fmt.Sprintf("%s/testhtml/%s", prefix, filename))
 
 	return string(b)
 }
