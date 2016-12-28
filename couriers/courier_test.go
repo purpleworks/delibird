@@ -1,13 +1,11 @@
 package couriers
 
 import (
+	"fmt"
 	"io/ioutil"
+	"path/filepath"
 	"runtime"
 	"testing"
-
-	"fmt"
-
-	"path/filepath"
 
 	"github.com/purpleworks/delibird"
 	. "github.com/smartystreets/goconvey/convey"
