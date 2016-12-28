@@ -1,6 +1,6 @@
 {
 	"ImportPath": "github.com/purpleworks/delibird",
-	"GoVersion": "go1.6",
+	"GoVersion": "go1.7",
 	"GodepVersion": "v74",
 	"Packages": [
 		"./..."
@@ -23,10 +23,6 @@
 		{
 			"ImportPath": "github.com/danryan/env",
 			"Rev": "bc567f4d372a17eb756004cdbfd8458ecc04b07e"
-		},
-		{
-			"ImportPath": "github.com/djimenez/iconv-go",
-			"Rev": "8960e66bd3dacbc8773962b40eb82fc18c63c127"
 		},
 		{
 			"ImportPath": "github.com/gopherjs/gopherjs/js",
@@ -105,6 +101,26 @@
 		{
 			"ImportPath": "golang.org/x/net/html/atom",
 			"Rev": "ef00b378c73f107bf44d5c9b69875255ce89b79a"
+		},
+		{
+			"ImportPath": "golang.org/x/text/encoding",
+			"Rev": "a49bea13b776691cb1b49873e5d8df96ec74831a"
+		},
+		{
+			"ImportPath": "golang.org/x/text/encoding/internal",
+			"Rev": "a49bea13b776691cb1b49873e5d8df96ec74831a"
+		},
+		{
+			"ImportPath": "golang.org/x/text/encoding/internal/identifier",
+			"Rev": "a49bea13b776691cb1b49873e5d8df96ec74831a"
+		},
+		{
+			"ImportPath": "golang.org/x/text/encoding/korean",
+			"Rev": "a49bea13b776691cb1b49873e5d8df96ec74831a"
+		},
+		{
+			"ImportPath": "golang.org/x/text/transform",
+			"Rev": "a49bea13b776691cb1b49873e5d8df96ec74831a"
 		}
 	]
 }
