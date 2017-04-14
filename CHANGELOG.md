@@ -1,3 +1,7 @@
+# 0.1.3 (2017-04-14)
+
+Add Logen
+
 # 0.1.2 (2017-04-14)
 
 Fix KG Logis date parse error
