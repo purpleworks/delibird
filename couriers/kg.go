@@ -73,7 +73,7 @@ func (t Kg) Parse(trackingNumber string) (delibird.Track, *delibird.ApiError) {
 		dateText := strings.TrimSpace(s.Find("td").Eq(0).Text()) + " " + strings.TrimSpace(s.Find("td").Eq(1).Text())
 		date, err := time.Parse("2006.01.02 15:04", dateText)
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
 		} else {
 			statusText := strings.TrimSpace(s.Find("td span").Eq(3).Text())
 
