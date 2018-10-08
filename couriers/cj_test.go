@@ -53,6 +53,7 @@ func TestCJCourier(t *testing.T) {
 			So(data.Receiver, ShouldEqual, "테*트")
 			So(data.Signer, ShouldEqual, "본인")
 			So(data.CompanyCode, ShouldEqual, "CJ")
+			So(data.History[5].Tel, ShouldEqual, "02-2129-1258")
 		})
 	})
 }
