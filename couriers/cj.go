@@ -65,7 +65,7 @@ func (t Cj) Parse(trackingNumber string) (delibird.Track, *delibird.ApiError) {
 
 	history := []delibird.History{}
 
-	numberReg, _ := regexp.Compile("[^0-9-]")
+	numberReg, _ := regexp.Compile(`\(([0-9-]+)\)`)
 
 	//배송정보
 	doc.Find("table").Eq(4).Find("tbody tr").Each(func(i int, s *goquery.Selection) {
@@ -80,7 +80,11 @@ func (t Cj) Parse(trackingNumber string) (delibird.Track, *delibird.ApiError) {
 					track.StatusCode = t.getStatus(statusText)
 					track.StatusText = statusText
 				}
-				tel := numberReg.ReplaceAllString(s.Find("td table tr td").Eq(1).Text(), "")
+				tel := ""
+				tels := numberReg.FindStringSubmatch(s.Find("td table tr td").Eq(1).Text())
+				if len(tels) > 1 {
+					tel = tels[1]
+				}
 				if tel == "--" {
 					tel = ""
 				}
