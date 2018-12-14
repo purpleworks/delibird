@@ -1,0 +1,770 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<title>한진택배 &gt; 예약&#47;조회 &gt; 배송조회</title>
+<link rel="stylesheet" href="../css/inquiry.css" type="text/css" />
+<link rel="stylesheet" href="../css/layout.css" type="text/css" />
+<link rel="stylesheet" href="../css/base_main02.css" type="text/css" />
+<script type="text/javascript" src="../js/script.js"></script>
+<script type="text/javascript" src="../js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../js/menu.js"></script>
+
+<script type="text/javascript">
+  //var ID = getParameter('ID')
+ </script>
+</head>
+<body>
+<!-- skipAccess -->
+<div class="skipAccess">
+	<ul>
+		<li><a href="#new_body" tabindex="0">본문 바로가기</a></li>
+		<li><a href="#gnbNew" tabindex="0">주메뉴 바로가기</a></li>
+		<li><a href="#lnb" tabindex="0">서브메뉴 바로가기</a></li>
+	</ul>
+</div>
+<!-- //skipAccess -->
+<div id="wrapper">
+	<div id="header">
+		<div class="topUtil">
+			<div class="topUtilBox">
+				<ul>
+					
+					<li><a href="/Delivery_html/members/member_login.jsp"><img src="../img/gnb/top_util_login.png" alt="로그인" /></a></li>
+					<li><a href="/Delivery_html/members/join_agree.jsp"><img src="../img/gnb/top_util_join.png" alt="회원가입" /></a></li>
+					
+					<li><a href="/Delivery_html/help/customer_write.jsp"><img src="../img/gnb/top_util_customer.png" alt="고객의 말씀" /></a></li>
+					<li><a href="/Delivery_html/sitemap/sitemap.jsp"><img src="../img/gnb/top_util_sitemap.png" alt="사이트맵" /></a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- GNB -->
+		<div id="gnb">
+			<div class="gnb_wrap">
+				<div class="inner">
+					<h1 class="logo"><a href="/Delivery_html/index.jsp"><img src="../img/gnb/logo.png" alt="한진택배" /></a></h1>
+					<ul class="gnb" id="gnbNew" tabindex="0">
+						<li ><a href="#"><img src="../img/gnb/gnb_01.png" alt="사업소개" /></a>
+							<ul>
+							  <li ><a href="/Delivery_html/business/hanjin_info.jsp">한진택배소개</a></li>
+                                <li ><a href="/Delivery_html/business/service_ccm.jsp">소비자중심경영</a> </li>
+								<li ><a href="/Delivery_html/business/service_info.jsp">서비스특징</a> </li>
+								<li > <a href="/Delivery_html/business/notice_list.jsp">공지사항</a> </li>
+								<li ><a href="/Delivery_html/event/event_list.jsp">이벤트</a></li>
+							</ul>
+						</li>
+						<li ><a href="#"><img src="../img/gnb/gnb_02.png" alt="국내택배" /></a>
+							<ul>
+								<li ><a href="/Delivery_html/domestic/pabalma.jsp">개인택배(파발마)</a></li>
+								<li ><a href="/Delivery_html/domestic/b2b_service.jsp">기업택배</a></li>
+								<li ><a href="/Delivery_html/business/service_guide3_01.jsp">요금안내</a></li>
+								<li ><a href="/Delivery_html/business/service_guide1.jsp">운송장 작성요령</a></li>
+								<li ><a href="/Delivery_html/business/service_guide4.jsp">상품포장방법</a></li>
+								<li ><a href="/Delivery_html/business/service_guide2.jsp">취급제한품목</a></li>
+							</ul>
+						</li>
+						<li ><a href="#"><img src="../img/gnb/gnb_03.png" alt="유통택배" /></a>
+							<ul>
+								<li ><a href="/Delivery_html/distribution/distribution01.jsp">B2B</a></li>
+								<li ><a href="/Delivery_html/distribution/distribution02.jsp">3PL</a> </li>
+								<li ><a href="/Delivery_html/distribution/distribution03.jsp">중계배송</a></li>
+								<li ><a href="/Delivery_html/charge/estimate.jsp">견적의뢰</a></li>
+							</ul>
+						</li>
+						<li ><a href="#"><img src="../img/gnb/gnb_04.png" alt="국제특송" /></a>
+							<ul>
+								<li ><a href="/Delivery_html/international/international.jsp">서비스소개</a></li>							
+								<li ><a href="/Delivery_html/international/standard.jsp">일반서비스</a></li>								
+								<!-- <li ><a href="/Delivery_html/international/japan.jsp">특화서비스</a></li> -->
+								<!-- 20180601 LHS 수정 -->
+								<li ><a href="/Delivery_html/international/Business_svc02.jsp">특화서비스</a></li>
+								
+								<li ><a href="/Delivery_html/international/entry.jsp">통관정보</a></li>
+								<li ><a href="/Delivery_html/international/direction.jsp">이용안내</a></li>
+							</ul>
+						</li>
+						<li class="on"><a href="#"><img src="../img/gnb/gnb_05.png" alt="예약/조회" /></a>
+							<ul>
+								<li class="on"><a href="/Delivery_html/inquiry/personal_inquiry.jsp">배송조회</a></li>
+								<li ><a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=A">택배예약</a></li>
+								<li ><a href="/Delivery_html/quick/login1.jsp">예약 확인/취소</a></li>
+								<li ><a href="/Delivery_html/charge/inquiry.jsp">요금/소요일조회</a></li>
+								<li ><a href="/Delivery_html/receipt/info.jsp">현금영수증</a></li>
+								<!--<li ><a href="/Delivery_html/quick/login1.jsp?gbn=wbl">운송장 인쇄</a></li>-->
+								<li ><a href="/Delivery_html/inquiry/personal_inquiry.jsp?menu_gbn=A">운송장 영수증</a></li>
+								<li ><a href="/Delivery_html/charge/estimate.jsp">견적의뢰</a></li>
+							</ul>
+						</li>
+						<li ><a href="#"><img src="../img/gnb/gnb_06.png" alt="고객지원" /></a>
+							<ul>
+								<li ><a href="/Delivery_html/store/domestic.jsp">집배점 조회</a></li>
+								<li ><a href="/Delivery_html/store/distributor.jsp">취급점 안내</a></li>
+								<li ><a href="/Delivery_html/help/faq.jsp">FAQ</a></li>
+								<li ><a href="/Delivery_html/help/contactus.jsp">문의방법안내</a></li>
+								<li ><a href="/Delivery_html/help/compensation.jsp">보상처리절차</a></li>
+								<li ><a href="/Delivery_html/help/customer_write.jsp">고객의 말씀</a></li>
+								<li ><a href="/Delivery_html/help/service_center.jsp">고객센터안내</a></li>
+								<li ><a href="/Delivery_html/help/policy.jsp">택배 운송약관</a></li>
+								<li ><a href="/Delivery_html/cooperate/skypass.jsp">제휴서비스</a></li>
+								<li ><a href="/Delivery_html/store/startUp.jsp">창업지원센터</a></li>  
+							</ul>
+						</li>
+				  </ul>
+			  </div>
+			</div>
+		</div>
+		<!-- //GNB -->
+	</div>
+	<!-- //header -->
+	
+	<!-- 서브비주얼 -->
+	
+	
+	
+	
+	
+	<!-- 예약/조회 -->
+	<div class="sub_visual sub05">
+		<div>가장가까운거리 고객과 가장 가까운 거리에서 언제나 변함없이 고객과 함께하며 소중한 마음을 전하는 기분 좋은 택배서비스</div>
+	</div>
+	
+	
+	
+	
+	
+	<!-- //서브비주얼 -->
+	
+</div>
+<!-- //wrapper -->
+
+<div id="wrap_new">
+	<div id="left_new">
+		<div id="lnb" class="left_new_lnb">
+			
+			
+			
+			
+			
+			<!-- 예약/조회 -->
+			<div class="menu">
+				<h2><img src="../img/common/h2_lnb5.gif" alt="예약/조회" /></h2>
+				<ul class="depth_01">
+					<li class="on"><a href="/Delivery_html/inquiry/personal_inquiry.jsp"><img src="../img/common/lnb5_01_off.png" alt="배송조회" /></a></li>
+					<li >
+						<a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=F"><img src="../img/common/lnb5_02_off.png" alt="택배예약" /></a>
+						<ul class="depth_02">
+							<li ><a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=A">일반택배</a></li>
+							<!--<li ><a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=F">플러스택배</a></li>-->
+                            <li ><a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=Q">퀵택배</a></li>  
+							<li ><a href="/Delivery_html/reserve/return.jsp">반품택배</a></li>
+							<!--<li ><a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=B">당일택배</a></li> -->
+							<li ><a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=N">취급점택배</a></li>
+							<li ><a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=G">공항택배</a></li>
+							<li ><a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=H">골프택배</a></li>
+							<li ><a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=E">국제특송</a></li>
+						</ul>
+					</li>
+					<li ><a href="/Delivery_html/quick/login1.jsp"><img src="../img/common/lnb5_03_off.png" alt="예약확인/취소" /></a></li>
+					<li ><a href="/Delivery_html/charge/inquiry.jsp"><img src="../img/common/lnb5_04_off.png" alt="요금/소요일 조회" /></a></li>
+					<li >
+						<a href="/Delivery_html/receipt/info.jsp"><img src="../img/common/lnb5_05_off.png" alt="현금영수증" /></a>
+						<ul class="depth_02">
+							<li ><a href="/Delivery_html/receipt/info.jsp">현금영수증 제도 소개</a></li>
+							<li ><a href="/Delivery_html/receipt/issue.jsp">현금영수증 발급</a></li>
+							<li ><a href="/Delivery_html/receipt/inquiry.jsp">현금영수증 승인내역보기</a></li>
+						</ul>
+					</li>
+					<!--<li ><a href="/Delivery_html/quick/login1.jsp?gbn=wbl"><img src="../img/common/lnb5_06_off.png" alt="운송장인쇄" /></a></li>-->
+					<li ><a href="/Delivery_html/inquiry/personal_inquiry.jsp?menu_gbn=A"><img src="../img/common/lnb5_07_off.png" alt="운송장 영수증" /></a></li>
+					<li ><a href="/Delivery_html/charge/estimate.jsp"><img src="../img/common/lnb5_08_off.png" alt="견적의뢰" /></a></li>
+				</ul>
+				<div class="banner">
+					<a href="/Delivery_html/inquiry/focus_System.jsp"><img src="../img/common/lnb5_banner.gif" alt="nFocus System" /></a>
+				</div>
+			</div>
+			
+			
+			
+			
+			
+		</div>
+		<!-- //lnb -->
+
+		<div id="new_body">
+
+
+<script>
+<!--
+function search_es(es_num) {
+	window.open('../store/esman_detail_pop.jsp?org_val='+es_num,'newWin','toolbar=no,location=no,scrollbars=no,width=560, height=700, left=100, top=100');
+}
+
+function go_print(wbl_num) {
+	window.open('receipt.jsp?wblnum='+wbl_num,'newWin','toolbar=no,location=no,scrollbars=no,width=660, height=800, left=100, top=100');
+}
+
+function go_cashback() {
+	window.name = "hanjin_waybill";
+	
+	var frm = document.OK_FORM;
+	pop_win = window.open("","pop_win","scrollbars=no,width="+frm.width.value+",height="+frm.height.value+",left=230,top=150");
+	frm.target = "pop_win";
+	frm.submit();
+	frm.focus();	
+}
+
+function getCookie(Name) {
+  var search = Name + "="
+  if (document.cookie.length > 0) { // 쿠키가 설정되어 있다면
+    offset = document.cookie.indexOf(search)
+    if (offset != -1) { // 쿠키가 존재하면
+      offset += search.length
+      // set index of beginning of value
+      end = document.cookie.indexOf(";", offset)
+      // 쿠키 값의 마지막 위치 인덱스 번호 설정
+      if (end == -1)
+        end = document.cookie.length
+      return unescape(document.cookie.substring(offset, end))
+    }
+  }
+}
+
+function openNotice() {
+  if (getCookie("notice_focus_1") != "deny") {
+    window.open("pop_notice.html","notice_focus_2","width=487,height=548,resizable=yes"); 
+  }
+}
+ 
+function openDtlRsn(wbl_num) {
+	window.open("pop_custom_clearance.jsp?wbl_num="+ wbl_num,"통관진행상태","width=500,height=500,resizable=yes"); 
+}
+//-->
+</script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-37080587-1']);
+  _gaq.push(['_setDomainName', 'hanjin.co.kr']);
+  _gaq.push(['_trackPageview']);
+ 
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+ 
+</script>
+<!-- 하단 배너롤링 -->
+<script type="text/javascript" src="../js/jquery.slide.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$('.banner_section').rollfunc({ 
+			speed:1000,
+			timer:5000,
+			animation: 'swing',
+			mousePause: true,
+			direction:"right",
+			autoplay:true
+		});
+	});
+</script>
+<!-- 파슬미디어 - 오케이 캐시백 연계 START -->
+
+<form name="OK_FORM" method="post" action="https://www.logii.com/interface/delvproms/delv_click.asp">
+  <input type="hidden" name="comp_code" value="hanjin" />
+  <input type="hidden" name="inv_no" value="413843775343" />
+  
+  <input type="hidden" name="login_yn" value="N" />
+  
+  <input type="hidden" name="login_name" value="" />
+  <input type="hidden" name="page_type" value="H" />
+  <input type="hidden" name="width" value="836" />
+  <input type="hidden" name="height" value="668" />
+</form>
+
+<!-- 파슬미디어 - 오케이 캐시백 연계 END -->
+
+
+
+      <!-- body -->
+      <div id="body">
+        <!-- current location -->
+        <p id="location"> 
+			<span class="home">Home</span> 
+			<span>예약&#47;조회</span> 
+			<span>배송조회</span> 
+			<span class="current">개인고객</span> 
+		</p>
+        <!-- //current location -->
+        <!-- 본문제목 -->
+        <h3><img src="../img/inquiry/h3_personal_inquiry.gif" alt="배송조회 - 개인고객" /></h3>
+        <!-- //본문제목 -->
+        <!-- 카피문구 -->
+        <p class="description"><img src="../img/inquiry/description_result_waybill.gif" alt="서류에서 소화물, 중량물까지 보내시는 분의 문 앞에서 받으시는 분의 문 앞까지 전화 한 통화로 직접 방문 접수하여 전국 어디든지 24시간 내에 배송해 드립니다." /></p>
+        <!-- //카피문구 -->
+        <!--  -->
+        <div id="result_waybill2">
+        
+          	<!-- 국제특송 메세지-->
+	        <!--<div class="inform">
+	          <p class="no"><img src="../img/common/inform_img03.png"> </p>
+	          <ul>
+	            <li> 한진 국제특송을 이용해 주시는 고객 님께 감사 말씀 드립니다. <br />
+	              	미국 기상청은<span class="blue"> `15.1.26일부터 27일</span> 까지 뉴욕 등 미국 동북부 지역을 중심으로 <span class="blue">폭설(Winter Storm)을 예고</span> 했습니다. 이에 따라 <span class="blue">항공기 결항 및 현지 수배송에 어려움이 있을 것으로 예상</span>되오니,이용에 참고해 주시기 바랍니다.</span> 감사합니다.</li>
+	          </ul>
+	        </div>-->
+	        <!--// 국제특송 메세지-->
+	    
+          <!-- 기본정보 -->
+          <p><img src="../img/inquiry/h4_result_waybill1.gif" alt="기본정보" /></p>
+          <table summary="이 표는 택배 운송장 기본정보를 제공하며 운송장정보/항공사 운송장 번호, 상품명, 보낸분, 받는 분으로 구성되어 있습니다.">
+            <caption>택배 운송장 기본 정보</caption>
+            <colgroup>
+            	<col style="width: 126px;" />
+		<col style="width: 110px;" />
+		<col style="width: 95px;" />
+		<col style="width: 109px;" />
+		<col style="width: 77px;" />
+		<col style="width: 83px;" />
+            </colgroup>
+
+            <thead>
+            	<tr>
+             	  
+             	 	<th rowspan="2" scope="col">
+	             	 	<span>
+	             	 	   운송장정보
+	             	 	</span>
+	             	 	<!-- <img src="../img/inquiry/h5_result_th01.gif" alt="운송장정보" width="48" height="12" /> -->
+             	    </th>
+              	  	
+				  <th rowspan="2" scope="col">
+					  	<span>
+		             	  상품명
+		             	</span>
+					  	<!-- <img src="../img/inquiry/h5_result_th02.gif" alt="상품명" /> -->
+				  </th>
+				  
+				  <th rowspan="2" scope="col">
+					  <span>
+		             	 운임(원)
+		              </span>
+					  <!-- <img src="../img/inquiry/h5_result_th02_01.gif" alt="운임(원)" /> -->
+				  </th>
+				  
+				  <!--국제특송 관부가세액 -->
+				  
+				  <th class="bg" scope="col">
+				     <span>
+				        보낸분
+				     </span>
+				     <!-- <img src="../img/inquiry/h5_result_th03.gif" alt="보낸분" /> -->
+				  </th>
+				  <th colspan="2" scope="col" class="rw bg">
+				    <span>
+				    	받는분
+				    </span>
+				  	<!-- <img src="../img/inquiry/h5_result_th04.gif" alt="받는분" /> -->
+				  </th>
+				</tr>
+				<tr>
+				  <th scope="col">
+					<span>
+						성명
+					</span>				  
+				    <!-- <img src="../img/inquiry/h5_result_th05.gif" alt="성명" /> -->
+				  </th>
+				  <th scope="col">
+					  <span>
+					  	 성명
+					  </span>
+					  <!-- <img src="../img/inquiry/h5_result_th06.gif" alt="성명" /> -->
+				  </th>
+				  <th scope="col" class="rw">
+				      <span>
+				          주소
+				      </span>
+				  	  <!-- <img src="../img/inquiry/h5_result_th07.gif" alt="주소" /> -->
+				  </th>
+				</tr>
+            </thead>
+            
+            <tbody>
+              <tr>
+                <td class="bb">
+                	<strong>4138 - 4377 - 5343</strong><br/>
+                	              
+                </td>
+                <td class="bb">
+                
+               		힙쉴드 유아동 구명조끼 팬티분리형 제품선택/디자인선택:4.힙쉴드 구명조끼M/해피웨일-1개
+               	
+                </td>
+                
+                <td class="bb">선불</td>
+                
+                
+                <!--국제특송 관부가세액 
+                <td class="bb">10,000원<br />
+                  </td>
+                 -->
+                <td class="bb">
+                  위******
+                  
+                  님</td>
+                <td class="bb">
+                  김*
+                  
+                  님</td>
+                <td class="bb rw">울산 남 </td>
+              </tr>
+            </tbody>
+          </table>
+          		
+          <!-- //기본정보 -->
+          
+          <!-- OK캐쉬백 -->
+          
+          <div class="btn02">
+			<span>운송장번호로 택배포인트 적립하세요.</span>
+			<a href="javascript:go_cashback();">
+				<img src="../img/inquiry/btn_point.gif" alt="택배 포인트 적립_새창열림" />
+			</a> 
+		  </div>
+          
+          <!-- //OK캐쉬백 -->
+          <!-- 배송진행현황-->
+          <h4><img src="../img/inquiry/h4_result_waybill2.gif" alt="배송 진행 상황" /></h4>
+          <!-- 배송진행현황 IMG-->
+          <div class="new_p"> 
+			<ul>
+				<li><img src="../img/inquiry/new_process01.png" alt="상품접수" /></li>
+				<li><img src="../img/inquiry/new_process02.png" alt="터미널입고" /></li>
+				<li><img src="../img/inquiry/new_process03.png" alt="상품이동중" /></li>
+				<li><img src="../img/inquiry/new_process04.png" alt="배송터미널도착" /></li>
+				<li><img src="../img/inquiry/new_process05.png" alt="상품배송출발" /></li>
+				<li><img src="../img/inquiry/new_process06_on.png" alt="상품배송완료(현재단계)" /></li>
+			</ul>	
+		  </div>
+          <!-- //배송진행현황 IMG-->
+          <!--배송 현황 table -->
+          <table summary="이 표는 배송진행 상황 안내를 제공하며 날짜, 시간, 현재위치, 현재상태, 전화번호로 구성되어 있습니다.">
+            <caption>배송진행 상황</caption>
+            <colgroup>
+				<col style="width: 92px;" />
+				<col style="width: 57px;" />
+				<col style="width: 92px;" />
+				<col style="width: 262px;" />
+				<col style="width: 97px;" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th scope="col">
+	                <span>
+	                  날짜
+	                </span>
+                	<!-- <img src="../img/inquiry/h5_result_th12.gif" alt="날짜" /> -->
+                </th>
+                <th scope="col">
+                     <span>
+                       시간
+                     </span>
+	                 <!-- <img src="../img/inquiry/h5_result_th13.gif" alt="시간" /> -->
+                </th>
+                <th scope="col">
+                     <span>
+                        현재위치
+                     </span>
+                	<!-- <img src="../img/inquiry/h5_result_th14.gif" alt="현재위치" /> -->
+                </th>
+                <th scope="col">
+                     <span>
+                        현재상태
+                     </span>
+                	<!-- <img src="../img/inquiry/h5_result_th15.gif" alt="현재상태" /> -->
+                </th>
+                <th scope="col" class="rw">
+                    <span>
+                       전화번호
+                    </span>
+                    <!-- <img src="../img/inquiry/h5_result_th16.gif" alt="전화번호" /> -->
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              
+              <tr>
+                <td>2018-11-14</td>
+                <td>17:11</td>
+                <td>부평터미널</td>
+                <td>
+                	<div align="left">고객님 상품을 집하하여 <strong>부평터미널</strong>에 입고되었습니다.
+              		
+              		</div>
+                </td>
+                <td class="rw">-</td>
+              </tr>
+              
+              
+              <tr>
+                <td>2018-11-14</td>
+                <td>17:11</td>
+                <td>부평터미널</td>
+                <td>
+                	<div align="left"><strong>부평터미널</strong>에서 <strong>안산터미널</strong>로 <strong>이동중</strong> 입니다.
+              		
+              		</div>
+                </td>
+                <td class="rw">-</td>
+              </tr>
+              
+              
+              <tr>
+                <td>2018-11-14</td>
+                <td>19:28</td>
+                <td>안산터미널</td>
+                <td>
+                	<div align="left"><strong>안산터미널</strong>에 <strong>도착</strong>하였습니다.
+              		
+              		</div>
+                </td>
+                <td class="rw">-</td>
+              </tr>
+              
+              
+              <tr>
+                <td>2018-11-14</td>
+                <td>19:29</td>
+                <td>안산터미널</td>
+                <td>
+                	<div align="left"><strong>안산터미널</strong>에서 <strong>양산터미널</strong>로 <strong>이동중</strong> 입니다.
+              		
+              		</div>
+                </td>
+                <td class="rw">-</td>
+              </tr>
+              
+              
+              <tr>
+                <td>2018-11-15</td>
+                <td>03:44</td>
+                <td>양산터미널</td>
+                <td>
+                	<div align="left"><strong>양산터미널</strong>에 <strong>도착</strong>하였습니다.
+              		
+              		</div>
+                </td>
+                <td class="rw">-</td>
+              </tr>
+              
+              
+              <tr>
+                <td>2018-11-15</td>
+                <td>03:59</td>
+                <td>양산터미널</td>
+                <td>
+                	<div align="left"><strong>양산터미널</strong>에서 <strong>울산터미널</strong>로 <strong>이동중</strong> 입니다.
+              		
+              		</div>
+                </td>
+                <td class="rw">-</td>
+              </tr>
+              
+              
+              <tr>
+                <td>2018-11-15</td>
+                <td>10:35</td>
+                <td>울산터미널</td>
+                <td>
+                	<div align="left">배송원이 <strong>배송준비중</strong> 입니다.
+              		
+              		</div>
+                </td>
+                <td class="rw">-</td>
+              </tr>
+              
+              
+              <tr>
+                <td>2018-11-15</td>
+                <td>10:35</td>
+                <td>울산터미널</td>
+                <td>
+                	<div align="left"><strong>울산터미널</strong>에 <strong>도착</strong>하였습니다.
+              		
+              		</div>
+                </td>
+                <td class="rw">-</td>
+              </tr>
+              
+              
+              <tr>
+                <td>2018-11-15</td>
+                <td>12:34</td>
+                <td>무거(대)</td>
+                <td>
+                	<div align="left"><strong>배송출발</strong> 하였습니다.
+              		
+              		</div>
+                </td>
+                <td class="rw">01012341234</td>
+              </tr>
+              
+              
+              <tr>
+                <td rowspan="2" class="bb"><b>2018-11-15</b></td>
+                <td rowspan="2" class="bb"><b>21:52</b></td>
+                <td>무거(대)</td>
+                <td>
+                	<div align="left"><strong>배송완료</strong> 되었습니다. 
+              		
+              		</div>
+                </td>
+                <td class="rw">01012341234</td>
+              </tr>
+              <tr>
+                <td colspan="3" class="bb rw"><b>수령인 :                  
+                  
+                  	김*(본인)
+                  
+                </b></td>
+              </tr>
+              
+            </tbody>
+          </table>
+          <!-- //배송 현황 table -->
+          <!-- //배송진행상황 설명 -->
+          <ul class="board_tip">
+            <li><!--해당 배송 문의 <br />-->
+              
+              【상품접수점】 032-508-6216~20
+              
+              
+              <br />
+              【상품배달 터미널 / 영업소】 010-2750-1432
+              
+            </li>
+            <li>완료시간은 고객님이 실제 받으신 시각과 차이가 있을 수 있습니다.</li>
+			
+				<li>대표 문의 : 1588-0011 (한진택배), 1588-1612(한진국제특송)</li>
+			
+          </ul>
+          <!-- 배너 -->
+          
+            <!-- 이하넥스 배너 연동-->
+			  <iframe src="http://www.ehanex.com/css/ehanex_banner.jsp" frameborder="0" width="600"  title="이하넥스 배너 연동" ></iframe>
+              <div>
+               <a href="https://www.hanjin.co.kr/Delivery_html/business/notice_view.jsp?num=1439" target="_blank" title="새창열림"><img src="../img/inquiry/banner_express_prom.jpg" alt="한진국제특송 이제 해외택배발송도 전국 어디서나 간편하게! 자세히보기" border="0" /></a></div>
+        <!--<div class="banner_section"> 		
+		    <ul class="visual_nav">
+					<li class="on"><a href="#">첫 번째 배너로 이동</a></li>
+					<li><a href="#">두 번째 배너로 이동</a></li>
+					<li><a href="#">세 번째 배너로 이동</a></li>
+					<li><a href="#">네 번째 배너로 이동</a></li> 
+				</ul>
+				<p class="play_btn">
+					<a href="#" class="btn_stop">정지</a>
+					<a href="#" class="btn_start">시작</a>
+				</p>
+				<div class="rolling_area">
+					<ul> 
+      					<li><a href="http://www.ehanex.com/" target="_blank"><img src="http://www.hanjin.co.kr/delivery_html/img/banner/img_banner_visa.jpg" alt="하나 VISA카드 제휴기념 THE빠른 서비스 운송료 단돈 천원! '나 하나면 충분!' - 새창열림" /></a></li>
+      					<li><a href="http://www.ehanex.com/" target="_blank"><img src="http://www.ehanex.com/images/main/banner/hanjin_CAMovie.gif" alt="이하넥스 CA물류센터 묶음배송비 면제 영화티켓 증정 - 새창열림" /></a></li>
+      					<li><a href="http://www.ehanex.com/" target="_blank"><img src="http://www.hanjin.co.kr/delivery_html/img/banner/img_banner02.jpg" alt="한진 이하넥스 THE빠른 서비스 무조건 1박스 운송료 30%할인 - 새창열림" /></a></li>
+      					<li><a href="http://www.ehanex.com/" target="_blank"><img src="http://www.ehanex.com/images/main/banner/hanjin_SHVisa.gif" alt="신한 VISA카드 제휴기념 THE빠른 서비스 운송료 $0.99! - 새창열림" /></a></li>
+					</ul>
+				</div> 
+				
+			</div> -->
+          
+          <!-- 배너 -->
+          
+          
+          <!-- //body -->
+        </div>
+      <!-- //wrap -->
+      </div>
+    <hr />
+	</div>
+      <!-- footer -->
+      
+	</div>
+	<!-- //left_new -->
+
+	<div id="quickmenu">
+		<p class="blind">QUICK LINK</p>
+		<ul>
+			<li><a href="/Delivery_html/inquiry/personal_inquiry.jsp"><img src="../img/common/quick_menu1.png" alt="배송조회 바로가기" /></a></li>
+			<li><a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=A"><img src="../img/common/quick_menu2.png" alt="택배예약 바로가기" /></a></li>
+			<li><a href="/Delivery_html/quick/login1.jsp"><img src="../img/common/quick_menu3.png" alt="예약확인/취소 바로가기" /></a></li>
+			<li><a href="/Delivery_html/business/service_guide3_01.jsp"><img src="../img/common/quick_menu4.png" alt="요금조회 바로가기" /></a></li>
+			<li><a href="/Delivery_html/store/domestic.jsp"><img src="../img/common/quick_menu5.png" alt="대리점안내 바로가기" /></a></li>
+		</ul>
+		<!--<a href="http://www.ehanex.com/" target="_blank"><img src="../img/common/quick_banner.gif" alt="eHanEx 해외쇼핑몰 배송대행-새창열림" /></a> -->
+	</div>
+	<!-- //quickmenu -->
+		
+</div>
+<!-- //wrap_new -->
+
+<div id="footer_wrap">
+	<div class="f_logo"><img src="../img/common/f_logo.gif" alt="HANJIN" /></div>
+	<div class="f_addr">
+		<ul class="f_link">
+			<li><a href="/PR_html/company/overview.jsp" target="_blank" title="새창열림">회사소개</a></li>
+			<li><a href="/pr_html/privacy/clause.jsp" target="_blank" title="새창열림">사이트 이용약관</a></li>
+			<li class="privacy"><a href="/pr_html/privacy/privacy.jsp" target="_blank" title="새창열림">개인정보 처리방침</a></li>
+			<li><a href="/pr_html/util/pop_rejection.html" onclick="window.open(this.href, '', 'width=480, height=297'); return false;" title="새창열림">이메일무단수집거부</a></li>
+			<li><a href="/Delivery_html/help/policy.jsp" target="_blank" title="새창열림">택배운송약관</a></li>
+			<li><a href="/Delivery_html/inquiry/focus_System.jsp" target="_blank" title="새창열림">nFocus System</a></li>
+		</ul>
+		<address>
+			서울시 중구 남대문로 63 (주)한진 / 대표이사 : 서용원 외 2명 <br />
+			택배고객센터 : 1588-0011 (이용요금 유료), 사업자등록번호 : 201-81-02823
+		</address>
+	</div>
+	<div class="f_banner">
+		<a href="http://www.kca.go.kr/wpge/m_210/ccm1100.do" target="_blank"><img src="../img/common/f_banner.gif" alt="CCM 인증마크소개 새창으로 열림" /></a>	</div>
+<!--<div class="web_mark">
+		<a href="http://www.kwacc.or.kr/WACertificate/WAMark" target="_blank" title="인증마크소개 새창으로 열림">
+			<img src="../img/common/icon_mark_wa.jpg" alt="웹접근성 우수사이트 인증" />
+		</a>
+	</div> -->
+	<div class="family">
+		<div>
+			<select name="family02" id="family02" title="패밀리 사이트 선택">
+				<option value="">패밀리 사이트</option>
+				<option value="http://www.hanjin.co.kr/pr_html/index.jsp">(주)한진</option>
+				<!--<option value="http://www.hanjin.co.kr/Logistics_html/index.jsp">한진물류</option> -->
+				<option value="http://rentacar.hanjin.co.kr/">한진렌터카</option>
+				<option value="http://www.ehanex.com/">이하넥스</option>
+				<option value="http://www.ehanexmall.com">이하넥스몰</option>     
+			</select>
+			<a href="#" onclick="goFamily();return false;"><img src="../img/common/btn_family_go.gif" alt="패밀리 사이트 이동_새창열림" /></a>
+		</div>
+		<div>
+			<select name="family03" id="family03" title="한진그룹 관계사 선택">
+				<option value="">한진그룹 관계사</option>
+				<option value="http://www.hanjinkal.co.kr/">한진칼</option>
+				<option value="https://kr.koreanair.com/korea/ko.html">대한항공</option>
+				<option value="http://www.kas.co.kr">한국공항</option>
+				<option value="http://www.jinair.com">진에어</option>
+			</select>
+			<a href="#" onclick="goGlobal();return false;"><img src="../img/common/btn_family_go.gif" alt="한진그룹 관계사 사이트 이동_새창열림" /></a>
+		</div>
+	</div>
+</div>
+<!-- //footer_wrap -->
+</body>
+</html>
+
+<!-- //footer -->
