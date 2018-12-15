@@ -1,0 +1,210 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<title>한진택배 &gt; 예약&#47;조회 &gt; 배송조회</title>
+<link rel="stylesheet" href="../css/inquiry.css" type="text/css" />
+<link rel="stylesheet" href="../css/layout.css" type="text/css" />
+<link rel="stylesheet" href="../css/base_main02.css" type="text/css" />
+<script type="text/javascript" src="../js/script.js"></script>
+<script type="text/javascript" src="../js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../js/menu.js"></script>
+
+<script type="text/javascript">
+  //var ID = getParameter('ID')
+ </script>
+</head>
+<body>
+<!-- skipAccess -->
+<div class="skipAccess">
+	<ul>
+		<li><a href="#new_body" tabindex="0">본문 바로가기</a></li>
+		<li><a href="#gnbNew" tabindex="0">주메뉴 바로가기</a></li>
+		<li><a href="#lnb" tabindex="0">서브메뉴 바로가기</a></li>
+	</ul>
+</div>
+<!-- //skipAccess -->
+<div id="wrapper">
+	<div id="header">
+		<div class="topUtil">
+			<div class="topUtilBox">
+				<ul>
+					
+					<li><a href="/Delivery_html/members/member_login.jsp"><img src="../img/gnb/top_util_login.png" alt="로그인" /></a></li>
+					<li><a href="/Delivery_html/members/join_agree.jsp"><img src="../img/gnb/top_util_join.png" alt="회원가입" /></a></li>
+					
+					<li><a href="/Delivery_html/help/customer_write.jsp"><img src="../img/gnb/top_util_customer.png" alt="고객의 말씀" /></a></li>
+					<li><a href="/Delivery_html/sitemap/sitemap.jsp"><img src="../img/gnb/top_util_sitemap.png" alt="사이트맵" /></a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- GNB -->
+		<div id="gnb">
+			<div class="gnb_wrap">
+				<div class="inner">
+					<h1 class="logo"><a href="/Delivery_html/index.jsp"><img src="../img/gnb/logo.png" alt="한진택배" /></a></h1>
+					<ul class="gnb" id="gnbNew" tabindex="0">
+						<li ><a href="#"><img src="../img/gnb/gnb_01.png" alt="사업소개" /></a>
+							<ul>
+							  <li ><a href="/Delivery_html/business/hanjin_info.jsp">한진택배소개</a></li>
+                                <li ><a href="/Delivery_html/business/service_ccm.jsp">소비자중심경영</a> </li>
+								<li ><a href="/Delivery_html/business/service_info.jsp">서비스특징</a> </li>
+								<li > <a href="/Delivery_html/business/notice_list.jsp">공지사항</a> </li>
+								<li ><a href="/Delivery_html/event/event_list.jsp">이벤트</a></li>
+							</ul>
+						</li>
+						<li ><a href="#"><img src="../img/gnb/gnb_02.png" alt="국내택배" /></a>
+							<ul>
+								<li ><a href="/Delivery_html/domestic/pabalma.jsp">개인택배(파발마)</a></li>
+								<li ><a href="/Delivery_html/domestic/b2b_service.jsp">기업택배</a></li>
+								<li ><a href="/Delivery_html/business/service_guide3_01.jsp">요금안내</a></li>
+								<li ><a href="/Delivery_html/business/service_guide1.jsp">운송장 작성요령</a></li>
+								<li ><a href="/Delivery_html/business/service_guide4.jsp">상품포장방법</a></li>
+								<li ><a href="/Delivery_html/business/service_guide2.jsp">취급제한품목</a></li>
+							</ul>
+						</li>
+						<li ><a href="#"><img src="../img/gnb/gnb_03.png" alt="유통택배" /></a>
+							<ul>
+								<li ><a href="/Delivery_html/distribution/distribution01.jsp">B2B</a></li>
+								<li ><a href="/Delivery_html/distribution/distribution02.jsp">3PL</a> </li>
+								<li ><a href="/Delivery_html/distribution/distribution03.jsp">중계배송</a></li>
+								<li ><a href="/Delivery_html/charge/estimate.jsp">견적의뢰</a></li>
+							</ul>
+						</li>
+						<li ><a href="#"><img src="../img/gnb/gnb_04.png" alt="국제특송" /></a>
+							<ul>
+								<li ><a href="/Delivery_html/international/international.jsp">서비스소개</a></li>							
+								<li ><a href="/Delivery_html/international/standard.jsp">일반서비스</a></li>								
+								<!-- <li ><a href="/Delivery_html/international/japan.jsp">특화서비스</a></li> -->
+								<!-- 20180601 LHS 수정 -->
+								<li ><a href="/Delivery_html/international/Business_svc02.jsp">특화서비스</a></li>
+								
+								<li ><a href="/Delivery_html/international/entry.jsp">통관정보</a></li>
+								<li ><a href="/Delivery_html/international/direction.jsp">이용안내</a></li>
+							</ul>
+						</li>
+						<li class="on"><a href="#"><img src="../img/gnb/gnb_05.png" alt="예약/조회" /></a>
+							<ul>
+								<li class="on"><a href="/Delivery_html/inquiry/personal_inquiry.jsp">배송조회</a></li>
+								<li ><a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=A">택배예약</a></li>
+								<li ><a href="/Delivery_html/quick/login1.jsp">예약 확인/취소</a></li>
+								<li ><a href="/Delivery_html/charge/inquiry.jsp">요금/소요일조회</a></li>
+								<li ><a href="/Delivery_html/receipt/info.jsp">현금영수증</a></li>
+								<!--<li ><a href="/Delivery_html/quick/login1.jsp?gbn=wbl">운송장 인쇄</a></li>-->
+								<li ><a href="/Delivery_html/inquiry/personal_inquiry.jsp?menu_gbn=A">운송장 영수증</a></li>
+								<li ><a href="/Delivery_html/charge/estimate.jsp">견적의뢰</a></li>
+							</ul>
+						</li>
+						<li ><a href="#"><img src="../img/gnb/gnb_06.png" alt="고객지원" /></a>
+							<ul>
+								<li ><a href="/Delivery_html/store/domestic.jsp">집배점 조회</a></li>
+								<li ><a href="/Delivery_html/store/distributor.jsp">취급점 안내</a></li>
+								<li ><a href="/Delivery_html/help/faq.jsp">FAQ</a></li>
+								<li ><a href="/Delivery_html/help/contactus.jsp">문의방법안내</a></li>
+								<li ><a href="/Delivery_html/help/compensation.jsp">보상처리절차</a></li>
+								<li ><a href="/Delivery_html/help/customer_write.jsp">고객의 말씀</a></li>
+								<li ><a href="/Delivery_html/help/service_center.jsp">고객센터안내</a></li>
+								<li ><a href="/Delivery_html/help/policy.jsp">택배 운송약관</a></li>
+								<li ><a href="/Delivery_html/cooperate/skypass.jsp">제휴서비스</a></li>
+								<li ><a href="/Delivery_html/store/startUp.jsp">창업지원센터</a></li>  
+							</ul>
+						</li>
+				  </ul>
+			  </div>
+			</div>
+		</div>
+		<!-- //GNB -->
+	</div>
+	<!-- //header -->
+	
+	<!-- 서브비주얼 -->
+	
+	
+	
+	
+	
+	<!-- 예약/조회 -->
+	<div class="sub_visual sub05">
+		<div>가장가까운거리 고객과 가장 가까운 거리에서 언제나 변함없이 고객과 함께하며 소중한 마음을 전하는 기분 좋은 택배서비스</div>
+	</div>
+	
+	
+	
+	
+	
+	<!-- //서브비주얼 -->
+	
+</div>
+<!-- //wrapper -->
+
+<div id="wrap_new">
+	<div id="left_new">
+		<div id="lnb" class="left_new_lnb">
+			
+			
+			
+			
+			
+			<!-- 예약/조회 -->
+			<div class="menu">
+				<h2><img src="../img/common/h2_lnb5.gif" alt="예약/조회" /></h2>
+				<ul class="depth_01">
+					<li class="on"><a href="/Delivery_html/inquiry/personal_inquiry.jsp"><img src="../img/common/lnb5_01_off.png" alt="배송조회" /></a></li>
+					<li >
+						<a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=F"><img src="../img/common/lnb5_02_off.png" alt="택배예약" /></a>
+						<ul class="depth_02">
+							<li ><a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=A">일반택배</a></li>
+							<!--<li ><a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=F">플러스택배</a></li>-->
+                            <li ><a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=Q">퀵택배</a></li>  
+							<li ><a href="/Delivery_html/reserve/return.jsp">반품택배</a></li>
+							<!--<li ><a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=B">당일택배</a></li> -->
+							<li ><a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=N">취급점택배</a></li>
+							<li ><a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=G">공항택배</a></li>
+							<li ><a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=H">골프택배</a></li>
+							<li ><a href="/Delivery_html/reserve/care_check.jsp?rsr_gbn=E">국제특송</a></li>
+						</ul>
+					</li>
+					<li ><a href="/Delivery_html/quick/login1.jsp"><img src="../img/common/lnb5_03_off.png" alt="예약확인/취소" /></a></li>
+					<li ><a href="/Delivery_html/charge/inquiry.jsp"><img src="../img/common/lnb5_04_off.png" alt="요금/소요일 조회" /></a></li>
+					<li >
+						<a href="/Delivery_html/receipt/info.jsp"><img src="../img/common/lnb5_05_off.png" alt="현금영수증" /></a>
+						<ul class="depth_02">
+							<li ><a href="/Delivery_html/receipt/info.jsp">현금영수증 제도 소개</a></li>
+							<li ><a href="/Delivery_html/receipt/issue.jsp">현금영수증 발급</a></li>
+							<li ><a href="/Delivery_html/receipt/inquiry.jsp">현금영수증 승인내역보기</a></li>
+						</ul>
+					</li>
+					<!--<li ><a href="/Delivery_html/quick/login1.jsp?gbn=wbl"><img src="../img/common/lnb5_06_off.png" alt="운송장인쇄" /></a></li>-->
+					<li ><a href="/Delivery_html/inquiry/personal_inquiry.jsp?menu_gbn=A"><img src="../img/common/lnb5_07_off.png" alt="운송장 영수증" /></a></li>
+					<li ><a href="/Delivery_html/charge/estimate.jsp"><img src="../img/common/lnb5_08_off.png" alt="견적의뢰" /></a></li>
+				</ul>
+				<div class="banner">
+					<a href="/Delivery_html/inquiry/focus_System.jsp"><img src="../img/common/lnb5_banner.gif" alt="nFocus System" /></a>
+				</div>
+			</div>
+			
+			
+			
+			
+			
+		</div>
+		<!-- //lnb -->
+
+		<div id="new_body">
+
+
+<script language="JavaScript">       	
+	window.location.href="result_error.jsp";
+</script>
+
+<!-- //footer -->
