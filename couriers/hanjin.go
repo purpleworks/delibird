@@ -156,9 +156,9 @@ func (t Hanjin) strpos(haystack string, needle string) bool {
 
 func (t Hanjin) getStatus(status_text string) delibird.TrackingStatus {
 	switch {
-	case t.strpos(status_text, "터미널에 입고"):
-		return delibird.Ready
-	case t.strpos(status_text, "터미널에 도착"), t.strpos(status_text, "이동중"):
+	case t.strpos(status_text, "집하"):
+		return delibird.PickupComplete
+	case t.strpos(status_text, "터미널"):
 		return delibird.Loading
 	case t.strpos(status_text, "배송준비중"):
 		return delibird.Unloading
