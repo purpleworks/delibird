@@ -91,7 +91,13 @@ func (t Hanjin) Parse(trackingNumber string) (delibird.Track, *delibird.ApiError
 	//배송정보
 	doc.Find("table").Eq(1).Find("tbody tr").Each(func(i int, s *goquery.Selection) {
 		dateText := strings.TrimSpace(s.Find("td").Eq(0).Text()) + " " + strings.TrimSpace(s.Find("td").Eq(1).Text())
+
+		if strings.Index(dateText, "수령인") > -1 {
+			return
+		}
+
 		date, err := time.Parse("2006-01-02 15:04", dateText)
+
 		if err != nil {
 			log.Print(err)
 		} else {
