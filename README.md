@@ -25,6 +25,7 @@ Korean Post / 우체국택배 | @purpleworks
 CJ KoreaExpress / CJ대한통운 | @purpleworks
 KG Logis / KG로지스 | @serendip811
 Logen / 로젠택배 | @purpleworks
+Slx / 알라딘 당일배송 | @babbayo
 
 ## Installation
 
@@ -87,6 +88,7 @@ KPOST | Korean Post / 우체국택배
 CJ | CJ Korea express / CJ대한통운
 KG | KG Logis / KG로지스
 LOGEN | Logen / 로젠택배
+SLX | Slx / 알라딘 당일배송
 
 **Response**
 
